@@ -8,9 +8,8 @@
 
 import Foundation
 import UIKit
-import TapticEngine
 import Firebase
-import SCLAlertView
+import StoreKit
 
 class SettingTableViewController: UITableViewController {
    

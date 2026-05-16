@@ -9,7 +9,6 @@
 import UIKit
 import GoogleMobileAds
 import Firebase
-import TapticEngine
 
 class HateViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, GADBannerViewDelegate {
    
@@ -69,13 +68,10 @@ class HateViewController: UIViewController, UITableViewDelegate, UITableViewData
    private func InitBannerView() {
       #if DEBUG
          print("\n\n--------INFO ADMOB--------------\n")
-         print("Google Mobile ads SDK Versioin -> " + GADRequest.sdkVersion() + "\n")
          self.SeeHateBannerView.adUnitID = BANNER_VIEW_TEST_ID
-         self.BannerViewReqest.testDevices = ["9d012329e337de42666c706e842b7819"];
          print("バナー広告：テスト環境\n\n")
       #else
          print("\n\n--------INFO ADMOB--------------\n")
-         print("Google Mobile ads SDK Versioin -> " + GADRequest.sdkVersion() + "\n")
          self.SeeHateBannerView.adUnitID = BANNER_VIEW_ID
          print("バナー広告：本番環境")
       #endif
@@ -170,7 +166,7 @@ class HateViewController: UIViewController, UITableViewDelegate, UITableViewData
    
    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
        let sourceCellItem = HateArray[sourceIndexPath.row]
-       guard let indexPath = HateArray.index(of: sourceCellItem) else { return }
+       guard let indexPath = HateArray.firstIndex(of: sourceCellItem) else { return }
       
        HateArray.remove(at: indexPath)
        HateArray.insert(sourceCellItem, at: destinationIndexPath.row)
@@ -212,25 +208,25 @@ class HateViewController: UIViewController, UITableViewDelegate, UITableViewData
    }
    
    /// Tells the delegate an ad request failed.
-   func adView(_ bannerView: GADBannerView,
-               didFailToReceiveAdWithError error: GADRequestError) {
+   func bannerView(_ bannerView: GADBannerView,
+               didFailToReceiveAdWithError error: Error) {
       print("広告(banner)のロードに失敗しました。: \(error.localizedDescription)")
    }
    
    /// Tells the delegate that a full-screen view will be presented in response
    /// to the user clicking on an ad.
-   func adViewWillPresentScreen(_ bannerView: GADBannerView) {
-      print("adViewWillPresentScreen")
+   func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillPresentScreen")
    }
    
    /// Tells the delegate that the full-screen view will be dismissed.
-   func adViewWillDismissScreen(_ bannerView: GADBannerView) {
-      print("adViewWillDismissScreen")
+   func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillDismissScreen")
    }
    
    /// Tells the delegate that the full-screen view has been dismissed.
-   func adViewDidDismissScreen(_ bannerView: GADBannerView) {
-      print("adViewDidDismissScreen")
+   func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewDidDismissScreen")
    }
    
    /// Tells the delegate that a user click will open another app (such as

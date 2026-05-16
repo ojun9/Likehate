@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import SCLAlertView
 import Firebase
 
 class SettingViewController: UIViewController {

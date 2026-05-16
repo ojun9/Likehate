@@ -6,10 +6,6 @@
 //
 
 import UIKit
-import HeartLoadingView
-import FlatUIKit
-import ChameleonFramework
-import SCLAlertView
 import StoreKit
 import Firebase
 

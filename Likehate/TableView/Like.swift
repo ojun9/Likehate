@@ -7,9 +7,7 @@
 //
 
 import UIKit
-import ChameleonFramework
 import Firebase
-import TapticEngine
 
 class LikeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
    
@@ -125,7 +123,7 @@ class LikeViewController: UIViewController, UITableViewDelegate, UITableViewData
    
    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
        let sourceCellItem = LikeArray[sourceIndexPath.row]
-       guard let indexPath = LikeArray.index(of: sourceCellItem) else { return }
+       guard let indexPath = LikeArray.firstIndex(of: sourceCellItem) else { return }
       
        LikeArray.remove(at: indexPath)
        LikeArray.insert(sourceCellItem, at: destinationIndexPath.row)

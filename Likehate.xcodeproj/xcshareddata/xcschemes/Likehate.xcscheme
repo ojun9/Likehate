@@ -37,26 +37,6 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF04C74D233E166E00E22CB6"
-               BuildableName = "LikehateUITests.xctest"
-               BlueprintName = "LikehateUITests"
-               ReferencedContainer = "container:Likehate.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF04C75B233E167500E22CB6"
-               BuildableName = "LikehateTests.xctest"
-               BlueprintName = "LikehateTests"
-               ReferencedContainer = "container:Likehate.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

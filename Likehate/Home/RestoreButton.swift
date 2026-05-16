@@ -8,9 +8,7 @@
 
 
 import UIKit
-import FlatUIKit
 import SwiftyStoreKit
-import SCLAlertView
 import Firebase
 
 class RestoreButton: FUIButton {

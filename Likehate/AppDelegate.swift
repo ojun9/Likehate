@@ -8,7 +8,10 @@
 
 import UIKit
 import Firebase
+import FirebaseMessaging
+import GoogleMobileAds
 import SwiftyStoreKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,12 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
       //--------------------FIREBASE-----------------------//
       print("本番のfirebaseにアクセス")
-      let fileName = "GoogleService-Info"
-      let filePath = Bundle.main.path(forResource: fileName, ofType: "plist")
-      let fileopts = FirebaseOptions(contentsOfFile: filePath!)
-      
-      FirebaseApp.configure(options: fileopts!)
-      GADMobileAds.sharedInstance().start(completionHandler: nil)
+      FirebaseApp.configure()
+      MobileAds.shared.start(completionHandler: nil)
       //--------------------FIREBASE-----------------------//
       
       
@@ -52,19 +51,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       // [START set_messaging_delegate]
       Messaging.messaging().delegate = self
       // [END set_messaging_delegate]
-      if #available(iOS 10.0, *) {
-         // For iOS 10 display notification (sent via APNS)
-         UNUserNotificationCenter.current().delegate = self
-         
-         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-         UNUserNotificationCenter.current().requestAuthorization(
-            options: authOptions,
-            completionHandler: {_, _ in })
-      } else {
-         let settings: UIUserNotificationSettings =
-            UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-         application.registerUserNotificationSettings(settings)
-      }
+      UNUserNotificationCenter.current().delegate = self
+
+      let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+      UNUserNotificationCenter.current().requestAuthorization(
+         options: authOptions,
+         completionHandler: {_, _ in })
       application.registerForRemoteNotifications()
       //------------------- プッシュ通知-----------------//
       
@@ -173,7 +165,8 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 
 extension AppDelegate : MessagingDelegate {
    //MARK:- START refresh_token
-   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+      guard let fcmToken else { return }
       print("Firebase registration token: \(fcmToken)")
       
       let dataDict:[String: String] = ["token": fcmToken]
@@ -183,11 +176,4 @@ extension AppDelegate : MessagingDelegate {
    }
    //MARK: END refresh_token -
    
-   //MARK:- START ios_10_data_message
-   // アプリがフォアグラウンドにあるときに、iOS 10以降でデータメッセージをFCMから直接（APNをバイパスして）受信する。
-   // To enable direct data messages, you can set Messaging.messaging().shouldEstablishDirectChannel to true.
-   func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
-      print("レシーブデータメッセージ: \(remoteMessage.appData)")
-   }
-   //MARK: END ios_10_data_message -
 }

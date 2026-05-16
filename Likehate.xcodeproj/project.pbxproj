@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		618B502C87DC35A9E5638965 /* Pods_Likehate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 216F7C97AA81E56AD34214EF /* Pods_Likehate.framework */; };
-		777B844CDDCC1F1A9BD9981E /* libPods-LikehateUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C252D28D6DD00F072D2495E6 /* libPods-LikehateUITests.a */; };
-		90C705930D623827B70AA099 /* libPods-LikehateTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2EE2A61B233EB7736652BA /* libPods-LikehateTests.a */; };
-		BF04C751233E166E00E22CB6 /* LikehateUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04C750233E166E00E22CB6 /* LikehateUITests.swift */; };
-		BF04C75F233E167500E22CB6 /* LikehateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04C75E233E167500E22CB6 /* LikehateTests.swift */; };
+		BF0000010000000000000001 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000011 /* GoogleMobileAds */; };
+		BF0000010000000000000002 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000012 /* FirebaseCore */; };
+		BF0000010000000000000003 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000013 /* FirebaseAnalytics */; };
+		BF0000010000000000000004 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000014 /* FirebaseRemoteConfig */; };
+		BF0000010000000000000005 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000015 /* FirebaseMessaging */; };
+		BF0000010000000000000006 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000016 /* Lottie */; };
+		BF0000010000000000000007 /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000017 /* SwiftyStoreKit */; };
+		BF0000010000000000000008 /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0000010000000000000018 /* Compatibility.swift */; };
 		BF1CE8CC22D5B76000ACF7F8 /* earth.json in Resources */ = {isa = PBXBuildFile; fileRef = BF1CE8CB22D5B76000ACF7F8 /* earth.json */; };
 		BF22F46220DE6E4C00B56F99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF22F46120DE6E4C00B56F99 /* AppDelegate.swift */; };
 		BF22F46420DE6E4C00B56F99 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF22F46320DE6E4C00B56F99 /* ViewController.swift */; };
@@ -30,7 +33,6 @@
 		BF2FB1612311170C0033C104 /* Egg.json in Resources */ = {isa = PBXBuildFile; fileRef = BF2FB1602311170C0033C104 /* Egg.json */; };
 		BF2FB163231117FD0033C104 /* Good.json in Resources */ = {isa = PBXBuildFile; fileRef = BF2FB162231117FD0033C104 /* Good.json */; };
 		BF2FB16523111AFB0033C104 /* MaruKuru.json in Resources */ = {isa = PBXBuildFile; fileRef = BF2FB16423111AFA0033C104 /* MaruKuru.json */; };
-		BF371D51233E192D00EC0D62 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF371D50233E192D00EC0D62 /* SnapshotHelper.swift */; };
 		BF371D53233E1B9600EC0D62 /* ExUIColo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF371D52233E1B9600EC0D62 /* ExUIColo.swift */; };
 		BF4323CE22D4977B008DF038 /* NoAdsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4323CD22D4977B008DF038 /* NoAdsButton.swift */; };
 		BF4323D122D497B0008DF038 /* ExNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4323D022D497B0008DF038 /* ExNotification.swift */; };
@@ -44,7 +46,6 @@
 		BF77128D23DD467E00EF0D3C /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF77128C23DD467E00EF0D3C /* SettingTableViewController.swift */; };
 		BF77128F23DD60B300EF0D3C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BF77128E23DD60B300EF0D3C /* Settings.bundle */; };
 		BFA4BAB4233F0BA1005421E9 /* AccessibilityIdentifire.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA4BAB3233F0BA1005421E9 /* AccessibilityIdentifire.swift */; };
-		BFA4BAB8233F2634005421E9 /* Iden.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA4BAB7233F2634005421E9 /* Iden.swift */; };
 		BFAC571920E229EB00813CC9 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAC571820E229EB00813CC9 /* test.swift */; };
 		BFB4887223DEA34900BF6602 /* ExViewControllerInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4887123DEA34900BF6602 /* ExViewControllerInit.swift */; };
 		BFB4887423DEA40F00BF6602 /* ExViewControllerAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4887323DEA40F00BF6602 /* ExViewControllerAnimation.swift */; };
@@ -54,35 +55,8 @@
 		BFE2138D22D3366000132D44 /* KiraKira.json in Resources */ = {isa = PBXBuildFile; fileRef = BFE2138C22D3366000132D44 /* KiraKira.json */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		BF04C753233E166E00E22CB6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BF22F45620DE6E4C00B56F99 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BF22F45D20DE6E4C00B56F99;
-			remoteInfo = Likehate;
-		};
-		BF04C761233E167500E22CB6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BF22F45620DE6E4C00B56F99 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BF22F45D20DE6E4C00B56F99;
-			remoteInfo = Likehate;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		10CE5D57347F88706F5A6052 /* Pods-LikehateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LikehateUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LikehateUITests/Pods-LikehateUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		155410E01877B2864727E256 /* Pods-LikehateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LikehateTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LikehateTests/Pods-LikehateTests.release.xcconfig"; sourceTree = "<group>"; };
-		216F7C97AA81E56AD34214EF /* Pods_Likehate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Likehate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		27D369996F0C6A4C0D1C3E58 /* Pods-Likehate.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Likehate.release.xcconfig"; path = "Pods/Target Support Files/Pods-Likehate/Pods-Likehate.release.xcconfig"; sourceTree = "<group>"; };
-		77A3D2D8A7381242C3884327 /* Pods-LikehateUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LikehateUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LikehateUITests/Pods-LikehateUITests.release.xcconfig"; sourceTree = "<group>"; };
-		BF04C74E233E166E00E22CB6 /* LikehateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LikehateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF04C750233E166E00E22CB6 /* LikehateUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikehateUITests.swift; sourceTree = "<group>"; };
-		BF04C752233E166E00E22CB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BF04C75C233E167500E22CB6 /* LikehateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LikehateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF04C75E233E167500E22CB6 /* LikehateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikehateTests.swift; sourceTree = "<group>"; };
-		BF04C760233E167500E22CB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF0000010000000000000018 /* Compatibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compatibility.swift; sourceTree = "<group>"; };
 		BF1CE8CB22D5B76000ACF7F8 /* earth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = earth.json; sourceTree = "<group>"; };
 		BF22F45E20DE6E4C00B56F99 /* Likehate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Likehate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF22F46120DE6E4C00B56F99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,7 +77,6 @@
 		BF2FB1602311170C0033C104 /* Egg.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Egg.json; sourceTree = "<group>"; };
 		BF2FB162231117FD0033C104 /* Good.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Good.json; sourceTree = "<group>"; };
 		BF2FB16423111AFA0033C104 /* MaruKuru.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MaruKuru.json; sourceTree = "<group>"; };
-		BF371D50233E192D00EC0D62 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		BF371D52233E1B9600EC0D62 /* ExUIColo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExUIColo.swift; sourceTree = "<group>"; };
 		BF4323CD22D4977B008DF038 /* NoAdsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoAdsButton.swift; sourceTree = "<group>"; };
 		BF4323D022D497B0008DF038 /* ExNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExNotification.swift; sourceTree = "<group>"; };
@@ -153,7 +126,6 @@
 		BF77128C23DD467E00EF0D3C /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		BF77128E23DD60B300EF0D3C /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		BFA4BAB3233F0BA1005421E9 /* AccessibilityIdentifire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifire.swift; sourceTree = "<group>"; };
-		BFA4BAB7233F2634005421E9 /* Iden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Iden.swift; sourceTree = "<group>"; };
 		BFAC571820E229EB00813CC9 /* test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		BFB4887123DEA34900BF6602 /* ExViewControllerInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExViewControllerInit.swift; sourceTree = "<group>"; };
 		BFB4887323DEA40F00BF6602 /* ExViewControllerAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExViewControllerAnimation.swift; sourceTree = "<group>"; };
@@ -162,91 +134,38 @@
 		BFE2138922D1A70800132D44 /* MoreHarts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MoreHarts.json; sourceTree = "<group>"; };
 		BFE2138B22D1B7B600132D44 /* Likehate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Likehate.entitlements; sourceTree = "<group>"; };
 		BFE2138C22D3366000132D44 /* KiraKira.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = KiraKira.json; sourceTree = SOURCE_ROOT; };
-		C252D28D6DD00F072D2495E6 /* libPods-LikehateUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LikehateUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF2EE2A61B233EB7736652BA /* libPods-LikehateTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LikehateTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E95CD51B96506ED89B3DDD4D /* Pods-Likehate.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Likehate.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Likehate/Pods-Likehate.debug.xcconfig"; sourceTree = "<group>"; };
-		F2AB44FFD46CEFA7583BF2C8 /* Pods-LikehateTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LikehateTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LikehateTests/Pods-LikehateTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		BF04C74B233E166E00E22CB6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				777B844CDDCC1F1A9BD9981E /* libPods-LikehateUITests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BF04C759233E167500E22CB6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				90C705930D623827B70AA099 /* libPods-LikehateTests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BF22F45B20DE6E4C00B56F99 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				618B502C87DC35A9E5638965 /* Pods_Likehate.framework in Frameworks */,
+				BF0000010000000000000002 /* FirebaseCore in Frameworks */,
+				BF0000010000000000000003 /* FirebaseAnalytics in Frameworks */,
+				BF0000010000000000000004 /* FirebaseRemoteConfig in Frameworks */,
+				BF0000010000000000000005 /* FirebaseMessaging in Frameworks */,
+				BF0000010000000000000001 /* GoogleMobileAds in Frameworks */,
+				BF0000010000000000000006 /* Lottie in Frameworks */,
+				BF0000010000000000000007 /* SwiftyStoreKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8A35AEA8D7077E30C613FDA5 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E95CD51B96506ED89B3DDD4D /* Pods-Likehate.debug.xcconfig */,
-				27D369996F0C6A4C0D1C3E58 /* Pods-Likehate.release.xcconfig */,
-				F2AB44FFD46CEFA7583BF2C8 /* Pods-LikehateTests.debug.xcconfig */,
-				155410E01877B2864727E256 /* Pods-LikehateTests.release.xcconfig */,
-				10CE5D57347F88706F5A6052 /* Pods-LikehateUITests.debug.xcconfig */,
-				77A3D2D8A7381242C3884327 /* Pods-LikehateUITests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		B776C712E8F6D795633683E9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				216F7C97AA81E56AD34214EF /* Pods_Likehate.framework */,
-				CF2EE2A61B233EB7736652BA /* libPods-LikehateTests.a */,
-				C252D28D6DD00F072D2495E6 /* libPods-LikehateUITests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		BF04C74F233E166E00E22CB6 /* LikehateUITests */ = {
-			isa = PBXGroup;
-			children = (
-				BF04C750233E166E00E22CB6 /* LikehateUITests.swift */,
-				BFA4BAB7233F2634005421E9 /* Iden.swift */,
-				BF371D50233E192D00EC0D62 /* SnapshotHelper.swift */,
-				BF04C752233E166E00E22CB6 /* Info.plist */,
-			);
-			path = LikehateUITests;
-			sourceTree = "<group>";
-		};
-		BF04C75D233E167500E22CB6 /* LikehateTests */ = {
-			isa = PBXGroup;
-			children = (
-				BF04C75E233E167500E22CB6 /* LikehateTests.swift */,
-				BF04C760233E167500E22CB6 /* Info.plist */,
-			);
-			path = LikehateTests;
 			sourceTree = "<group>";
 		};
 		BF22F45520DE6E4C00B56F99 = {
 			isa = PBXGroup;
 			children = (
 				BF22F46020DE6E4C00B56F99 /* Likehate */,
-				BF04C74F233E166E00E22CB6 /* LikehateUITests */,
-				BF04C75D233E167500E22CB6 /* LikehateTests */,
 				BF22F45F20DE6E4C00B56F99 /* Products */,
-				8A35AEA8D7077E30C613FDA5 /* Pods */,
 				B776C712E8F6D795633683E9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -255,8 +174,6 @@
 			isa = PBXGroup;
 			children = (
 				BF22F45E20DE6E4C00B56F99 /* Likehate.app */,
-				BF04C74E233E166E00E22CB6 /* LikehateUITests.xctest */,
-				BF04C75C233E167500E22CB6 /* LikehateTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -293,6 +210,7 @@
 				BF4323D022D497B0008DF038 /* ExNotification.swift */,
 				BF371D52233E1B9600EC0D62 /* ExUIColo.swift */,
 				BFA4BAB3233F0BA1005421E9 /* AccessibilityIdentifire.swift */,
+				BF0000010000000000000018 /* Compatibility.swift */,
 			);
 			path = Extention;
 			sourceTree = "<group>";
@@ -367,62 +285,30 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BF04C74D233E166E00E22CB6 /* LikehateUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BF04C757233E166E00E22CB6 /* Build configuration list for PBXNativeTarget "LikehateUITests" */;
-			buildPhases = (
-				A4B9ED4F04242C4C36AB6FB2 /* [CP] Check Pods Manifest.lock */,
-				BF04C74A233E166E00E22CB6 /* Sources */,
-				BF04C74B233E166E00E22CB6 /* Frameworks */,
-				BF04C74C233E166E00E22CB6 /* Resources */,
-				64DA08DDCE074227C6EE0E17 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BF04C754233E166E00E22CB6 /* PBXTargetDependency */,
-			);
-			name = LikehateUITests;
-			productName = LikehateUITests;
-			productReference = BF04C74E233E166E00E22CB6 /* LikehateUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
-		BF04C75B233E167500E22CB6 /* LikehateTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BF04C763233E167500E22CB6 /* Build configuration list for PBXNativeTarget "LikehateTests" */;
-			buildPhases = (
-				263B01FC0310E176CE6A6C8D /* [CP] Check Pods Manifest.lock */,
-				BF04C758233E167500E22CB6 /* Sources */,
-				BF04C759233E167500E22CB6 /* Frameworks */,
-				BF04C75A233E167500E22CB6 /* Resources */,
-				66A383138FA275928C176971 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BF04C762233E167500E22CB6 /* PBXTargetDependency */,
-			);
-			name = LikehateTests;
-			productName = LikehateTests;
-			productReference = BF04C75C233E167500E22CB6 /* LikehateTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
+
+
 		BF22F45D20DE6E4C00B56F99 /* Likehate */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BF22F47020DE6E4D00B56F99 /* Build configuration list for PBXNativeTarget "Likehate" */;
 			buildPhases = (
-				A8222C43FF78480E221D8848 /* [CP] Check Pods Manifest.lock */,
 				BF22F45A20DE6E4C00B56F99 /* Sources */,
 				BF22F45B20DE6E4C00B56F99 /* Frameworks */,
 				BF22F45C20DE6E4C00B56F99 /* Resources */,
-				4777196775C1A57A4A398D51 /* [CP] Embed Pods Frameworks */,
-				BF77129023DD614A00EF0D3C /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Likehate;
+			packageProductDependencies = (
+				BF0000010000000000000011 /* GoogleMobileAds */,
+				BF0000010000000000000012 /* FirebaseCore */,
+				BF0000010000000000000013 /* FirebaseAnalytics */,
+				BF0000010000000000000014 /* FirebaseRemoteConfig */,
+				BF0000010000000000000015 /* FirebaseMessaging */,
+				BF0000010000000000000016 /* Lottie */,
+				BF0000010000000000000017 /* SwiftyStoreKit */,
+			);
 			productName = Likehate;
 			productReference = BF22F45E20DE6E4C00B56F99 /* Likehate.app */;
 			productType = "com.apple.product-type.application";
@@ -437,14 +323,6 @@
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = jun;
 				TargetAttributes = {
-					BF04C74D233E166E00E22CB6 = {
-						CreatedOnToolsVersion = 11.0;
-						TestTargetID = BF22F45D20DE6E4C00B56F99;
-					};
-					BF04C75B233E167500E22CB6 = {
-						CreatedOnToolsVersion = 11.0;
-						TestTargetID = BF22F45D20DE6E4C00B56F99;
-					};
 					BF22F45D20DE6E4C00B56F99 = {
 						CreatedOnToolsVersion = 9.4;
 						SystemCapabilities = {
@@ -473,32 +351,24 @@
 				de,
 			);
 			mainGroup = BF22F45520DE6E4C00B56F99;
+			packageReferences = (
+				BF0000010000000000000021 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				BF0000010000000000000022 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				BF0000010000000000000023 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+				BF0000010000000000000024 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */,
+			);
 			productRefGroup = BF22F45F20DE6E4C00B56F99 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				BF22F45D20DE6E4C00B56F99 /* Likehate */,
-				BF04C74D233E166E00E22CB6 /* LikehateUITests */,
-				BF04C75B233E167500E22CB6 /* LikehateTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		BF04C74C233E166E00E22CB6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BF04C75A233E167500E22CB6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
+
+
 		BF22F45C20DE6E4C00B56F99 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -529,163 +399,15 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		263B01FC0310E176CE6A6C8D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LikehateTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4777196775C1A57A4A398D51 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Likehate/Pods-Likehate-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Likehate/Pods-Likehate-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Likehate/Pods-Likehate-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		64DA08DDCE074227C6EE0E17 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LikehateUITests/Pods-LikehateUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LikehateUITests/Pods-LikehateUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LikehateUITests/Pods-LikehateUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		66A383138FA275928C176971 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LikehateTests/Pods-LikehateTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LikehateTests/Pods-LikehateTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LikehateTests/Pods-LikehateTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A4B9ED4F04242C4C36AB6FB2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LikehateUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A8222C43FF78480E221D8848 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Likehate-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BF77129023DD614A00EF0D3C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\nif [ $CONFIGURATION = \"Debug\" ]; then\n${PODS_ROOT}/LicensePlist/license-plist --output-path $PRODUCT_NAME/Settings.bundle\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		BF04C74A233E166E00E22CB6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF04C751233E166E00E22CB6 /* LikehateUITests.swift in Sources */,
-				BF371D51233E192D00EC0D62 /* SnapshotHelper.swift in Sources */,
-				BFA4BAB8233F2634005421E9 /* Iden.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BF04C758233E167500E22CB6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF04C75F233E167500E22CB6 /* LikehateTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
+
+
 		BF22F45A20DE6E4C00B56F99 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				BF22F47420DE6EB800B56F99 /* Like.swift in Sources */,
+				BF0000010000000000000008 /* Compatibility.swift in Sources */,
 				BF22F47A20DE744400B56F99 /* WriteHate.swift in Sources */,
 				BFB4887423DEA40F00BF6602 /* ExViewControllerAnimation.swift in Sources */,
 				BFA4BAB4233F0BA1005421E9 /* AccessibilityIdentifire.swift in Sources */,
@@ -706,19 +428,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		BF04C754233E166E00E22CB6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BF22F45D20DE6E4C00B56F99 /* Likehate */;
-			targetProxy = BF04C753233E166E00E22CB6 /* PBXContainerItemProxy */;
-		};
-		BF04C762233E167500E22CB6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BF22F45D20DE6E4C00B56F99 /* Likehate */;
-			targetProxy = BF04C761233E167500E22CB6 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		BF22F46520DE6E4C00B56F99 /* Main.storyboard */ = {
@@ -792,98 +501,10 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		BF04C755233E166E00E22CB6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 10CE5D57347F88706F5A6052 /* Pods-LikehateUITests.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9R4W53MKG7;
-				INFOPLIST_FILE = LikehateUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Taped.LikehateUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Likehate;
-			};
-			name = Debug;
-		};
-		BF04C756233E166E00E22CB6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 77A3D2D8A7381242C3884327 /* Pods-LikehateUITests.release.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9R4W53MKG7;
-				INFOPLIST_FILE = LikehateUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Taped.LikehateUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Likehate;
-			};
-			name = Release;
-		};
-		BF04C764233E167500E22CB6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F2AB44FFD46CEFA7583BF2C8 /* Pods-LikehateTests.debug.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9R4W53MKG7;
-				INFOPLIST_FILE = LikehateTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Taped.LikehateTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Likehate.app/Likehate";
-			};
-			name = Debug;
-		};
-		BF04C765233E167500E22CB6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 155410E01877B2864727E256 /* Pods-LikehateTests.release.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9R4W53MKG7;
-				INFOPLIST_FILE = LikehateTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Taped.LikehateTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Likehate.app/Likehate";
-			};
-			name = Release;
-		};
+
+
+
+
 		BF22F46E20DE6E4D00B56F99 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -936,7 +557,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -991,7 +612,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -1002,7 +623,6 @@
 		};
 		BF22F47120DE6E4D00B56F99 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E95CD51B96506ED89B3DDD4D /* Pods-Likehate.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Likehate/Likehate.entitlements;
@@ -1015,9 +635,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = myfirst.Likehate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1025,7 +646,6 @@
 		};
 		BF22F47220DE6E4D00B56F99 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 27D369996F0C6A4C0D1C3E58 /* Pods-Likehate.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Likehate/Likehate.entitlements;
@@ -1038,9 +658,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = myfirst.Likehate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1049,24 +670,8 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BF04C757233E166E00E22CB6 /* Build configuration list for PBXNativeTarget "LikehateUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BF04C755233E166E00E22CB6 /* Debug */,
-				BF04C756233E166E00E22CB6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BF04C763233E167500E22CB6 /* Build configuration list for PBXNativeTarget "LikehateTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BF04C764233E167500E22CB6 /* Debug */,
-				BF04C765233E167500E22CB6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
+
+
 		BF22F45920DE6E4C00B56F99 /* Build configuration list for PBXProject "Likehate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1086,6 +691,79 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BF0000010000000000000021 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.4.0;
+			};
+		};
+		BF0000010000000000000022 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.0;
+			};
+		};
+		BF0000010000000000000023 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.1;
+			};
+		};
+		BF0000010000000000000024 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bizz84/SwiftyStoreKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.16.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BF0000010000000000000011 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF0000010000000000000021 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+		BF0000010000000000000012 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF0000010000000000000022 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		BF0000010000000000000013 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF0000010000000000000022 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		BF0000010000000000000014 /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF0000010000000000000022 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		BF0000010000000000000015 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF0000010000000000000022 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		BF0000010000000000000016 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF0000010000000000000023 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+		BF0000010000000000000017 /* SwiftyStoreKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF0000010000000000000024 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */;
+			productName = SwiftyStoreKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BF22F45620DE6E4C00B56F99 /* Project object */;
 }

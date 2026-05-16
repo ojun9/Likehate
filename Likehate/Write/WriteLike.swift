@@ -7,12 +7,9 @@
 //
 
 import UIKit
-import ChameleonFramework
-import FlatUIKit
 import Lottie
 import Firebase
 import FirebaseRemoteConfig
-import TapticEngine
 
 class WritteLikeViewController: UIViewController, UITextFieldDelegate {
    
@@ -123,20 +120,20 @@ class WritteLikeViewController: UIViewController, UITextFieldDelegate {
    private func InitConfig() {
       self.RemorteConfigs = RemoteConfig.remoteConfig()
       //MARK: デベロッパモード　出すときはやめろ
+      let RemortConfigSetting = RemoteConfigSettings()
       #if DEBUG
       print("RemoConデバッグモード")
-      let RemortConfigSetting = RemoteConfigSettings(developerModeEnabled: true)
-      self.RemorteConfigs.configSettings = RemortConfigSetting
+      RemortConfigSetting.minimumFetchInterval = 0
       #else
       print("RemoConリリースモードでいくとよ。")
-      let RemortConfigSetting = RemoteConfigSettings(developerModeEnabled: false)
-      self.RemorteConfigs.configSettings = RemortConfigSetting
+      RemortConfigSetting.minimumFetchInterval = 3600
       #endif
+      self.RemorteConfigs.configSettings = RemortConfigSetting
    }
    
    func FetchConfig() {
       // ディベロッパーモードの時、expirationDurationを0にして随時更新できるようにする。
-      let expirationDuration = RemorteConfigs.configSettings.isDeveloperModeEnabled ? 0 : 3600
+      let expirationDuration = RemorteConfigs.configSettings.minimumFetchInterval
       print("RemoteConfigのフェッチする間隔： \(expirationDuration)")
       RemorteConfigs.fetch(withExpirationDuration: TimeInterval(expirationDuration)) { [unowned self] (status, error) -> Void in
          guard error == nil else {
@@ -146,14 +143,16 @@ class WritteLikeViewController: UIViewController, UITextFieldDelegate {
          }
          
          print("フェッチできたよ")
-         self.RemorteConfigs.activateFetched()
-         self.SetUpAniView()
+         self.RemorteConfigs.activate { _, _ in
+            self.SetUpAniView()
+         }
       }
    }
    
    private func SetUpAniView() {
-      print(RemorteConfigs["LOTKEY"].stringValue!)
-      switch RemorteConfigs["LOTKEY"].stringValue! {
+      let animationKey = RemorteConfigs["LOTKEY"].stringValue
+      print(animationKey)
+      switch animationKey {
       case "MoreHarts":
          RemoFuwa()
          RemoKuruKuru()

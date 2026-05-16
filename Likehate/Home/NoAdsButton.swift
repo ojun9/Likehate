@@ -8,9 +8,7 @@
 
 
 import UIKit
-import FlatUIKit
 import SwiftyStoreKit
-import SCLAlertView
 import Firebase
 
 class NoAdsButton: FUIButton {
@@ -69,6 +67,9 @@ class NoAdsButton: FUIButton {
          case .error(_):
             //購入失敗
             print("purchaseエラー")
+            self.LockPurchasButton = false
+         case .deferred(_):
+            print("purchase deferred")
             self.LockPurchasButton = false
          }
       }
@@ -133,4 +134,3 @@ class NoAdsButton: FUIButton {
    }
    
 }
-

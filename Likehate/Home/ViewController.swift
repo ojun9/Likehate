@@ -8,11 +8,8 @@
 
 import UIKit
 import Lottie
-import ChameleonFramework
-import FlatUIKit
 import SwiftyStoreKit
 import Firebase
-import TapticEngine
 
 class ViewController: UIViewController {
 

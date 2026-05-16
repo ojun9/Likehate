@@ -8,10 +8,7 @@
 
 import UIKit
 import GoogleMobileAds
-import ChameleonFramework
-import FlatUIKit
 import Firebase
-import TapticEngine
 
 class WritteHateViewController: UIViewController, UITextFieldDelegate, GADBannerViewDelegate, GADInterstitialDelegate  {
    
@@ -145,13 +142,10 @@ class WritteHateViewController: UIViewController, UITextFieldDelegate, GADBanner
    private func InitBannerView() {
       #if DEBUG
       print("\n\n--------INFO ADMOB--------------\n")
-      print("Google Mobile ads SDK Versioin -> " + GADRequest.sdkVersion() + "\n")
       self.bannerView.adUnitID = AdBannerView_TEST_ID
-      self.request.testDevices = ["9d012329e337de42666c706e842b7819"];
       print("バナー広告：テスト環境\n\n")
       #else
       print("\n\n--------INFO ADMOB--------------\n")
-      print("Google Mobile ads SDK Versioin -> " + GADRequest.sdkVersion() + "\n")
       self.bannerView.adUnitID = AdBannerView_ID
       print("バナー広告：本番環境")
       #endif
