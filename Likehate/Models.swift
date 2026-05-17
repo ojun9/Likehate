@@ -8,22 +8,22 @@ enum EntryKind: String, CaseIterable, Identifiable {
 
    var title: String {
       switch self {
-      case .like: return NSLocalizedString("Like", comment: "")
-      case .hate: return NSLocalizedString("Hate", comment: "")
+      case .like: return String(localized: "Like")
+      case .hate: return String(localized: "Hate")
       }
    }
 
    var listTitle: String {
       switch self {
-      case .like: return NSLocalizedString("likething", comment: "")
-      case .hate: return NSLocalizedString("hatething", comment: "")
+      case .like: return String(localized: "likething")
+      case .hate: return String(localized: "hatething")
       }
    }
 
    var prompt: String {
       switch self {
-      case .like: return NSLocalizedString("WhatLike", comment: "")
-      case .hate: return NSLocalizedString("WhatHate", comment: "")
+      case .like: return String(localized: "WhatLike")
+      case .hate: return String(localized: "WhatHate")
       }
    }
 

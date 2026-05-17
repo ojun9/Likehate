@@ -113,15 +113,38 @@ struct LikehateAdBannerView: UIViewRepresentable {
 
 struct LikehateAdaptiveAdBanner: View {
    let adUnitID: String
+   @State private var availableWidth: CGFloat = 320
 
    var body: some View {
-      GeometryReader { proxy in
-         let adSize = largeAnchoredAdaptiveBanner(width: proxy.size.width)
-         LikehateAdBannerView(adUnitID: adUnitID, adSize: adSize)
-            .frame(width: adSize.size.width, height: adSize.size.height)
-            .frame(maxWidth: .infinity)
+      let adSize = largeAnchoredAdaptiveBanner(width: max(availableWidth, 320))
+
+      LikehateAdBannerView(adUnitID: adUnitID, adSize: adSize)
+         .frame(width: adSize.size.width, height: adSize.size.height)
+         .frame(maxWidth: .infinity)
+         .padding(.bottom, 8)
+         .background {
+            GeometryReader { proxy in
+               Color.clear
+                  .preference(key: BannerWidthPreferenceKey.self, value: proxy.size.width)
+            }
+         }
+         .onPreferenceChange(BannerWidthPreferenceKey.self) { width in
+            if width > 0 {
+               availableWidth = width
+            }
+         }
+         .frame(height: adSize.size.height + 8)
+         .background(Color(.systemBackground))
+   }
+}
+
+private struct BannerWidthPreferenceKey: PreferenceKey {
+   static var defaultValue: CGFloat = 320
+
+   static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+      let next = nextValue()
+      if next > 0 {
+         value = next
       }
-      .frame(height: 60)
-      .background(Color(.systemBackground))
    }
 }

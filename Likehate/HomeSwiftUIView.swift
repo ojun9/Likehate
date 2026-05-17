@@ -11,6 +11,7 @@ struct RootSwiftUIView: View {
 
 struct HomeSwiftUIView: View {
    @EnvironmentObject private var store: LikeHateStore
+   @State private var isShowingSettings = false
 
    var body: some View {
       GeometryReader { proxy in
@@ -20,22 +21,63 @@ struct HomeSwiftUIView: View {
 
             HomeLottieLayer(size: proxy.size)
 
+            VStack {
+               HStack {
+                  Spacer()
+                  Button {
+                     isShowingSettings = true
+                  } label: {
+                     Image(systemName: "gearshape")
+                        .font(.title3)
+                  }
+                  .buttonStyle(.bordered)
+                  .buttonBorderShape(.circle)
+                  .accessibilityLabel(Text("Settings"))
+               }
+               .padding(.top, max(proxy.safeAreaInsets.top, 12))
+               .padding(.trailing, proxy.size.width / 20)
+
+               Spacer()
+            }
+
             VStack(spacing: proxy.size.width / 20) {
                if !store.didBuyRemoveAd {
                   HStack(spacing: 12) {
-                     PurchaseControlButton(
-                        title: NSLocalizedString("No Ads", comment: ""),
-                        isLoading: store.isPurchasing,
-                        action: store.purchaseNoAds
-                     )
+                     Button {
+                        store.purchaseNoAds()
+                     } label: {
+                        ZStack {
+                           if store.isPurchasing {
+                              ProgressView()
+                           } else {
+                              Text("No Ads")
+                                 .fontWeight(.semibold)
+                           }
+                        }
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                     }
+                     .buttonStyle(.borderedProminent)
+                     .buttonBorderShape(.roundedRectangle(radius: 8))
+                     .disabled(store.isPurchasing)
 
-                     PurchaseControlButton(
-                        title: NSLocalizedString("Restore", comment: ""),
-                        isLoading: store.isRestoring,
-                        action: store.restorePurchases
-                     )
+                     Button {
+                        store.restorePurchases()
+                     } label: {
+                        ZStack {
+                           if store.isRestoring {
+                              ProgressView()
+                           } else {
+                              Text("Restore")
+                                 .fontWeight(.semibold)
+                           }
+                        }
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                     }
+                     .buttonStyle(.bordered)
+                     .buttonBorderShape(.roundedRectangle(radius: 8))
+                     .disabled(store.isRestoring)
                   }
-                  .frame(height: max(58, proxy.size.height / 11))
+                  .controlSize(.large)
                }
 
                Spacer(minLength: proxy.size.height * 0.14)
@@ -43,26 +85,26 @@ struct HomeSwiftUIView: View {
                NavigationLink {
                   ChooseEntrySwiftUIView()
                } label: {
-                  HomeImageButton(imageName: "set", title: NSLocalizedString("register", comment: ""))
+                  HomeImageButton(imageName: "set", height: proxy.size.height / 5, accessibilityLabel: "register")
                }
 
                NavigationLink {
                   ItemListSwiftUIView(kind: .like)
                } label: {
-                  HomeImageButton(imageName: "like", title: NSLocalizedString("Like", comment: ""))
+                  HomeImageButton(imageName: "like", height: proxy.size.height / 5, accessibilityLabel: "Like")
                }
 
                NavigationLink {
                   ItemListSwiftUIView(kind: .hate)
                } label: {
-                  HomeImageButton(imageName: "hate", title: NSLocalizedString("Hate", comment: ""))
+                  HomeImageButton(imageName: "hate", height: proxy.size.height / 5, accessibilityLabel: "Hate")
                }
             }
             .padding(.horizontal, proxy.size.width / 20)
             .padding(.bottom, 12)
          }
       }
-      .navigationTitle(NSLocalizedString("home", comment: ""))
+      .toolbar(.hidden, for: .navigationBar)
       .alert(item: $store.purchaseMessage) { message in
          Alert(
             title: Text(message.title),
@@ -74,23 +116,18 @@ struct HomeSwiftUIView: View {
          Alert(
             title: Text(prompt.title),
             message: Text(prompt.message),
-            primaryButton: .default(Text(NSLocalizedString("ThankYou", comment: ""))) {
+            primaryButton: .default(Text("ThankYou")) {
                Analytics.logEvent("TapSCLAlertView", parameters: nil)
                AppReviewClient.requestReview()
             },
-            secondaryButton: .cancel(Text(NSLocalizedString("Ohthankyou", comment: ""))) {
+            secondaryButton: .cancel(Text("Ohthankyou")) {
                Analytics.logEvent("UserTap_OhThanks...For100", parameters: nil)
             }
          )
       }
-      .toolbar {
-         ToolbarItem(placement: .topBarTrailing) {
-            NavigationLink {
-               SettingsSwiftUIView()
-            } label: {
-               Image(systemName: "gearshape")
-            }
-            .accessibilityLabel(NSLocalizedString("Settings", comment: ""))
+      .sheet(isPresented: $isShowingSettings) {
+         NavigationStack {
+            SettingsSwiftUIView()
          }
       }
       .onAppear {
@@ -99,53 +136,31 @@ struct HomeSwiftUIView: View {
    }
 }
 
-struct PurchaseControlButton: View {
-   let title: String
-   let isLoading: Bool
-   let action: () -> Void
-
-   var body: some View {
-      Button(action: action) {
-         ZStack {
-            if isLoading {
-               ProgressView()
-                  .tint(.white)
-            } else {
-               Text(title)
-                  .font(.headline.bold())
-                  .minimumScaleFactor(0.55)
-                  .lineLimit(1)
-            }
-         }
-         .frame(maxWidth: .infinity, maxHeight: .infinity)
-      }
-      .buttonStyle(.plain)
-      .foregroundStyle(.white)
-      .padding(.horizontal, 8)
-      .background(Color(red: 0.353, green: 0.737, blue: 0.816), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-      .shadow(color: Color(red: 0.255, green: 0.592, blue: 0.671).opacity(0.45), radius: 0, x: 0, y: 3)
-      .disabled(isLoading)
-   }
-}
-
 struct HomeImageButton: View {
    let imageName: String
-   let title: String
+   let height: CGFloat
+   let accessibilityLabel: LocalizedStringKey
 
    var body: some View {
-      Image(imageName)
-         .resizable()
-         .scaledToFit()
-         .accessibilityLabel(title)
-         .frame(maxWidth: .infinity)
-         .frame(height: 150)
-         .padding(.horizontal, 8)
-         .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 25, style: .continuous))
-         .overlay(
-            RoundedRectangle(cornerRadius: 25, style: .continuous)
-               .stroke(Color.primary.opacity(0.75), lineWidth: 1.5)
-         )
-         .shadow(color: .black.opacity(0.18), radius: 10, x: 0, y: 2)
+      ZStack {
+         RoundedRectangle(cornerRadius: 25, style: .continuous)
+            .fill(Color(.systemBackground))
+
+         Image(imageName)
+            .resizable()
+            .scaledToFit()
+            .padding(.horizontal, 8)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+      }
+      .frame(maxWidth: .infinity)
+      .frame(height: height)
+      .overlay(
+         RoundedRectangle(cornerRadius: 25, style: .continuous)
+            .stroke(Color.primary.opacity(0.75), lineWidth: 1.5)
+      )
+      .shadow(color: .black.opacity(0.18), radius: 10, x: 0, y: 2)
+      .contentShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+      .accessibilityLabel(Text(accessibilityLabel))
    }
 }
 
@@ -171,13 +186,11 @@ struct HomeLottieLayer: View {
          LottieLoopView(name: "KiraKira")
             .opacity(0.8)
             .frame(width: sparkleWidth, height: sparkleHeight)
-            .scaleEffect(1.4)
             .position(x: size.width / 20 + sparkleWidth / 2, y: size.height * 0.475)
 
          LottieLoopView(name: "KiraKira")
             .opacity(0.8)
             .frame(width: sparkleWidth, height: sparkleHeight)
-            .scaleEffect(1.4)
             .position(x: size.width * 0.45 + sparkleWidth / 2, y: size.height * 0.575)
       }
       .allowsHitTesting(false)

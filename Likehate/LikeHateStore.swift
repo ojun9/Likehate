@@ -98,7 +98,7 @@ final class LikeHateStore: ObservableObject {
                }
                self.setAdRemoved(true)
                self.verifyNoAdsPurchase()
-               self.purchaseMessage = PurchaseMessage(title: NSLocalizedString("Passed.", comment: ""), message: "Purchase complete")
+               self.purchaseMessage = PurchaseMessage(title: String(localized: "Passed."), message: "Purchase complete")
             case .error(let error):
                self.purchaseMessage = PurchaseMessage(title: "Purchase failed", message: error.localizedDescription)
             case .deferred:
@@ -121,7 +121,7 @@ final class LikeHateStore: ObservableObject {
                self.purchaseMessage = PurchaseMessage(title: "Restore failed", message: error.localizedDescription)
             } else if results.restoredPurchases.contains(where: { $0.productId == Constants.noAdsProductID }) {
                self.setAdRemoved(true)
-               self.purchaseMessage = PurchaseMessage(title: NSLocalizedString("Passed.", comment: ""), message: "Restore successful")
+               self.purchaseMessage = PurchaseMessage(title: String(localized: "Passed."), message: "Restore successful")
             } else {
                self.purchaseMessage = PurchaseMessage(title: "Restore", message: "No purchases were found.")
             }
@@ -154,8 +154,8 @@ final class LikeHateStore: ObservableObject {
 
       defaults.set(true, forKey: "Check10Like")
       reviewPrompt = ReviewPrompt(
-         title: NSLocalizedString("registe10Things", comment: ""),
-         message: NSLocalizedString("Congrats", comment: "")
+         title: String(localized: "registe10Things"),
+         message: String(localized: "Congrats")
       )
    }
 }

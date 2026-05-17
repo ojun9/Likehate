@@ -23,14 +23,9 @@ struct ChooseEntrySwiftUIView: View {
                NavigationLink {
                   WriteItemSwiftUIView(kind: kind)
                } label: {
-                  VStack(alignment: .leading, spacing: 8) {
-                     Text(kind.title)
-                        .font(.largeTitle.bold())
-                     Text(kind.prompt)
-                        .font(.body)
-                        .foregroundStyle(.secondary)
-                  }
-                  .frame(maxWidth: .infinity, minHeight: 150, alignment: .leading)
+                  Text(kind.title)
+                     .font(.largeTitle.bold())
+                     .frame(maxWidth: .infinity, minHeight: 150)
                   .padding(20)
                   .background(kind.color.opacity(0.14), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                   .overlay(
@@ -43,7 +38,7 @@ struct ChooseEntrySwiftUIView: View {
          }
          .padding(20)
       }
-      .navigationTitle(NSLocalizedString("register", comment: ""))
+      .navigationTitle("register")
       .onAppear {
          HapticsClient.medium()
       }
@@ -60,29 +55,48 @@ struct WriteItemSwiftUIView: View {
    let kind: EntryKind
 
    var body: some View {
-      ZStack {
-         WriteLottieLayer(kind: kind)
+      GeometryReader { proxy in
+         ZStack(alignment: .top) {
+            Color(.systemBackground)
+               .ignoresSafeArea()
 
-         Form {
-            Section {
+            WriteLottieLayer(kind: kind, topOffset: 275)
+
+            VStack(spacing: 0) {
+               Text(kind.prompt)
+                  .font(.system(size: 23))
+                  .lineLimit(1)
+                  .minimumScaleFactor(0.65)
+                  .frame(maxWidth: .infinity)
+                  .padding(.horizontal, 54)
+
                TextField(kind.prompt, text: $text)
+                  .font(.system(size: 16, weight: .bold))
                   .textInputAutocapitalization(.sentences)
                   .submitLabel(.done)
                   .onSubmit(save)
-            } header: {
-               Text(kind.prompt)
-            }
+                  .padding(.horizontal, 15)
+                  .frame(height: 50)
+                  .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 3, style: .continuous))
+                  .overlay(
+                     RoundedRectangle(cornerRadius: 3, style: .continuous)
+                        .stroke(Color.cyan, lineWidth: 2)
+                  )
+                  .padding(.top, kind == .like ? 43 : 34)
+                  .padding(.horizontal, 54)
 
-            Section {
                Button(action: save) {
-                  Label(NSLocalizedString("register", comment: ""), systemImage: "checkmark.circle.fill")
+                  Text("register")
                      .frame(maxWidth: .infinity)
+                     .frame(height: 74)
                }
                .buttonStyle(.borderedProminent)
                .tint(kind.color)
+               .frame(width: min(proxy.size.width - 224, 160))
+               .padding(.top, kind == .like ? 30 : 40)
             }
+            .padding(.top, kind == .like ? 73 : 48)
          }
-         .scrollContentBackground(.hidden)
       }
       .navigationTitle(kind.title)
       .alert("入力してください", isPresented: $showEmptyAlert) {
@@ -92,11 +106,11 @@ struct WriteItemSwiftUIView: View {
          Alert(
             title: Text(prompt.title),
             message: Text(prompt.message),
-            primaryButton: .default(Text(NSLocalizedString("ThankYou", comment: ""))) {
+            primaryButton: .default(Text("ThankYou")) {
                Analytics.logEvent("TapSCLAlertView", parameters: nil)
                AppReviewClient.requestReview()
             },
-            secondaryButton: .cancel(Text(NSLocalizedString("Ohthankyou", comment: ""))) {
+            secondaryButton: .cancel(Text("Ohthankyou")) {
                Analytics.logEvent("UserTap_OhThanks...For100", parameters: nil)
             }
          )
@@ -130,14 +144,15 @@ struct WriteItemSwiftUIView: View {
 
 struct WriteLottieLayer: View {
    let kind: EntryKind
+   let topOffset: CGFloat
 
    var body: some View {
       GeometryReader { proxy in
          VStack {
-            Spacer(minLength: proxy.size.height * 0.34)
+            Spacer(minLength: topOffset)
 
             LottieLoopView(name: kind == .like ? "MoreHarts" : "Henka")
-               .frame(width: proxy.size.width * 0.96, height: proxy.size.height * 0.52)
+               .frame(width: proxy.size.width * 0.96, height: max(proxy.size.height - topOffset - 15, 120))
                .frame(maxWidth: .infinity)
                .padding(.horizontal, proxy.size.width * 0.02)
                .padding(.bottom, 15)
