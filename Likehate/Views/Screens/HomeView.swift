@@ -121,7 +121,7 @@ struct HomeView: View {
       NavigationLink {
          ItemListView(kind: .hate)
       } label: {
-         HomeImageButton(imageName: "hate", accessibilityLabel: "Hate", overlayLottie: showsHomeLottie ? .fuwa : nil)
+         HomeImageButton(imageName: "hate", accessibilityLabel: "Hate", overlayLottie: showsHomeLottie ? .kaminari : nil)
       }
       .simultaneousGesture(TapGesture().onEnded {
          showsHomeLottie = false
@@ -132,11 +132,13 @@ struct HomeView: View {
 enum HomeButtonLottie {
    case kiraKira
    case fuwa
+   case kaminari
 
    var name: String {
       switch self {
       case .kiraKira: return "KiraKira"
       case .fuwa: return "Fuwa"
+      case .kaminari: return "Kaminari"
       }
    }
 
@@ -144,6 +146,7 @@ enum HomeButtonLottie {
       switch self {
       case .kiraKira: return 0.78
       case .fuwa: return 0.9
+      case .kaminari: return 0.7
       }
    }
 
@@ -153,6 +156,8 @@ enum HomeButtonLottie {
          return CGSize(width: size.width * 0.9, height: size.height * 0.72)
       case .fuwa:
          return CGSize(width: size.width * 0.46, height: size.height * 0.86)
+      case .kaminari:
+         return CGSize(width: size.height * 0.95, height: size.height * 0.95)
       }
    }
 
@@ -162,6 +167,8 @@ enum HomeButtonLottie {
          return CGPoint(x: size.width * 0.5, y: size.height * 0.5)
       case .fuwa:
          return CGPoint(x: size.width * 0.72, y: size.height * 0.5)
+      case .kaminari:
+         return CGPoint(x: size.width * 0.16, y: size.height * 0.62)
       }
    }
 }
@@ -219,7 +226,6 @@ struct HomeLottieLayer: View {
       ZStack {
          let horizontalInset = max(size.width / 20, 12)
          let earthSize = min(max(size.width * 0.11, 38), 52)
-         let lightningSize = size.height * 0.13
 
          VStack {
             HStack {
@@ -233,12 +239,6 @@ struct HomeLottieLayer: View {
 
             Spacer()
          }
-
-         LottieLoopView(name: "Kaminari")
-            .opacity(0.7)
-            .frame(width: lightningSize, height: lightningSize)
-            .clipped()
-            .position(x: size.width / 20 + lightningSize / 2, y: size.height - (size.height / 10 + 15))
       }
       .frame(width: size.width, height: size.height)
       .clipped()

@@ -251,15 +251,6 @@ struct ItemListCard: View {
                   .stroke(kind.color.opacity(0.16), lineWidth: 1)
             )
 
-         if kind == .hate {
-            LottieLoopView(name: "Kaminari")
-               .opacity(0.36)
-               .frame(width: 72, height: 72)
-               .clipped()
-               .padding(.trailing, 10)
-               .allowsHitTesting(false)
-         }
-
          Text(text)
             .font(.body)
             .fontDesign(.rounded)
@@ -268,7 +259,7 @@ struct ItemListCard: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 12)
             .padding(.leading, 14)
-            .padding(.trailing, kind == .hate ? 84 : 14)
+            .padding(.trailing, 14)
       }
       .frame(maxWidth: .infinity, minHeight: 52)
       .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
