@@ -132,7 +132,7 @@ final class LikeHateStore: ObservableObject {
    private func setAdRemoved(_ value: Bool) {
       didBuyRemoveAd = value
       defaults.set(value, forKey: "BuyRemoveAd")
-      NotificationCenter.default.post(name: .BuyNoAdsInClearView, object: nil)
+      NotificationCenter.default.post(name: .didRemoveAds, object: nil)
    }
 
    private func verifyNoAdsPurchase() {

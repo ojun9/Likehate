@@ -28,6 +28,8 @@
 		BF22F46920DE6E4D00B56F99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF22F46820DE6E4D00B56F99 /* Assets.xcassets */; };
 		BF2668192FB96F6400DA9BBF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BF2668182FB96F6400DA9BBF /* Localizable.xcstrings */; };
 		BF26681B2FB96F6400DA9BBF /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BF26681A2FB96F6400DA9BBF /* InfoPlist.xcstrings */; };
+		BF26681D2FB984A400DA9BBF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF26681C2FB984A400DA9BBF /* GoogleService-Info.plist */; };
+		BF26681F2FB984BA00DA9BBF /* KiraKira.json in Resources */ = {isa = PBXBuildFile; fileRef = BF26681E2FB984B900DA9BBF /* KiraKira.json */; };
 		BF2FB15923110C040033C104 /* MaruZukei.json in Resources */ = {isa = PBXBuildFile; fileRef = BF2FB15623110C040033C104 /* MaruZukei.json */; };
 		BF2FB15A23110C040033C104 /* Zukei.json in Resources */ = {isa = PBXBuildFile; fileRef = BF2FB15723110C040033C104 /* Zukei.json */; };
 		BF2FB15D231111270033C104 /* Henka.json in Resources */ = {isa = PBXBuildFile; fileRef = BF2FB15C231111270033C104 /* Henka.json */; };
@@ -35,13 +37,11 @@
 		BF2FB1612311170C0033C104 /* Egg.json in Resources */ = {isa = PBXBuildFile; fileRef = BF2FB1602311170C0033C104 /* Egg.json */; };
 		BF2FB163231117FD0033C104 /* Good.json in Resources */ = {isa = PBXBuildFile; fileRef = BF2FB162231117FD0033C104 /* Good.json */; };
 		BF2FB16523111AFB0033C104 /* MaruKuru.json in Resources */ = {isa = PBXBuildFile; fileRef = BF2FB16423111AFA0033C104 /* MaruKuru.json */; };
-		BF4323D122D497B0008DF038 /* ExNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4323D022D497B0008DF038 /* ExNotification.swift */; };
+		BF4323D122D497B0008DF038 /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4323D022D497B0008DF038 /* NotificationNames.swift */; };
 		BF4323D522D4A026008DF038 /* Kaminari.json in Resources */ = {isa = PBXBuildFile; fileRef = BF4323D422D4A025008DF038 /* Kaminari.json */; };
-		BF6562D020E77F9400294710 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF6562CF20E77F9400294710 /* GoogleService-Info.plist */; };
 		BFE2138622D1A67E00132D44 /* Fuwa.json in Resources */ = {isa = PBXBuildFile; fileRef = BFE2138522D1A67E00132D44 /* Fuwa.json */; };
 		BFE2138822D1A6C000132D44 /* KuruKuru.json in Resources */ = {isa = PBXBuildFile; fileRef = BFE2138722D1A6C000132D44 /* KuruKuru.json */; };
 		BFE2138A22D1A70800132D44 /* MoreHarts.json in Resources */ = {isa = PBXBuildFile; fileRef = BFE2138922D1A70800132D44 /* MoreHarts.json */; };
-		BFE2138D22D3366000132D44 /* KiraKira.json in Resources */ = {isa = PBXBuildFile; fileRef = BFE2138C22D3366000132D44 /* KiraKira.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +61,8 @@
 		BF22F46D20DE6E4D00B56F99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF2668182FB96F6400DA9BBF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		BF26681A2FB96F6400DA9BBF /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		BF26681C2FB984A400DA9BBF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BF26681E2FB984B900DA9BBF /* KiraKira.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = KiraKira.json; sourceTree = "<group>"; };
 		BF2FB15623110C040033C104 /* MaruZukei.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MaruZukei.json; sourceTree = "<group>"; };
 		BF2FB15723110C040033C104 /* Zukei.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Zukei.json; sourceTree = "<group>"; };
 		BF2FB15C231111270033C104 /* Henka.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Henka.json; sourceTree = "<group>"; };
@@ -68,14 +70,12 @@
 		BF2FB1602311170C0033C104 /* Egg.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Egg.json; sourceTree = "<group>"; };
 		BF2FB162231117FD0033C104 /* Good.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Good.json; sourceTree = "<group>"; };
 		BF2FB16423111AFA0033C104 /* MaruKuru.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MaruKuru.json; sourceTree = "<group>"; };
-		BF4323D022D497B0008DF038 /* ExNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExNotification.swift; sourceTree = "<group>"; };
+		BF4323D022D497B0008DF038 /* NotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
 		BF4323D422D4A025008DF038 /* Kaminari.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Kaminari.json; sourceTree = "<group>"; };
-		BF6562CF20E77F9400294710 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		BFE2138522D1A67E00132D44 /* Fuwa.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Fuwa.json; sourceTree = "<group>"; };
 		BFE2138722D1A6C000132D44 /* KuruKuru.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = KuruKuru.json; sourceTree = "<group>"; };
 		BFE2138922D1A70800132D44 /* MoreHarts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MoreHarts.json; sourceTree = "<group>"; };
 		BFE2138B22D1B7B600132D44 /* Likehate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Likehate.entitlements; sourceTree = "<group>"; };
-		BFE2138C22D3366000132D44 /* KiraKira.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = KiraKira.json; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,18 +124,18 @@
 			isa = PBXGroup;
 			children = (
 				BFE2138B22D1B7B600132D44 /* Likehate.entitlements */,
-				BF6562CF20E77F9400294710 /* GoogleService-Info.plist */,
 				BF0000010000000000000019 /* LikehateApp.swift */,
 				BF000001000000000000001A /* Models.swift */,
 				BF000001000000000000001B /* LikeHateStore.swift */,
 				BF000001000000000000001C /* AppServices.swift */,
 				BF000001000000000000001D /* LottieLoopView.swift */,
+				BF26681C2FB984A400DA9BBF /* GoogleService-Info.plist */,
 				BF000001000000000000001E /* AdMobViews.swift */,
 				BF000001000000000000001F /* HomeView.swift */,
 				BF0000010000000000000020 /* EntryViews.swift */,
 				BF0000010000000000000026 /* SettingsView.swift */,
 				BF22F46120DE6E4C00B56F99 /* AppDelegate.swift */,
-				BF4323CF22D497A1008DF038 /* Extention */,
+				BF4323D022D497B0008DF038 /* NotificationNames.swift */,
 				BFE2138422D1A67400132D44 /* Lottie */,
 				BF26681A2FB96F6400DA9BBF /* InfoPlist.xcstrings */,
 				BF2668182FB96F6400DA9BBF /* Localizable.xcstrings */,
@@ -145,21 +145,13 @@
 			path = Likehate;
 			sourceTree = "<group>";
 		};
-		BF4323CF22D497A1008DF038 /* Extention */ = {
-			isa = PBXGroup;
-			children = (
-				BF4323D022D497B0008DF038 /* ExNotification.swift */,
-			);
-			path = Extention;
-			sourceTree = "<group>";
-		};
 		BFE2138422D1A67400132D44 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
 				BF4323D422D4A025008DF038 /* Kaminari.json */,
 				BFE2138522D1A67E00132D44 /* Fuwa.json */,
+				BF26681E2FB984B900DA9BBF /* KiraKira.json */,
 				BFE2138722D1A6C000132D44 /* KuruKuru.json */,
-				BFE2138C22D3366000132D44 /* KiraKira.json */,
 				BF1CE8CB22D5B76000ACF7F8 /* earth.json */,
 				BFE2138922D1A70800132D44 /* MoreHarts.json */,
 				BF2FB15623110C040033C104 /* MaruZukei.json */,
@@ -265,14 +257,14 @@
 				BFE2138822D1A6C000132D44 /* KuruKuru.json in Resources */,
 				BF2668192FB96F6400DA9BBF /* Localizable.xcstrings in Resources */,
 				BF2FB16523111AFB0033C104 /* MaruKuru.json in Resources */,
-				BF6562D020E77F9400294710 /* GoogleService-Info.plist in Resources */,
 				BF22F46920DE6E4D00B56F99 /* Assets.xcassets in Resources */,
+				BF26681F2FB984BA00DA9BBF /* KiraKira.json in Resources */,
 				BF2FB163231117FD0033C104 /* Good.json in Resources */,
 				BF2FB1612311170C0033C104 /* Egg.json in Resources */,
 				BF2FB15D231111270033C104 /* Henka.json in Resources */,
-				BFE2138D22D3366000132D44 /* KiraKira.json in Resources */,
 				BF26681B2FB96F6400DA9BBF /* InfoPlist.xcstrings in Resources */,
 				BF2FB15F2311169A0033C104 /* Patch.json in Resources */,
+				BF26681D2FB984A400DA9BBF /* GoogleService-Info.plist in Resources */,
 				BFE2138622D1A67E00132D44 /* Fuwa.json in Resources */,
 				BF4323D522D4A026008DF038 /* Kaminari.json in Resources */,
 				BF1CE8CC22D5B76000ACF7F8 /* earth.json in Resources */,
@@ -297,7 +289,7 @@
 				BF0000010000000000000010 /* EntryViews.swift in Sources */,
 				BF0000010000000000000025 /* SettingsView.swift in Sources */,
 				BF22F46220DE6E4C00B56F99 /* AppDelegate.swift in Sources */,
-				BF4323D122D497B0008DF038 /* ExNotification.swift in Sources */,
+				BF4323D122D497B0008DF038 /* NotificationNames.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
