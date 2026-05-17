@@ -29,12 +29,14 @@ struct ChooseEntryView: View {
                   } label: {
                      VStack(spacing: 8) {
                         Text(kind.title)
-                           .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                           .font(.largeTitle.bold())
+                           .fontDesign(.rounded)
                            .lineLimit(1)
                            .minimumScaleFactor(0.8)
 
                         Text(kind.selectionSubtitle)
-                           .font(.system(.callout, design: .rounded, weight: .medium))
+                           .font(.callout.weight(.medium))
+                           .fontDesign(.rounded)
                            .foregroundStyle(.secondary)
                            .lineLimit(1)
                            .minimumScaleFactor(0.75)
@@ -47,6 +49,16 @@ struct ChooseEntryView: View {
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                            .stroke(kind.color.opacity(0.28), lineWidth: 1)
                      )
+                     .overlay(alignment: .trailing) {
+                        if showsLottie && kind == .hate {
+                           LottieLoopView(name: "Fuwa")
+                              .opacity(0.34)
+                              .frame(width: 104, height: 116)
+                              .clipped()
+                              .padding(.trailing, 12)
+                              .allowsHitTesting(false)
+                        }
+                     }
                      .shadow(color: kind.color.opacity(0.08), radius: 8, x: 0, y: 2)
                   }
                   .buttonStyle(.plain)
@@ -90,7 +102,8 @@ struct WriteItemView: View {
 
             VStack(spacing: 0) {
                TextField(kind.inputPlaceholder, text: $text)
-                  .font(.system(.body, design: .rounded, weight: .semibold))
+                  .font(.body.weight(.semibold))
+                  .fontDesign(.rounded)
                   .textInputAutocapitalization(.sentences)
                   .submitLabel(.done)
                   .onSubmit(save)
@@ -108,7 +121,8 @@ struct WriteItemView: View {
 
                Button(action: save) {
                   Text(kind.inputButtonTitle)
-                     .font(.system(.body, design: .rounded, weight: .bold))
+                     .font(.body.weight(.bold))
+                     .fontDesign(.rounded)
                      .lineLimit(1)
                      .minimumScaleFactor(0.75)
                      .frame(maxWidth: .infinity)
@@ -198,7 +212,8 @@ struct ItemListView: View {
       List {
          ForEach(Array(store.items(for: kind).enumerated()), id: \.offset) { _, item in
             Text(item)
-               .font(.system(.body, design: .rounded))
+               .font(.body)
+               .fontDesign(.rounded)
                .lineLimit(2)
                .padding(.vertical, 4)
                .listRowInsets(EdgeInsets(top: 6, leading: 18, bottom: 6, trailing: 18))
