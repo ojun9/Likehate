@@ -62,9 +62,9 @@ extension ViewController {
    }
    
    func InitButtonImage() {
-      Top.setImage(UIImage(named: NSLocalizedString("set", comment: "")), for: .normal)
-      Second.setImage(UIImage(named: NSLocalizedString("like", comment: "")), for: .normal)
-      Bottom.setImage(UIImage(named: NSLocalizedString("hate", comment: "")), for: .normal)
+      Top.setImage(UIImage(named: "set"), for: .normal)
+      Second.setImage(UIImage(named: "like"), for: .normal)
+      Bottom.setImage(UIImage(named: "hate"), for: .normal)
    }
    
    

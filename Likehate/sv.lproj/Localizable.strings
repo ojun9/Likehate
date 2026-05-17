@@ -6,11 +6,8 @@
   Copyright © 2018年 jun. All rights reserved.
 */
 
-"like" = "like_Swe";
-"hate" = "hate_Swe";
 "deleteErasing" = "Radering av data";
 "All" = "All data radering i den här appen";
-"set" = "set_Swe";
 
 "home" = "Hem";
 

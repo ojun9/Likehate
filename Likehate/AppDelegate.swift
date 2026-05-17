@@ -13,8 +13,7 @@ import GoogleMobileAds
 import SwiftyStoreKit
 import UserNotifications
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate {
 
    var window: UIWindow?
 
@@ -41,6 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Unlock content
             case .failed, .purchasing, .deferred:
                break // do nothing
+            @unknown default:
+               break
             }
          }
       }
@@ -60,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       application.registerForRemoteNotifications()
       //------------------- プッシュ通知-----------------//
       
-      UIApplication.shared.applicationIconBadgeNumber = 0
+      UNUserNotificationCenter.current().setBadgeCount(0)
       
       
       return true

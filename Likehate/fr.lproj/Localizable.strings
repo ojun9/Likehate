@@ -6,11 +6,8 @@
   Copyright © 2018年 jun. All rights reserved.
 */
 
-"like" = "like_Fra";
-"hate" = "hate_Fra";
 "deleteErasing" = "Effacement des données";
 "All" = "Effacement de toutes les données dans cette application";
-"set" = "set_Fra";
 
 "home" = "Accueil";
 

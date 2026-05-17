@@ -6,11 +6,8 @@
   Copyright © 2018年 jun. All rights reserved.
 */
 
-"like" = "like_Chi_Sim";
-"hate" = "hate_Chi_Sim";
 "deleteErasing" = "资料清除";
 "All" = "此应用中的所有数据擦除";
-"set" = "set_Chi_Sim";
 
 "home" = "家";
 
