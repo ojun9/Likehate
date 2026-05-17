@@ -7,7 +7,7 @@ struct LikehateApp: App {
 
    var body: some Scene {
       WindowGroup {
-         RootSwiftUIView()
+         RootView()
             .environmentObject(store)
       }
    }

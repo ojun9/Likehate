@@ -20,13 +20,12 @@
 		BF000001000000000000000C /* AppServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF000001000000000000001C /* AppServices.swift */; };
 		BF000001000000000000000D /* LottieLoopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF000001000000000000001D /* LottieLoopView.swift */; };
 		BF000001000000000000000E /* AdMobViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF000001000000000000001E /* AdMobViews.swift */; };
-		BF000001000000000000000F /* HomeSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF000001000000000000001F /* HomeSwiftUIView.swift */; };
-		BF0000010000000000000010 /* EntrySwiftViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0000010000000000000020 /* EntrySwiftViews.swift */; };
-		BF0000010000000000000025 /* SettingsSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0000010000000000000026 /* SettingsSwiftUIView.swift */; };
+		BF000001000000000000000F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF000001000000000000001F /* HomeView.swift */; };
+		BF0000010000000000000010 /* EntryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0000010000000000000020 /* EntryViews.swift */; };
+		BF0000010000000000000025 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0000010000000000000026 /* SettingsView.swift */; };
 		BF1CE8CC22D5B76000ACF7F8 /* earth.json in Resources */ = {isa = PBXBuildFile; fileRef = BF1CE8CB22D5B76000ACF7F8 /* earth.json */; };
 		BF22F46220DE6E4C00B56F99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF22F46120DE6E4C00B56F99 /* AppDelegate.swift */; };
 		BF22F46920DE6E4D00B56F99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF22F46820DE6E4D00B56F99 /* Assets.xcassets */; };
-		BF22F46C20DE6E4D00B56F99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF22F46A20DE6E4D00B56F99 /* LaunchScreen.storyboard */; };
 		BF2668192FB96F6400DA9BBF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BF2668182FB96F6400DA9BBF /* Localizable.xcstrings */; };
 		BF26681B2FB96F6400DA9BBF /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BF26681A2FB96F6400DA9BBF /* InfoPlist.xcstrings */; };
 		BF2FB15923110C040033C104 /* MaruZukei.json in Resources */ = {isa = PBXBuildFile; fileRef = BF2FB15623110C040033C104 /* MaruZukei.json */; };
@@ -39,7 +38,6 @@
 		BF4323D122D497B0008DF038 /* ExNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4323D022D497B0008DF038 /* ExNotification.swift */; };
 		BF4323D522D4A026008DF038 /* Kaminari.json in Resources */ = {isa = PBXBuildFile; fileRef = BF4323D422D4A025008DF038 /* Kaminari.json */; };
 		BF6562D020E77F9400294710 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF6562CF20E77F9400294710 /* GoogleService-Info.plist */; };
-		BF77128F23DD60B300EF0D3C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BF77128E23DD60B300EF0D3C /* Settings.bundle */; };
 		BFE2138622D1A67E00132D44 /* Fuwa.json in Resources */ = {isa = PBXBuildFile; fileRef = BFE2138522D1A67E00132D44 /* Fuwa.json */; };
 		BFE2138822D1A6C000132D44 /* KuruKuru.json in Resources */ = {isa = PBXBuildFile; fileRef = BFE2138722D1A6C000132D44 /* KuruKuru.json */; };
 		BFE2138A22D1A70800132D44 /* MoreHarts.json in Resources */ = {isa = PBXBuildFile; fileRef = BFE2138922D1A70800132D44 /* MoreHarts.json */; };
@@ -53,14 +51,13 @@
 		BF000001000000000000001C /* AppServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppServices.swift; sourceTree = "<group>"; };
 		BF000001000000000000001D /* LottieLoopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieLoopView.swift; sourceTree = "<group>"; };
 		BF000001000000000000001E /* AdMobViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobViews.swift; sourceTree = "<group>"; };
-		BF000001000000000000001F /* HomeSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSwiftUIView.swift; sourceTree = "<group>"; };
-		BF0000010000000000000020 /* EntrySwiftViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntrySwiftViews.swift; sourceTree = "<group>"; };
-		BF0000010000000000000026 /* SettingsSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwiftUIView.swift; sourceTree = "<group>"; };
+		BF000001000000000000001F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		BF0000010000000000000020 /* EntryViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViews.swift; sourceTree = "<group>"; };
+		BF0000010000000000000026 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BF1CE8CB22D5B76000ACF7F8 /* earth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = earth.json; sourceTree = "<group>"; };
 		BF22F45E20DE6E4C00B56F99 /* Likehate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Likehate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF22F46120DE6E4C00B56F99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF22F46820DE6E4D00B56F99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		BF22F46B20DE6E4D00B56F99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BF22F46D20DE6E4D00B56F99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF2668182FB96F6400DA9BBF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		BF26681A2FB96F6400DA9BBF /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
@@ -74,16 +71,6 @@
 		BF4323D022D497B0008DF038 /* ExNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExNotification.swift; sourceTree = "<group>"; };
 		BF4323D422D4A025008DF038 /* Kaminari.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Kaminari.json; sourceTree = "<group>"; };
 		BF6562CF20E77F9400294710 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
-		BF6562EE20E8D4A400294710 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		BF77126723DC2ED600EF0D3C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		BF77126B23DC2EDF00EF0D3C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		BF77126F23DC2EE700EF0D3C /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		BF77127323DC2EF000EF0D3C /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		BF77127723DC2EF700EF0D3C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		BF77127B23DC2F1000EF0D3C /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		BF77127F23DC2F1500EF0D3C /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		BF77128323DC2F2A00EF0D3C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		BF77128E23DD60B300EF0D3C /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		BFE2138522D1A67E00132D44 /* Fuwa.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Fuwa.json; sourceTree = "<group>"; };
 		BFE2138722D1A6C000132D44 /* KuruKuru.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = KuruKuru.json; sourceTree = "<group>"; };
 		BFE2138922D1A70800132D44 /* MoreHarts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MoreHarts.json; sourceTree = "<group>"; };
@@ -144,17 +131,15 @@
 				BF000001000000000000001C /* AppServices.swift */,
 				BF000001000000000000001D /* LottieLoopView.swift */,
 				BF000001000000000000001E /* AdMobViews.swift */,
-				BF000001000000000000001F /* HomeSwiftUIView.swift */,
-				BF0000010000000000000020 /* EntrySwiftViews.swift */,
-				BF0000010000000000000026 /* SettingsSwiftUIView.swift */,
+				BF000001000000000000001F /* HomeView.swift */,
+				BF0000010000000000000020 /* EntryViews.swift */,
+				BF0000010000000000000026 /* SettingsView.swift */,
 				BF22F46120DE6E4C00B56F99 /* AppDelegate.swift */,
 				BF4323CF22D497A1008DF038 /* Extention */,
 				BFE2138422D1A67400132D44 /* Lottie */,
 				BF26681A2FB96F6400DA9BBF /* InfoPlist.xcstrings */,
 				BF2668182FB96F6400DA9BBF /* Localizable.xcstrings */,
-				BF77128E23DD60B300EF0D3C /* Settings.bundle */,
 				BF22F46820DE6E4D00B56F99 /* Assets.xcassets */,
-				BF22F46A20DE6E4D00B56F99 /* LaunchScreen.storyboard */,
 				BF22F46D20DE6E4D00B56F99 /* Info.plist */,
 			);
 			path = Likehate;
@@ -276,7 +261,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF2FB15923110C040033C104 /* MaruZukei.json in Resources */,
-				BF22F46C20DE6E4D00B56F99 /* LaunchScreen.storyboard in Resources */,
 				BF2FB15A23110C040033C104 /* Zukei.json in Resources */,
 				BFE2138822D1A6C000132D44 /* KuruKuru.json in Resources */,
 				BF2668192FB96F6400DA9BBF /* Localizable.xcstrings in Resources */,
@@ -285,7 +269,6 @@
 				BF22F46920DE6E4D00B56F99 /* Assets.xcassets in Resources */,
 				BF2FB163231117FD0033C104 /* Good.json in Resources */,
 				BF2FB1612311170C0033C104 /* Egg.json in Resources */,
-				BF77128F23DD60B300EF0D3C /* Settings.bundle in Resources */,
 				BF2FB15D231111270033C104 /* Henka.json in Resources */,
 				BFE2138D22D3366000132D44 /* KiraKira.json in Resources */,
 				BF26681B2FB96F6400DA9BBF /* InfoPlist.xcstrings in Resources */,
@@ -310,35 +293,15 @@
 				BF000001000000000000000C /* AppServices.swift in Sources */,
 				BF000001000000000000000D /* LottieLoopView.swift in Sources */,
 				BF000001000000000000000E /* AdMobViews.swift in Sources */,
-				BF000001000000000000000F /* HomeSwiftUIView.swift in Sources */,
-				BF0000010000000000000010 /* EntrySwiftViews.swift in Sources */,
-				BF0000010000000000000025 /* SettingsSwiftUIView.swift in Sources */,
+				BF000001000000000000000F /* HomeView.swift in Sources */,
+				BF0000010000000000000010 /* EntryViews.swift in Sources */,
+				BF0000010000000000000025 /* SettingsView.swift in Sources */,
 				BF22F46220DE6E4C00B56F99 /* AppDelegate.swift in Sources */,
 				BF4323D122D497B0008DF038 /* ExNotification.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		BF22F46A20DE6E4D00B56F99 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BF22F46B20DE6E4D00B56F99 /* Base */,
-				BF6562EE20E8D4A400294710 /* ja */,
-				BF77126723DC2ED600EF0D3C /* zh-Hans */,
-				BF77126B23DC2EDF00EF0D3C /* zh-Hant */,
-				BF77126F23DC2EE700EF0D3C /* ko */,
-				BF77127323DC2EF000EF0D3C /* el */,
-				BF77127723DC2EF700EF0D3C /* fr */,
-				BF77127B23DC2F1000EF0D3C /* sv */,
-				BF77127F23DC2F1500EF0D3C /* ar */,
-				BF77128323DC2F2A00EF0D3C /* de */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		BF22F46E20DE6E4D00B56F99 /* Debug */ = {

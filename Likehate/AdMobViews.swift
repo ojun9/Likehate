@@ -3,15 +3,15 @@ import SwiftUI
 import UIKit
 
 enum AdMobUnitID {
-#if DEBUG
+    #if DEBUG
    static let hateListBanner = "ca-app-pub-3940256099942544/2934735716"
    static let writeHateBanner = "ca-app-pub-3940256099942544/2934735716"
    static let writeHateInterstitial = "ca-app-pub-3940256099942544/4411468910"
-#else
+    #else
    static let hateListBanner = "ca-app-pub-1460017825820383/1086930169"
    static let writeHateBanner = "ca-app-pub-1460017825820383/8035481899"
    static let writeHateInterstitial = "ca-app-pub-1460017825820383/9263543904"
-#endif
+    #endif
 }
 
 @MainActor
