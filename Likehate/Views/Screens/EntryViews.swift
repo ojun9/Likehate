@@ -70,7 +70,7 @@ struct ChooseEntryView: View {
 
 struct WriteItemView: View {
    private static let likeLottieNames = ["MoreHarts", "heart1", "heart2"]
-   private static let hateLottieNames = ["fish", "lightiing", "wave"]
+   private static let hateLottieNames = ["fish", "lightiing", "wave", "Bubbles", "Bubbles2", "Bubbbles3"]
 
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dismiss) private var dismiss
