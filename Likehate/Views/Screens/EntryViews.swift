@@ -201,23 +201,10 @@ struct ItemListView: View {
    var body: some View {
       List {
          ForEach(Array(store.items(for: kind).enumerated()), id: \.offset) { _, item in
-            Text(item)
-               .font(.body)
-               .fontDesign(.rounded)
-               .lineLimit(2)
-               .padding(.vertical, 4)
-               .frame(maxWidth: .infinity, alignment: .leading)
-               .overlay(alignment: .trailing) {
-                  if kind == .hate {
-                     LottieLoopView(name: "Fuwa")
-                        .opacity(0.28)
-                        .frame(width: 76, height: 64)
-                        .clipped()
-                        .offset(x: 8)
-                        .allowsHitTesting(false)
-                  }
-               }
-               .listRowInsets(EdgeInsets(top: 6, leading: 18, bottom: 6, trailing: 18))
+            ItemListCard(text: item, kind: kind)
+               .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+               .listRowSeparator(.hidden)
+               .listRowBackground(Color.clear)
          }
          .onDelete { offsets in
             store.delete(at: offsets, from: kind)
@@ -226,11 +213,11 @@ struct ItemListView: View {
             store.move(from: source, to: destination, in: kind)
          }
 
-        if kind == .hate && !store.didBuyRemoveAd {
-           LikehateAdaptiveAdBanner(adUnitID: AdMobUnitID.hateListBanner)
-              .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-              .listRowSeparator(.hidden)
-        }
+         if kind == .hate && !store.didBuyRemoveAd {
+            LikehateAdaptiveAdBanner(adUnitID: AdMobUnitID.hateListBanner)
+               .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+               .listRowSeparator(.hidden)
+         }
       }
       .overlay {
          if store.items(for: kind).isEmpty {
@@ -248,5 +235,42 @@ struct ItemListView: View {
       .onAppear {
          Analytics.logEvent(kind == .like ? "showLikeTableView" : "showHateTableView", parameters: nil)
       }
+   }
+}
+
+struct ItemListCard: View {
+   let text: String
+   let kind: EntryKind
+
+   var body: some View {
+      ZStack(alignment: .trailing) {
+         RoundedRectangle(cornerRadius: 14, style: .continuous)
+            .fill(Color(.secondarySystemGroupedBackground))
+            .overlay(
+               RoundedRectangle(cornerRadius: 14, style: .continuous)
+                  .stroke(kind.color.opacity(0.16), lineWidth: 1)
+            )
+
+         if kind == .hate {
+            LottieLoopView(name: "Kaminari")
+               .opacity(0.36)
+               .frame(width: 72, height: 72)
+               .clipped()
+               .padding(.trailing, 10)
+               .allowsHitTesting(false)
+         }
+
+         Text(text)
+            .font(.body)
+            .fontDesign(.rounded)
+            .foregroundStyle(.primary)
+            .lineLimit(2)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 12)
+            .padding(.leading, 14)
+            .padding(.trailing, kind == .hate ? 84 : 14)
+      }
+      .frame(maxWidth: .infinity, minHeight: 52)
+      .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
    }
 }
