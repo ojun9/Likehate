@@ -9,6 +9,40 @@ struct SettingsView: View {
    var body: some View {
       List {
          Section {
+            if !store.didBuyRemoveAd {
+               Button {
+                  store.purchaseNoAds()
+               } label: {
+                  if store.isPurchasing {
+                     Label {
+                        Text("No Ads")
+                     } icon: {
+                        ProgressView()
+                     }
+                  } else {
+                     Label("No Ads", systemImage: "nosign")
+                  }
+               }
+               .disabled(store.isPurchasing)
+            }
+
+            Button {
+               store.restorePurchases()
+            } label: {
+               if store.isRestoring {
+                  Label {
+                     Text("Restore")
+                  } icon: {
+                     ProgressView()
+                  }
+               } else {
+                  Label("Restore", systemImage: "arrow.clockwise")
+               }
+            }
+            .disabled(store.isRestoring)
+         }
+
+         Section {
             Toggle(isOn: $isHapticsEnabled) {
                Label("Vibration", systemImage: "iphone.radiowaves.left.and.right")
             }
@@ -44,6 +78,13 @@ struct SettingsView: View {
          }
       }
       .navigationTitle("Settings")
+      .alert(item: $store.purchaseMessage) { message in
+         Alert(
+            title: Text(message.title),
+            message: Text(message.message),
+            dismissButton: .default(Text("OK"))
+         )
+      }
       .confirmationDialog(
          String(localized: "doyouwanttodelete"),
          isPresented: $showDeleteConfirmation,

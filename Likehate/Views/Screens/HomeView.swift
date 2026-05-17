@@ -17,7 +17,6 @@ struct HomeView: View {
       GeometryReader { proxy in
          let horizontalPadding = proxy.size.width / 20
          let isLandscape = proxy.size.width > proxy.size.height
-         let mainButtonHeight = isLandscape ? min(max(proxy.size.height * 0.42, 110), 170) : proxy.size.height / 5
          let spacing = isLandscape ? 12.0 : proxy.size.width / 20
 
          ZStack {
@@ -26,14 +25,12 @@ struct HomeView: View {
 
             ScrollView(.vertical) {
                VStack(spacing: spacing) {
-                  purchaseActions(width: proxy.size.width)
-
-                  Spacer(minLength: isLandscape ? 24 : mainButtonHeight * 0.7)
+                  Spacer(minLength: isLandscape ? 12 : 48)
 
                   VStack(spacing: spacing) {
-                     registerButton(height: mainButtonHeight)
-                     likeButton(height: mainButtonHeight)
-                     hateButton(height: mainButtonHeight)
+                     registerButton()
+                     likeButton()
+                     hateButton()
                   }
                }
                .frame(maxWidth: .infinity)
@@ -44,29 +41,18 @@ struct HomeView: View {
             .scrollIndicators(.hidden)
 
             HomeLottieLayer(size: proxy.size)
-
-            VStack {
-               HStack {
-                  Spacer()
-                  Button {
-                     isShowingSettings = true
-                  } label: {
-                     Image(systemName: "gearshape")
-                        .font(.title3)
-                  }
-                  .buttonStyle(.bordered)
-                  .buttonBorderShape(.circle)
-                  .accessibilityLabel(Text("Settings"))
-               }
-               .padding(.top, max(proxy.safeAreaInsets.top, 12))
-               .padding(.trailing, proxy.size.width / 20)
-
-               Spacer()
-            }
-            .zIndex(10)
          }
       }
-      .toolbar(.hidden, for: .navigationBar)
+      .toolbar {
+         ToolbarItem(placement: .topBarTrailing) {
+            Button {
+               isShowingSettings = true
+            } label: {
+               Image(systemName: "gearshape")
+            }
+            .accessibilityLabel(Text("Settings"))
+         }
+      }
       .alert(item: $store.purchaseMessage) { message in
          Alert(
             title: Text(message.title),
@@ -100,108 +86,74 @@ struct HomeView: View {
       }
    }
 
-   @ViewBuilder
-   private func purchaseActions(width: CGFloat) -> some View {
-      if !store.didBuyRemoveAd {
-         PurchaseActionsView(
-            width: width / 3,
-            isPurchasing: store.isPurchasing,
-            isRestoring: store.isRestoring,
-            purchase: store.purchaseNoAds,
-            restore: store.restorePurchases
-         )
-      }
-   }
-
-   private func registerButton(height: CGFloat) -> some View {
+   private func registerButton() -> some View {
       NavigationLink {
          ChooseEntryView()
       } label: {
-         HomeImageButton(imageName: "set", height: height, accessibilityLabel: "register")
+         HomeImageButton(imageName: "set", accessibilityLabel: "register")
       }
    }
 
-   private func likeButton(height: CGFloat) -> some View {
+   private func likeButton() -> some View {
       NavigationLink {
          ItemListView(kind: .like)
       } label: {
-         HomeImageButton(imageName: "like", height: height, accessibilityLabel: "Like")
+         HomeImageButton(imageName: "like", accessibilityLabel: "Like", overlayLottie: .kiraKira)
       }
    }
 
-   private func hateButton(height: CGFloat) -> some View {
+   private func hateButton() -> some View {
       NavigationLink {
          ItemListView(kind: .hate)
       } label: {
-         HomeImageButton(imageName: "hate", height: height, accessibilityLabel: "Hate")
+         HomeImageButton(imageName: "hate", accessibilityLabel: "Hate", overlayLottie: .fuwa)
       }
    }
 }
 
-struct PurchaseActionsView: View {
-   let width: CGFloat
-   let isPurchasing: Bool
-   let isRestoring: Bool
-   let purchase: () -> Void
-   let restore: () -> Void
+enum HomeButtonLottie {
+   case kiraKira
+   case fuwa
 
-   var body: some View {
-      VStack(spacing: 8) {
-         purchaseButton
-         restoreButton
+   var name: String {
+      switch self {
+      case .kiraKira: return "KiraKira"
+      case .fuwa: return "Fuwa"
       }
-      .font(.callout.weight(.semibold))
-      .controlSize(.large)
-      .buttonBorderShape(.roundedRectangle(radius: 8))
-      .frame(width: width, alignment: .leading)
-      .frame(maxWidth: .infinity, alignment: .leading)
    }
 
-   private var purchaseButton: some View {
-      Button(action: purchase) {
-         Group {
-            if isPurchasing {
-               ProgressView()
-                  .tint(.white)
-            } else {
-               Text("No Ads")
-                  .lineLimit(1)
-                  .minimumScaleFactor(0.8)
-            }
-         }
-         .frame(minHeight: 34)
-         .frame(maxWidth: .infinity)
+   var opacity: Double {
+      switch self {
+      case .kiraKira: return 0.78
+      case .fuwa: return 0.9
       }
-      .buttonStyle(.borderedProminent)
-      .tint(Color(red: 0.957, green: 0.275, blue: 0.365))
-      .disabled(isPurchasing)
-      .frame(maxWidth: .infinity)
    }
 
-   private var restoreButton: some View {
-      Button(action: restore) {
-         Group {
-            if isRestoring {
-               ProgressView()
-            } else {
-               Text("Restore")
-                  .lineLimit(1)
-                  .minimumScaleFactor(0.8)
-            }
-         }
-         .frame(minHeight: 34)
-         .frame(maxWidth: .infinity)
+   func frame(in size: CGSize) -> CGSize {
+      switch self {
+      case .kiraKira:
+         return CGSize(width: size.width * 0.34, height: size.height * 0.78)
+      case .fuwa:
+         return CGSize(width: size.width * 0.28, height: size.height * 0.72)
       }
-      .buttonStyle(.bordered)
-      .disabled(isRestoring)
-      .frame(maxWidth: .infinity)
+   }
+
+   func position(in size: CGSize) -> CGPoint {
+      switch self {
+      case .kiraKira:
+         return CGPoint(x: size.width * 0.55, y: size.height * 0.5)
+      case .fuwa:
+         return CGPoint(x: size.width * 0.76, y: size.height * 0.5)
+      }
    }
 }
 
 struct HomeImageButton: View {
+   private static let imageAspectRatio = 2058.0 / 690.0
+
    let imageName: String
-   let height: CGFloat
    let accessibilityLabel: LocalizedStringKey
+   var overlayLottie: HomeButtonLottie?
 
    var body: some View {
       ZStack {
@@ -210,12 +162,24 @@ struct HomeImageButton: View {
 
          Image(imageName)
             .resizable()
-            .scaledToFill()
+            .scaledToFit()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .clipped()
+
+         if let overlayLottie {
+            GeometryReader { proxy in
+               let lottieSize = overlayLottie.frame(in: proxy.size)
+               let lottiePosition = overlayLottie.position(in: proxy.size)
+
+               LottieLoopView(name: overlayLottie.name)
+                  .opacity(overlayLottie.opacity)
+                  .frame(width: lottieSize.width, height: lottieSize.height)
+                  .position(lottiePosition)
+                  .allowsHitTesting(false)
+            }
+         }
       }
       .frame(maxWidth: .infinity)
-      .frame(height: height)
+      .aspectRatio(Self.imageAspectRatio, contentMode: .fit)
       .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
       .overlay(
          RoundedRectangle(cornerRadius: 25, style: .continuous)
@@ -234,8 +198,6 @@ struct HomeLottieLayer: View {
       ZStack {
          let horizontalInset = size.width / 20
          let earthSize = min(size.width * 0.12, size.height * 0.055)
-         let sparkleWidth = size.width * 0.34
-         let sparkleHeight = size.height * 0.14
          let lightningSize = size.height * 0.13
 
          LottieLoopView(name: "earth")
@@ -246,16 +208,6 @@ struct HomeLottieLayer: View {
             .opacity(0.7)
             .frame(width: lightningSize, height: lightningSize)
             .position(x: size.width / 20 + lightningSize / 2, y: size.height - (size.height / 10 + 15))
-
-         LottieLoopView(name: "KiraKira")
-            .opacity(0.8)
-            .frame(width: sparkleWidth, height: sparkleHeight)
-            .position(x: size.width / 20 + sparkleWidth / 2, y: size.height * 0.49)
-
-         LottieLoopView(name: "KiraKira")
-            .opacity(0.8)
-            .frame(width: sparkleWidth, height: sparkleHeight)
-            .position(x: size.width * 0.53 + sparkleWidth / 2, y: size.height * 0.59)
       }
       .allowsHitTesting(false)
    }
