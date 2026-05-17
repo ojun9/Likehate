@@ -20,6 +20,7 @@ struct HomeView: View {
          let horizontalPadding = proxy.size.width / 20
          let isLandscape = proxy.size.width > proxy.size.height
          let spacing = isLandscape ? 10.0 : max(proxy.size.width / 24, 14)
+         let contentMinHeight = max(proxy.size.height - proxy.safeAreaInsets.top - proxy.safeAreaInsets.bottom - 24, 0)
 
          ZStack {
             Color(.systemGray6)
@@ -27,24 +28,23 @@ struct HomeView: View {
 
             ScrollView(.vertical) {
                VStack(spacing: spacing) {
-                  Spacer(minLength: isLandscape ? 10 : 34)
+                  Spacer(minLength: isLandscape ? 8 : 18)
 
                   VStack(spacing: spacing) {
                      registerButton()
                      likeButton()
                      hateButton()
                   }
+
+                  Spacer(minLength: isLandscape ? 14 : 56)
                }
                .frame(maxWidth: .infinity)
+               .frame(minHeight: contentMinHeight)
                .padding(.horizontal, horizontalPadding)
                .padding(.top, max(proxy.safeAreaInsets.top + 8, 12))
                .padding(.bottom, max(proxy.safeAreaInsets.bottom + 12, 16))
             }
             .scrollIndicators(.hidden)
-
-            if showsHomeLottie {
-               HomeLottieLayer(size: proxy.size, safeAreaInsets: proxy.safeAreaInsets)
-            }
          }
       }
       .navigationTitle("AppTitle")
@@ -208,33 +208,5 @@ struct HomeImageButton: View {
       .shadow(color: .black.opacity(0.11), radius: 8, x: 0, y: 2)
       .contentShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
       .accessibilityLabel(Text(accessibilityLabel))
-   }
-}
-
-struct HomeLottieLayer: View {
-   let size: CGSize
-   let safeAreaInsets: EdgeInsets
-
-   var body: some View {
-      ZStack {
-         let horizontalInset = max(size.width / 20, 12)
-         let earthSize = min(max(size.width * 0.11, 38), 52)
-
-         VStack {
-            HStack {
-               Spacer()
-               LottieLoopView(name: "earth")
-                  .frame(width: earthSize, height: earthSize)
-                  .clipped()
-                  .padding(.trailing, horizontalInset)
-            }
-            .padding(.top, max(safeAreaInsets.top, 0) + 12)
-
-            Spacer()
-         }
-      }
-      .frame(width: size.width, height: size.height)
-      .clipped()
-      .allowsHitTesting(false)
    }
 }

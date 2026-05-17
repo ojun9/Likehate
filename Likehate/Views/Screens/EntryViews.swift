@@ -69,13 +69,27 @@ struct ChooseEntryView: View {
 }
 
 struct WriteItemView: View {
+   private static let likeLottieNames = ["MoreHarts", "heart1", "heart2"]
+   private static let hateLottieNames = ["fish", "lightiing", "wave"]
+
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dismiss) private var dismiss
    @State private var text = ""
    @State private var showEmptyAlert = false
+   @State private var lottieName: String
    @FocusState private var isTextFieldFocused: Bool
 
    let kind: EntryKind
+
+   init(kind: EntryKind) {
+      self.kind = kind
+      switch kind {
+      case .like:
+         _lottieName = State(initialValue: Self.likeLottieNames.randomElement() ?? "MoreHarts")
+      case .hate:
+         _lottieName = State(initialValue: Self.hateLottieNames.randomElement() ?? "fish")
+      }
+   }
 
    var body: some View {
       GeometryReader { proxy in
@@ -83,7 +97,7 @@ struct WriteItemView: View {
             Color(.systemBackground)
                .ignoresSafeArea()
 
-            WriteLottieLayer(kind: kind, topOffset: kind == .like ? 222 : 238, keepsFullHeight: isTextFieldFocused)
+            WriteLottieLayer(lottieName: lottieName, kind: kind, topOffset: kind == .like ? 222 : 238, keepsFullHeight: isTextFieldFocused)
 
             VStack(spacing: 0) {
                TextField(kind.inputPlaceholder, text: $text)
@@ -169,6 +183,7 @@ struct WriteItemView: View {
 }
 
 struct WriteLottieLayer: View {
+   let lottieName: String
    let kind: EntryKind
    let topOffset: CGFloat
    let keepsFullHeight: Bool
@@ -181,7 +196,7 @@ struct WriteLottieLayer: View {
          VStack {
             Spacer(minLength: topOffset)
 
-            LottieLoopView(name: kind == .like ? "MoreHarts" : "Henka")
+            LottieLoopView(name: lottieName)
                .frame(width: proxy.size.width * 0.96, height: max(stableHeight - topOffset - 15, 120))
                .frame(maxWidth: .infinity)
                .padding(.horizontal, proxy.size.width * 0.02)
