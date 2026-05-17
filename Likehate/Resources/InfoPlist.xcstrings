@@ -7,31 +7,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مثل & اكرهه"
+            "value" : "دفتر الإعجابات والكراهية"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mögen & Hass"
+            "value" : "Gefällt-mir-und-nicht-Notizbuch"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Αρέσει & Μισώ"
+            "value" : "Σημειωματάριο προτιμήσεων"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "好き嫌いメモ帳"
+            "value" : "Like/Dislike Notebook"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comme & Haine"
+            "value" : "Carnet des goûts"
           }
         },
         "ja" : {
@@ -43,25 +43,25 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "처럼 & 미움"
+            "value" : "좋고 싫은 메모장"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tycka om & Hata"
+            "value" : "Gilla/ogilla-anteckningar"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "喜欢 & 讨厌"
+            "value" : "喜欢讨厌记事本"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "喜歡 & 討厭"
+            "value" : "喜歡討厭記事本"
           }
         }
       }

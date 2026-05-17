@@ -59,12 +59,11 @@ struct LikehateAdaptiveAdBanner: View {
    @State private var availableWidth: CGFloat = 320
 
    var body: some View {
-      let adSize = largeAnchoredAdaptiveBanner(width: max(availableWidth, 320))
+      let adSize = largePortraitAnchoredAdaptiveBanner(width: max(availableWidth, 320))
 
       LikehateAdBannerView(adUnitID: adUnitID, adSize: adSize)
          .frame(width: adSize.size.width, height: adSize.size.height)
          .frame(maxWidth: .infinity)
-         .padding(.bottom, 8)
          .background {
             GeometryReader { proxy in
                Color.clear

@@ -209,6 +209,12 @@ struct ItemListView: View {
          .onMove { source, destination in
             store.move(from: source, to: destination, in: kind)
          }
+
+        if kind == .hate && !store.didBuyRemoveAd {
+           LikehateAdaptiveAdBanner(adUnitID: AdMobUnitID.hateListBanner)
+              .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+              .listRowSeparator(.hidden)
+        }
       }
       .overlay {
          if store.items(for: kind).isEmpty {
@@ -221,11 +227,6 @@ struct ItemListView: View {
          ToolbarItem(placement: .topBarTrailing) {
             EditButton()
                .font(.subheadline)
-         }
-      }
-      .safeAreaInset(edge: .bottom) {
-         if kind == .hate && !store.didBuyRemoveAd {
-            LikehateAdaptiveAdBanner(adUnitID: AdMobUnitID.hateListBanner)
          }
       }
       .onAppear {
