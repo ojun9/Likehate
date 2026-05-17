@@ -49,16 +49,6 @@ struct ChooseEntryView: View {
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                            .stroke(kind.color.opacity(0.28), lineWidth: 1)
                      )
-                     .overlay(alignment: .trailing) {
-                        if showsLottie && kind == .hate {
-                           LottieLoopView(name: "Fuwa")
-                              .opacity(0.34)
-                              .frame(width: 104, height: 116)
-                              .clipped()
-                              .padding(.trailing, 12)
-                              .allowsHitTesting(false)
-                        }
-                     }
                      .shadow(color: kind.color.opacity(0.08), radius: 8, x: 0, y: 2)
                   }
                   .buttonStyle(.plain)
@@ -216,6 +206,17 @@ struct ItemListView: View {
                .fontDesign(.rounded)
                .lineLimit(2)
                .padding(.vertical, 4)
+               .frame(maxWidth: .infinity, alignment: .leading)
+               .overlay(alignment: .trailing) {
+                  if kind == .hate {
+                     LottieLoopView(name: "Fuwa")
+                        .opacity(0.28)
+                        .frame(width: 76, height: 64)
+                        .clipped()
+                        .offset(x: 8)
+                        .allowsHitTesting(false)
+                  }
+               }
                .listRowInsets(EdgeInsets(top: 6, leading: 18, bottom: 6, trailing: 18))
          }
          .onDelete { offsets in
