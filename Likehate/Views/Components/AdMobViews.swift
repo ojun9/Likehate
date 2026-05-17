@@ -81,7 +81,7 @@ struct LikehateAdaptiveAdBanner: View {
 }
 
 private struct BannerWidthPreferenceKey: PreferenceKey {
-   static var defaultValue: CGFloat = 320
+   static let defaultValue: CGFloat = 320
 
    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
       let next = nextValue()

@@ -63,7 +63,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
    }
 }
 
-extension AppDelegate: UNUserNotificationCenterDelegate {
+extension AppDelegate: @preconcurrency UNUserNotificationCenterDelegate {
    func userNotificationCenter(_ center: UNUserNotificationCenter,
                                willPresent notification: UNNotification,
                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -79,7 +79,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
    }
 }
 
-extension AppDelegate: MessagingDelegate {
+extension AppDelegate: @preconcurrency MessagingDelegate {
    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
       guard let fcmToken else { return }
       print("Firebase registration token: \(fcmToken)")

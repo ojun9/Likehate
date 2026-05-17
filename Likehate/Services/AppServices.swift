@@ -11,26 +11,31 @@ enum HapticsClient {
       return defaults.bool(forKey: isEnabledKey)
    }
 
+   @MainActor
    static func light() {
       guard isEnabled else { return }
       UIImpactFeedbackGenerator(style: .light).impactOccurred()
    }
 
+   @MainActor
    static func medium() {
       guard isEnabled else { return }
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
    }
 
+   @MainActor
    static func heavy() {
       guard isEnabled else { return }
       UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
    }
 
+   @MainActor
    static func success() {
       guard isEnabled else { return }
       UINotificationFeedbackGenerator().notificationOccurred(.success)
    }
 
+   @MainActor
    static func error() {
       guard isEnabled else { return }
       UINotificationFeedbackGenerator().notificationOccurred(.error)
