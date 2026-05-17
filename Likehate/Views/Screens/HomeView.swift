@@ -55,6 +55,7 @@ struct HomeView: View {
       .toolbar {
          ToolbarItem(placement: .topBarTrailing) {
             Button {
+               Analytics.logEvent("settings_opened_from_home", parameters: homeAnalyticsParameters)
                isShowingSettings = true
             } label: {
                Image(systemName: "gearshape")
@@ -92,12 +93,14 @@ struct HomeView: View {
       }
       .onAppear {
          showsHomeLottie = true
-         Analytics.logEvent("showSwiftUIHome", parameters: nil)
+         Analytics.logEvent("showSwiftUIHome", parameters: homeAnalyticsParameters)
+         Analytics.logEvent("screen_view_home", parameters: homeAnalyticsParameters)
       }
    }
 
    private func registerButton() -> some View {
       Button {
+         Analytics.logEvent("home_register_tapped", parameters: homeAnalyticsParameters)
          showsHomeLottie = false
          isShowingChooseEntry = true
       } label: {
@@ -113,6 +116,7 @@ struct HomeView: View {
          HomeImageButton(imageName: "like", accessibilityLabel: "Like", overlayLottie: showsHomeLottie ? .kiraKira : nil)
       }
       .simultaneousGesture(TapGesture().onEnded {
+         Analytics.logEvent("home_list_tapped", parameters: listAnalyticsParameters(for: .like))
          showsHomeLottie = false
       })
    }
@@ -124,8 +128,25 @@ struct HomeView: View {
          HomeImageButton(imageName: "hate", accessibilityLabel: "Hate", overlayLottie: showsHomeLottie ? .kaminari : nil)
       }
       .simultaneousGesture(TapGesture().onEnded {
+         Analytics.logEvent("home_list_tapped", parameters: listAnalyticsParameters(for: .hate))
          showsHomeLottie = false
       })
+   }
+
+   private var homeAnalyticsParameters: [String: Any] {
+      [
+         "like_count": store.likes.count,
+         "hate_count": store.hates.count,
+         "total_count": store.likes.count + store.hates.count,
+         "did_buy_remove_ad": store.didBuyRemoveAd
+      ]
+   }
+
+   private func listAnalyticsParameters(for kind: EntryKind) -> [String: Any] {
+      homeAnalyticsParameters.merging([
+         "kind": kind.rawValue,
+         "kind_count": store.items(for: kind).count
+      ]) { _, new in new }
    }
 }
 

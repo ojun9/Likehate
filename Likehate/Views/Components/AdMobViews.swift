@@ -1,3 +1,4 @@
+import FirebaseAnalytics
 import GoogleMobileAds
 import SwiftUI
 import UIKit
@@ -46,10 +47,19 @@ struct LikehateAdBannerView: UIViewRepresentable {
 
       func bannerViewDidReceiveAd(_ bannerView: BannerView) {
          print("AdMob banner loaded: \(adUnitID)")
+         Analytics.logEvent("ad_banner_loaded", parameters: [
+            "placement": "hate_list"
+         ])
       }
 
       func bannerView(_ bannerView: BannerView, didFailToReceiveAdWithError error: Error) {
+         let nsError = error as NSError
          print("AdMob banner failed: \(error)")
+         Analytics.logEvent("ad_banner_failed", parameters: [
+            "placement": "hate_list",
+            "error_domain": nsError.domain,
+            "error_code": nsError.code
+         ])
       }
    }
 }
@@ -64,6 +74,12 @@ struct LikehateAdaptiveAdBanner: View {
       LikehateAdBannerView(adUnitID: adUnitID, adSize: adSize)
          .frame(width: adSize.size.width, height: adSize.size.height)
          .frame(maxWidth: .infinity)
+         .onAppear {
+            Analytics.logEvent("ad_banner_container_appeared", parameters: [
+               "placement": "hate_list",
+               "available_width": availableWidth
+            ])
+         }
          .background {
             GeometryReader { proxy in
                Color.clear

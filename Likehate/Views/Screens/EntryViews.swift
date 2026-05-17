@@ -47,6 +47,11 @@ struct ChooseEntryView: View {
                      .shadow(color: kind.color.opacity(0.08), radius: 8, x: 0, y: 2)
                   }
                   .buttonStyle(.plain)
+                  .simultaneousGesture(TapGesture().onEnded {
+                     Analytics.logEvent("choose_entry_kind_tapped", parameters: [
+                        "kind": kind.rawValue
+                     ])
+                  })
                }
             }
             .padding(.horizontal, 20)
@@ -56,6 +61,7 @@ struct ChooseEntryView: View {
       .navigationTitle("ChooseEntryTitle")
       .navigationBarTitleDisplayMode(.inline)
       .onAppear {
+         Analytics.logEvent("screen_view_choose_entry", parameters: nil)
          HapticsClient.medium()
       }
       .task {
@@ -105,7 +111,9 @@ struct WriteItemView: View {
                   .fontDesign(.rounded)
                   .textInputAutocapitalization(.sentences)
                   .submitLabel(.done)
-                  .onSubmit(save)
+                  .onSubmit {
+                     save(source: "keyboard")
+                  }
                   .focused($isTextFieldFocused)
                   .padding(.horizontal, 16)
                   .frame(minHeight: 52)
@@ -118,7 +126,9 @@ struct WriteItemView: View {
                   .shadow(color: kind.color.opacity(isTextFieldFocused ? 0.14 : 0.06), radius: isTextFieldFocused ? 8 : 4, x: 0, y: 2)
                   .padding(.horizontal, 36)
 
-               Button(action: save) {
+               Button {
+                  save(source: "button")
+               } label: {
                   Text(kind.inputButtonTitle)
                      .font(.body.weight(.bold))
                      .fontDesign(.rounded)
@@ -154,15 +164,26 @@ struct WriteItemView: View {
             }
          )
       }
+      .onAppear {
+         Analytics.logEvent("screen_view_write_entry", parameters: writeAnalyticsParameters(source: "appear"))
+      }
+      .onDisappear {
+         Analytics.logEvent("write_entry_disappeared", parameters: writeAnalyticsParameters(source: "disappear"))
+      }
+      .onChange(of: isTextFieldFocused) { _, isFocused in
+         Analytics.logEvent("write_text_field_focus_changed", parameters: writeAnalyticsParameters(source: isFocused ? "focused" : "unfocused"))
+      }
    }
 
-   private func save() {
+   private func save(source: String) {
       guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+         Analytics.logEvent("write_entry_empty_submitted", parameters: writeAnalyticsParameters(source: source))
          HapticsClient.error()
          showEmptyAlert = true
          return
       }
 
+      Analytics.logEvent("write_entry_submit_tapped", parameters: writeAnalyticsParameters(source: source))
       store.add(text, to: kind)
       dismiss()
    }
@@ -179,6 +200,18 @@ struct WriteItemView: View {
 
    private var fieldBorderColor: Color {
       kind.color.opacity(isTextFieldFocused ? 0.48 : 0.2)
+   }
+
+   private func writeAnalyticsParameters(source: String) -> [String: Any] {
+      [
+         "kind": kind.rawValue,
+         "source": source,
+         "text_length": text.trimmingCharacters(in: .whitespacesAndNewlines).count,
+         "lottie_name": lottieName,
+         "is_focused": isTextFieldFocused,
+         "like_count": store.likes.count,
+         "hate_count": store.hates.count
+      ]
    }
 }
 
@@ -222,6 +255,9 @@ struct ItemListView: View {
    let kind: EntryKind
 
    var body: some View {
+      let itemCount = store.items(for: kind).count
+      let showsBanner = kind == .hate && !store.didBuyRemoveAd && !store.items(for: kind).isEmpty
+
       List {
          ForEach(Array(store.items(for: kind).enumerated()), id: \.offset) { _, item in
             Text(item)
@@ -238,14 +274,17 @@ struct ItemListView: View {
             store.move(from: source, to: destination, in: kind)
          }
 
-         if kind == .hate && !store.didBuyRemoveAd && !store.items(for: kind).isEmpty {
+         if showsBanner {
             LikehateAdaptiveAdBanner(adUnitID: AdMobUnitID.hateListBanner)
                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                .listRowSeparator(.hidden)
+               .onAppear {
+                  Analytics.logEvent("list_banner_visible", parameters: listAnalyticsParameters(itemCount: itemCount, showsBanner: showsBanner))
+               }
          }
       }
       .overlay {
-         if store.items(for: kind).isEmpty {
+         if itemCount == 0 {
             ContentUnavailableView(kind.listTitle, systemImage: "tray", description: Text("EmptyListMessage"))
          }
       }
@@ -258,7 +297,18 @@ struct ItemListView: View {
          }
       }
       .onAppear {
-         Analytics.logEvent(kind == .like ? "showLikeTableView" : "showHateTableView", parameters: nil)
+         Analytics.logEvent(kind == .like ? "showLikeTableView" : "showHateTableView", parameters: listAnalyticsParameters(itemCount: itemCount, showsBanner: showsBanner))
+         Analytics.logEvent("screen_view_item_list", parameters: listAnalyticsParameters(itemCount: itemCount, showsBanner: showsBanner))
       }
+   }
+
+   private func listAnalyticsParameters(itemCount: Int, showsBanner: Bool) -> [String: Any] {
+      [
+         "kind": kind.rawValue,
+         "item_count": itemCount,
+         "is_empty": itemCount == 0,
+         "shows_banner": showsBanner,
+         "did_buy_remove_ad": store.didBuyRemoveAd
+      ]
    }
 }
