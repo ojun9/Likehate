@@ -113,50 +113,43 @@ struct PurchaseActionsView: View {
    let restore: () -> Void
 
    var body: some View {
-      HStack(spacing: 12) {
+      HStack(spacing: 10) {
          Button(action: purchase) {
-            ZStack {
+            Group {
                if isPurchasing {
                   ProgressView()
                      .tint(.white)
                } else {
                   Text("No Ads")
-                     .font(.headline)
                      .fontWeight(.semibold)
                      .lineLimit(1)
                }
             }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity, minHeight: 48)
-            .background(Color(red: 0.957, green: 0.275, blue: 0.365), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+            .frame(maxWidth: .infinity)
          }
-         .buttonStyle(.plain)
+         .buttonStyle(.borderedProminent)
+         .controlSize(.regular)
+         .buttonBorderShape(.capsule)
+         .tint(Color(red: 0.957, green: 0.275, blue: 0.365))
          .disabled(isPurchasing)
 
          Button(action: restore) {
-            ZStack {
+            Group {
                if isRestoring {
                   ProgressView()
                } else {
                   Text("Restore")
-                     .font(.subheadline)
                      .fontWeight(.semibold)
                      .lineLimit(1)
                }
             }
-            .foregroundStyle(.secondary)
-            .frame(width: 92)
-            .frame(minHeight: 48)
          }
-         .buttonStyle(.plain)
+         .buttonStyle(.bordered)
+         .controlSize(.regular)
+         .buttonBorderShape(.capsule)
          .disabled(isRestoring)
       }
-      .padding(8)
-      .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-      .overlay(
-         RoundedRectangle(cornerRadius: 8, style: .continuous)
-            .stroke(Color.primary.opacity(0.08), lineWidth: 1)
-      )
+      .font(.subheadline)
    }
 }
 

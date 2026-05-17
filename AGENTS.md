@@ -2,29 +2,40 @@
 
 ## Project Structure & Module Organization
 
-This repository contains an iOS app named `Likehate`. Main app code lives under `Likehate/`, grouped by feature: `Home/`, `Write/`, `TableView/`, `Setting/`, `Chose/`, and shared extensions in `Extention/`. Storyboards are in `Likehate/Base.lproj/` and localized string files are in language folders such as `ja.lproj`, `en.lproj`, `fr.lproj`, and `zh-Hans.lproj`. Image assets are in `Likehate/Assets.xcassets/`; Lottie animations are in `Likehate/Lottie/`. Unit tests are in `LikehateTests/`, and UI tests plus screenshot flows are in `LikehateUITests/`.
+This repository contains the iOS app `Likehate`. App code lives under `Likehate/`:
+
+- `App/`: SwiftUI app entry point and `AppDelegate`.
+- `Models/`: shared app model types such as `EntryKind`.
+- `Stores/`: observable state and persistence, currently `LikeHateStore`.
+- `Services/`: app services, notification names, and haptics helpers.
+- `Views/Screens/`: SwiftUI screens such as home, entry, list, and settings.
+- `Views/Components/`: reusable SwiftUI/UIKit bridge components such as AdMob and Lottie views.
+- `Resources/`: asset catalogs, Lottie JSON, and `.xcstrings` localization files.
+- `SupportingFiles/`: `Info.plist`, entitlements, and Firebase config.
 
 ## Build, Test, and Development Commands
 
-- `pod install`: install CocoaPods dependencies from `Podfile` and refresh the workspace.
-- `open Likehate.xcworkspace`: open the app with Pods linked; prefer the workspace over the project when developing locally.
-- `xcodebuild -workspace Likehate.xcworkspace -scheme Likehate -destination 'platform=iOS Simulator,name=iPhone 15' build`: build the app from the command line.
-- `xcodebuild -workspace Likehate.xcworkspace -scheme Likehate -destination 'platform=iOS Simulator,name=iPhone 15' test`: run unit and UI tests configured in the shared scheme.
+- `open Likehate.xcodeproj`: open the app in Xcode.
+- `xcodebuild -quiet -project Likehate.xcodeproj -scheme Likehate -destination 'generic/platform=iOS' -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO build`: quieter verification build used by automation.
 
-Use an installed simulator name available on your machine if `iPhone 15` is not present.
+Dependencies are managed with Swift Package Manager through the Xcode project. Do not reintroduce CocoaPods or a workspace.
 
 ## Coding Style & Naming Conventions
 
-Use Swift and UIKit patterns already present in the project. Keep feature-specific controllers and helpers in their existing folders. Prefer 3-space indentation when touching existing files, matching the current code style. Use `UpperCamelCase` for types (`ViewController`, `WriteLike`) and `lowerCamelCase` for methods, properties, and local variables. Keep storyboard accessibility identifiers aligned with constants or names used by UI tests, such as `RegiButton`, `LikeTextField`, and `OKButton`.
+Use SwiftUI-first implementations. Keep UIKit only where it bridges SDKs that still require it, such as Lottie or AdMob. Use 3-space indentation. Types use `UpperCamelCase`; methods, properties, enum cases, and notification names use `lowerCamelCase`. Avoid suffixes like `SwiftUIView`; name views by purpose, for example `HomeView`.
 
 ## Testing Guidelines
 
-Tests use XCTest. Add unit tests to `LikehateTests` for isolated logic and UI flows to `LikehateUITests` when behavior depends on navigation, buttons, text fields, or screenshots. Name test methods with the `test...` prefix so Xcode discovers them. UI tests currently rely on accessibility identifiers and `snapshot(...)`; update identifiers and screenshot names together when changing screens.
+Unit test and UI test targets are intentionally removed for now. For verification, run the command-line build and manually check affected flows in Xcode or Simulator. When tests return, prefer focused XCTest coverage for store logic and critical navigation, purchase, and persistence flows.
+
+## Localization & Assets
+
+Use `.xcstrings` for strings: `Resources/Localizable.xcstrings` and `Resources/InfoPlist.xcstrings`. Do not add per-language `.lproj` string files. Use localized asset catalog variants in `Resources/Assets.xcassets` instead of names like `_Ja` or `_Ara`. Keep Lottie files in `Resources/Lottie`.
 
 ## Commit & Pull Request Guidelines
 
-History uses short, descriptive commits in English and Japanese, for example `コード整形完了` and `ViewDidLoadを見やすくした`. Keep commits focused on one behavior or cleanup. Pull requests should include a brief summary, test results or simulator details, and screenshots for visible UI changes. Mention any localization, Firebase, CocoaPods, or storyboard changes because they can affect build setup and release behavior.
+Recent history uses short Japanese commit messages. Keep commits focused and describe the actual change. Pull requests should include a summary, build result, and screenshots for visible UI changes. Call out changes to SPM dependencies, Firebase, AdMob, purchases, localization, or entitlements.
 
 ## Security & Configuration Tips
 
-Treat `GoogleService-Info.plist`, entitlements, and Firebase configuration as sensitive app configuration. Do not add new secrets or local signing files. When adding dependencies, update both `Podfile` and `Podfile.lock` intentionally.
+Treat `SupportingFiles/GoogleService-Info.plist`, entitlements, bundle identifiers, AdMob IDs, and purchase product IDs as release-sensitive configuration. Do not add local signing assets or new secrets to the repository.
