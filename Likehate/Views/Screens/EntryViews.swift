@@ -83,7 +83,7 @@ struct WriteItemView: View {
             Color(.systemBackground)
                .ignoresSafeArea()
 
-            WriteLottieLayer(kind: kind, topOffset: kind == .like ? 222 : 238)
+            WriteLottieLayer(kind: kind, topOffset: kind == .like ? 222 : 238, keepsFullHeight: isTextFieldFocused)
 
             VStack(spacing: 0) {
                TextField(kind.inputPlaceholder, text: $text)
@@ -171,21 +171,34 @@ struct WriteItemView: View {
 struct WriteLottieLayer: View {
    let kind: EntryKind
    let topOffset: CGFloat
+   let keepsFullHeight: Bool
+   @State private var largestSize: CGSize = .zero
 
    var body: some View {
       GeometryReader { proxy in
+         let stableHeight = keepsFullHeight ? max(largestSize.height, proxy.size.height) : proxy.size.height
+
          VStack {
             Spacer(minLength: topOffset)
 
             LottieLoopView(name: kind == .like ? "MoreHarts" : "Henka")
-               .frame(width: proxy.size.width * 0.96, height: max(proxy.size.height - topOffset - 15, 120))
+               .frame(width: proxy.size.width * 0.96, height: max(stableHeight - topOffset - 15, 120))
                .frame(maxWidth: .infinity)
                .padding(.horizontal, proxy.size.width * 0.02)
                .padding(.bottom, 15)
          }
+         .onAppear {
+            largestSize = proxy.size
+         }
+         .onChange(of: proxy.size) { _, newSize in
+            if !keepsFullHeight || newSize.height > largestSize.height {
+               largestSize = newSize
+            }
+         }
       }
       .opacity(kind == .like ? 0.72 : 0.32)
       .allowsHitTesting(false)
+      .ignoresSafeArea(.keyboard, edges: .bottom)
    }
 }
 

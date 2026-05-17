@@ -131,13 +131,11 @@ struct HomeView: View {
 
 enum HomeButtonLottie {
    case kiraKira
-   case fuwa
    case kaminari
 
    var name: String {
       switch self {
       case .kiraKira: return "KiraKira"
-      case .fuwa: return "Fuwa"
       case .kaminari: return "Kaminari"
       }
    }
@@ -145,7 +143,6 @@ enum HomeButtonLottie {
    var opacity: Double {
       switch self {
       case .kiraKira: return 0.78
-      case .fuwa: return 0.9
       case .kaminari: return 0.7
       }
    }
@@ -154,8 +151,6 @@ enum HomeButtonLottie {
       switch self {
       case .kiraKira:
          return CGSize(width: size.width * 0.9, height: size.height * 0.72)
-      case .fuwa:
-         return CGSize(width: size.width * 0.46, height: size.height * 0.86)
       case .kaminari:
          return CGSize(width: size.height * 0.95, height: size.height * 0.95)
       }
@@ -165,8 +160,6 @@ enum HomeButtonLottie {
       switch self {
       case .kiraKira:
          return CGPoint(x: size.width * 0.5, y: size.height * 0.5)
-      case .fuwa:
-         return CGPoint(x: size.width * 0.72, y: size.height * 0.5)
       case .kaminari:
          return CGPoint(x: size.width * 0.16, y: size.height * 0.62)
       }
