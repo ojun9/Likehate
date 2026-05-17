@@ -3,15 +3,19 @@ import GoogleMobileAds
 import SwiftUI
 
 struct ChooseEntryView: View {
+   @State private var showsLottie = false
+
    var body: some View {
       ZStack {
          VStack {
-            HStack {
-               LottieLoopView(name: "Egg")
-                  .frame(width: 120, height: 120)
-               Spacer()
-               LottieLoopView(name: "MaruKuru")
-                  .frame(width: 120, height: 120)
+            if showsLottie {
+               HStack {
+                  LottieLoopView(name: "Egg")
+                     .frame(width: 96, height: 96)
+                  Spacer()
+                  LottieLoopView(name: "MaruKuru")
+                     .frame(width: 96, height: 96)
+               }
             }
             Spacer()
          }
@@ -41,6 +45,13 @@ struct ChooseEntryView: View {
       .navigationTitle("register")
       .onAppear {
          HapticsClient.medium()
+      }
+      .task {
+         try? await Task.sleep(for: .milliseconds(350))
+         showsLottie = true
+      }
+      .onDisappear {
+         showsLottie = false
       }
    }
 }
