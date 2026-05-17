@@ -150,7 +150,7 @@ enum HomeButtonLottie {
    func frame(in size: CGSize) -> CGSize {
       switch self {
       case .kiraKira:
-         return CGSize(width: size.width * 0.26, height: size.height * 0.62)
+         return CGSize(width: size.width * 0.18, height: size.height * 0.45)
       case .fuwa:
          return CGSize(width: size.width * 0.28, height: size.height * 0.72)
       }
@@ -159,7 +159,7 @@ enum HomeButtonLottie {
    func position(in size: CGSize) -> CGPoint {
       switch self {
       case .kiraKira:
-         return CGPoint(x: size.width * 0.55, y: size.height * 0.52)
+         return CGPoint(x: size.width * 0.52, y: size.height * 0.52)
       case .fuwa:
          return CGPoint(x: size.width * 0.76, y: size.height * 0.5)
       }
@@ -215,12 +215,12 @@ struct HomeLottieLayer: View {
    var body: some View {
       ZStack {
          let horizontalInset = size.width / 20
-         let earthSize = min(size.width * 0.06, size.height * 0.0275)
+         let earthSize = min(size.width * 0.03, size.height * 0.014)
          let lightningSize = size.height * 0.13
 
          LottieLoopView(name: "earth")
             .frame(width: earthSize, height: earthSize)
-            .position(x: size.width - horizontalInset - (earthSize * 1.2), y: size.height * 0.12)
+            .position(x: size.width - horizontalInset - (earthSize * 2), y: size.height * 0.14)
 
          LottieLoopView(name: "Kaminari")
             .opacity(0.7)
