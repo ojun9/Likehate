@@ -7,6 +7,8 @@ final class LikeHateStore: ObservableObject {
    private enum Constants {
       static let noAdsProductID = "NO_ADS_LIKEHATE"
       static let receiptSharedSecret = "50822b94b56840bb845871be8d3352ab"
+      static let launchReviewRequestCountKey = "LaunchReviewRequestCount"
+      static let registrationReviewRequestCountKey = "RegistrationReviewRequestCount"
    }
 
    @Published private(set) var likes: [String]
@@ -41,7 +43,6 @@ final class LikeHateStore: ObservableObject {
       case .like:
          likes.append(trimmed)
          defaults.set(likes, forKey: kind.storageKey)
-         showReviewPromptIfNeeded()
       case .hate:
          hates.append(trimmed)
          defaults.set(hates, forKey: kind.storageKey)
@@ -49,6 +50,14 @@ final class LikeHateStore: ObservableObject {
 
       Analytics.logEvent(kind.analyticsName, parameters: nil)
       HapticsClient.success()
+      recordRegistrationAndRequestReviewIfNeeded()
+   }
+
+   func recordLaunchAndRequestReviewIfNeeded() {
+      let nextCount = defaults.integer(forKey: Constants.launchReviewRequestCountKey) + 1
+      defaults.set(nextCount, forKey: Constants.launchReviewRequestCountKey)
+
+      requestReviewIfNeeded(count: nextCount, eventName: "requestReviewByLaunchCount")
    }
 
    func delete(at offsets: IndexSet, from kind: EntryKind) {
@@ -148,14 +157,17 @@ final class LikeHateStore: ObservableObject {
       }
    }
 
-   private func showReviewPromptIfNeeded() {
-      defaults.register(defaults: ["Check10Like": false])
-      guard likes.count == 10, !defaults.bool(forKey: "Check10Like") else { return }
+   private func recordRegistrationAndRequestReviewIfNeeded() {
+      let nextCount = defaults.integer(forKey: Constants.registrationReviewRequestCountKey) + 1
+      defaults.set(nextCount, forKey: Constants.registrationReviewRequestCountKey)
 
-      defaults.set(true, forKey: "Check10Like")
-      reviewPrompt = ReviewPrompt(
-         title: String(localized: "registe10Things"),
-         message: String(localized: "Congrats")
-      )
+      requestReviewIfNeeded(count: nextCount, eventName: "requestReviewByRegistrationCount")
+   }
+
+   private func requestReviewIfNeeded(count: Int, eventName: String) {
+      guard count == 10 || count == 20 else { return }
+
+      Analytics.logEvent(eventName, parameters: ["count": count])
+      AppReviewClient.requestReview()
    }
 }

@@ -9,6 +9,16 @@ struct SettingsView: View {
    var body: some View {
       List {
          Section {
+            Button {
+               Analytics.logEvent("TapAppReview", parameters: nil)
+               HapticsClient.heavy()
+               AppReviewClient.requestReview()
+            } label: {
+               Label("AppRevie", systemImage: "star")
+            }
+         }
+
+         Section {
             if !store.didBuyRemoveAd {
                Button {
                   store.purchaseNoAds()
@@ -46,26 +56,6 @@ struct SettingsView: View {
             Toggle(isOn: $isHapticsEnabled) {
                Label("Vibration", systemImage: "iphone.radiowaves.left.and.right")
             }
-         }
-
-         Section {
-            Button(role: .destructive) {
-               Analytics.logEvent("TapDataErasing", parameters: nil)
-               HapticsClient.heavy()
-               showDeleteConfirmation = true
-            } label: {
-               Label("deleteErasing", systemImage: "trash")
-            }
-         }
-
-         Section {
-            Button {
-               Analytics.logEvent("TapAppReview", parameters: nil)
-               HapticsClient.heavy()
-               AppReviewClient.requestReview()
-            } label: {
-               Label("AppRevie", systemImage: "star")
-            }
 
             Link(destination: URL(string: "https://forms.gle/mSEq7WwDz3fZNcqF6")!) {
                Label("ContactUs", systemImage: "envelope")
@@ -75,6 +65,13 @@ struct SettingsView: View {
                HapticsClient.light()
             })
 
+            Button(role: .destructive) {
+               Analytics.logEvent("TapDataErasing", parameters: nil)
+               HapticsClient.heavy()
+               showDeleteConfirmation = true
+            } label: {
+               Label("deleteErasing", systemImage: "trash")
+            }
          }
       }
       .navigationTitle("SettingsTitle")
