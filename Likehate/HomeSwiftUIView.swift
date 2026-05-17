@@ -42,42 +42,12 @@ struct HomeSwiftUIView: View {
 
             VStack(spacing: proxy.size.width / 20) {
                if !store.didBuyRemoveAd {
-                  HStack(spacing: 12) {
-                     Button {
-                        store.purchaseNoAds()
-                     } label: {
-                        ZStack {
-                           if store.isPurchasing {
-                              ProgressView()
-                           } else {
-                              Text("No Ads")
-                                 .fontWeight(.semibold)
-                           }
-                        }
-                        .frame(maxWidth: .infinity, minHeight: 44)
-                     }
-                     .buttonStyle(.borderedProminent)
-                     .buttonBorderShape(.roundedRectangle(radius: 8))
-                     .disabled(store.isPurchasing)
-
-                     Button {
-                        store.restorePurchases()
-                     } label: {
-                        ZStack {
-                           if store.isRestoring {
-                              ProgressView()
-                           } else {
-                              Text("Restore")
-                                 .fontWeight(.semibold)
-                           }
-                        }
-                        .frame(maxWidth: .infinity, minHeight: 44)
-                     }
-                     .buttonStyle(.bordered)
-                     .buttonBorderShape(.roundedRectangle(radius: 8))
-                     .disabled(store.isRestoring)
-                  }
-                  .controlSize(.large)
+                  PurchaseActionsView(
+                     isPurchasing: store.isPurchasing,
+                     isRestoring: store.isRestoring,
+                     purchase: store.purchaseNoAds,
+                     restore: store.restorePurchases
+                  )
                }
 
                Spacer(minLength: proxy.size.height * 0.14)
@@ -133,6 +103,59 @@ struct HomeSwiftUIView: View {
       .onAppear {
          Analytics.logEvent("showSwiftUIHome", parameters: nil)
       }
+   }
+}
+
+struct PurchaseActionsView: View {
+   let isPurchasing: Bool
+   let isRestoring: Bool
+   let purchase: () -> Void
+   let restore: () -> Void
+
+   var body: some View {
+      HStack(spacing: 12) {
+         Button(action: purchase) {
+            ZStack {
+               if isPurchasing {
+                  ProgressView()
+                     .tint(.white)
+               } else {
+                  Text("No Ads")
+                     .font(.headline)
+                     .fontWeight(.semibold)
+                     .lineLimit(1)
+               }
+            }
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity, minHeight: 48)
+            .background(Color(red: 0.957, green: 0.275, blue: 0.365), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+         }
+         .buttonStyle(.plain)
+         .disabled(isPurchasing)
+
+         Button(action: restore) {
+            ZStack {
+               if isRestoring {
+                  ProgressView()
+               } else {
+                  Text("Restore")
+                     .font(.subheadline)
+                     .fontWeight(.semibold)
+                     .lineLimit(1)
+               }
+            }
+            .foregroundStyle(.secondary)
+            .frame(width: 92, minHeight: 48)
+         }
+         .buttonStyle(.plain)
+         .disabled(isRestoring)
+      }
+      .padding(8)
+      .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+      .overlay(
+         RoundedRectangle(cornerRadius: 8, style: .continuous)
+            .stroke(Color.primary.opacity(0.08), lineWidth: 1)
+      )
    }
 }
 
