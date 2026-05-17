@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -285,8 +285,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-
-
 		BF22F45D20DE6E4C00B56F99 /* Likehate */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BF22F47020DE6E4D00B56F99 /* Build configuration list for PBXNativeTarget "Likehate" */;
@@ -367,8 +365,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-
-
 		BF22F45C20DE6E4C00B56F99 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -400,8 +396,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-
-
 		BF22F45A20DE6E4C00B56F99 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -501,10 +495,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-
-
-
-
 		BF22F46E20DE6E4D00B56F99 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -670,8 +660,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-
-
 		BF22F45920DE6E4C00B56F99 /* Build configuration list for PBXProject "Likehate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
