@@ -13,6 +13,13 @@ enum EntryKind: String, CaseIterable, Identifiable {
       }
    }
 
+   var selectionSubtitle: String {
+      switch self {
+      case .like: return "残しておきたいもの"
+      case .hate: return "忘れずに避けたいもの"
+      }
+   }
+
    var listTitle: String {
       switch self {
       case .like: return String(localized: "likething")

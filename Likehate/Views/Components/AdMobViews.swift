@@ -5,66 +5,9 @@ import UIKit
 enum AdMobUnitID {
     #if DEBUG
    static let hateListBanner = "ca-app-pub-3940256099942544/2934735716"
-   static let writeHateBanner = "ca-app-pub-3940256099942544/2934735716"
-   static let writeHateInterstitial = "ca-app-pub-3940256099942544/4411468910"
     #else
    static let hateListBanner = "ca-app-pub-1460017825820383/1086930169"
-   static let writeHateBanner = "ca-app-pub-1460017825820383/8035481899"
-   static let writeHateInterstitial = "ca-app-pub-1460017825820383/9263543904"
     #endif
-}
-
-@MainActor
-final class LikehateInterstitialAdController: NSObject, ObservableObject, FullScreenContentDelegate {
-   private var interstitialAd: InterstitialAd?
-   private var isLoading = false
-
-   func load() {
-      guard interstitialAd == nil, !isLoading else { return }
-      isLoading = true
-
-      Task {
-         do {
-            interstitialAd = try await InterstitialAd.load(
-               with: AdMobUnitID.writeHateInterstitial,
-               request: Request()
-            )
-            interstitialAd?.fullScreenContentDelegate = self
-         } catch {
-            print("Interstitial load failed: \(error)")
-         }
-
-         isLoading = false
-      }
-   }
-
-   func present() {
-      guard let interstitialAd else {
-         load()
-         return
-      }
-
-      let rootViewController = UIApplication.shared.likehateRootViewController
-      do {
-         try interstitialAd.canPresent(from: rootViewController)
-      } catch {
-         print("Interstitial cannot present: \(error)")
-         load()
-         return
-      }
-
-      interstitialAd.present(from: rootViewController)
-      self.interstitialAd = nil
-   }
-
-   func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
-      load()
-   }
-
-   func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
-      print("Interstitial present failed: \(error)")
-      load()
-   }
 }
 
 struct LikehateAdBannerView: UIViewRepresentable {

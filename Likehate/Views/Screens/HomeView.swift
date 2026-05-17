@@ -19,7 +19,7 @@ struct HomeView: View {
       GeometryReader { proxy in
          let horizontalPadding = proxy.size.width / 20
          let isLandscape = proxy.size.width > proxy.size.height
-         let spacing = isLandscape ? 12.0 : proxy.size.width / 20
+         let spacing = isLandscape ? 10.0 : max(proxy.size.width / 24, 14)
 
          ZStack {
             Color(.systemGray6)
@@ -27,7 +27,7 @@ struct HomeView: View {
 
             ScrollView(.vertical) {
                VStack(spacing: spacing) {
-                  Spacer(minLength: isLandscape ? 12 : 48)
+                  Spacer(minLength: isLandscape ? 10 : 34)
 
                   VStack(spacing: spacing) {
                      registerButton()
@@ -47,7 +47,7 @@ struct HomeView: View {
             }
          }
       }
-      .navigationTitle("Likehate")
+      .navigationTitle("好き嫌いメモ帳")
       .navigationBarTitleDisplayMode(.inline)
       .navigationDestination(isPresented: $isShowingChooseEntry) {
          ChooseEntryView()
@@ -59,7 +59,7 @@ struct HomeView: View {
             } label: {
                Image(systemName: "gearshape")
             }
-            .accessibilityLabel(Text("Settings"))
+            .accessibilityLabel(Text("設定"))
          }
       }
       .alert(item: $store.purchaseMessage) { message in
@@ -203,9 +203,9 @@ struct HomeImageButton: View {
       .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
       .overlay(
          RoundedRectangle(cornerRadius: 25, style: .continuous)
-            .stroke(Color.primary.opacity(0.75), lineWidth: 1.5)
+            .stroke(Color.primary.opacity(0.48), lineWidth: 1)
       )
-      .shadow(color: .black.opacity(0.18), radius: 10, x: 0, y: 2)
+      .shadow(color: .black.opacity(0.11), radius: 8, x: 0, y: 2)
       .contentShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
       .accessibilityLabel(Text(accessibilityLabel))
    }
