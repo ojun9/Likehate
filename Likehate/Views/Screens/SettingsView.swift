@@ -3,6 +3,7 @@ import SwiftUI
 
 struct SettingsView: View {
    @EnvironmentObject private var store: LikeHateStore
+   @Environment(\.openURL) private var openURL
    @AppStorage("HapticsEnabled") private var isHapticsEnabled = true
    @State private var showDeleteConfirmation = false
 
@@ -15,21 +16,15 @@ struct SettingsView: View {
                HapticsClient.heavy()
                AppReviewClient.requestReview()
             } label: {
-               Label {
-                  VStack(alignment: .leading, spacing: 3) {
-                     Text("AppRevie")
-                        .fontWeight(.bold)
-                        .foregroundStyle(.primary)
-
-                     Text("AppReviewSubtitle")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                  }
-               } icon: {
-                  Image(systemName: "star.fill")
-                     .foregroundStyle(.yellow)
-               }
+               SettingsActionRow(
+                  iconName: "star.fill",
+                  title: "AppRevie",
+                  subtitle: "AppReviewSubtitle",
+                  iconColor: .yellow,
+                  titleWeight: .bold
+               )
             }
+            .buttonStyle(.plain)
          }
 
          Section {
@@ -39,18 +34,13 @@ struct SettingsView: View {
                   store.purchaseNoAds()
                } label: {
                   if store.isPurchasing {
-                     Label {
-                        Text("No Ads")
-                     } icon: {
-                        ProgressView()
-                     }
-                     .foregroundStyle(.primary)
+                     SettingsProgressRow(title: "No Ads")
                   } else {
-                     Label("No Ads", systemImage: "nosign")
-                        .foregroundStyle(.primary)
+                     SettingsActionRow(iconName: "nosign", title: "No Ads")
                   }
                }
                .disabled(store.isPurchasing)
+               .buttonStyle(.plain)
             }
 
             Button {
@@ -58,35 +48,29 @@ struct SettingsView: View {
                store.restorePurchases()
             } label: {
                if store.isRestoring {
-                  Label {
-                     Text("Restore")
-                  } icon: {
-                     ProgressView()
-                  }
-                  .foregroundStyle(.primary)
+                  SettingsProgressRow(title: "Restore")
                } else {
-                  Label("Restore", systemImage: "arrow.clockwise")
-                     .foregroundStyle(.primary)
+                  SettingsActionRow(iconName: "arrow.clockwise", title: "Restore")
                }
             }
             .disabled(store.isRestoring)
+            .buttonStyle(.plain)
          }
 
          Section {
             Toggle(isOn: $isHapticsEnabled) {
-               Label("Vibration", systemImage: "iphone.radiowaves.left.and.right")
-                  .foregroundStyle(.primary)
+               SettingsActionRow(iconName: "iphone.radiowaves.left.and.right", title: "Vibration")
             }
 
-            Link(destination: URL(string: "https://forms.gle/mSEq7WwDz3fZNcqF6")!) {
-               Label("ContactUs", systemImage: "envelope")
-                  .foregroundStyle(.primary)
-            }
-            .simultaneousGesture(TapGesture().onEnded {
+            Button {
                Analytics.logEvent("TapContacuUs", parameters: nil)
                Analytics.logEvent("settings_contact_tapped", parameters: settingsAnalyticsParameters)
                HapticsClient.light()
-            })
+               openURL(URL(string: "https://forms.gle/mSEq7WwDz3fZNcqF6")!)
+            } label: {
+               SettingsActionRow(iconName: "envelope", title: "ContactUs")
+            }
+            .buttonStyle(.plain)
 
             Button {
                Analytics.logEvent("TapDataErasing", parameters: nil)
@@ -94,9 +78,9 @@ struct SettingsView: View {
                HapticsClient.heavy()
                showDeleteConfirmation = true
             } label: {
-               Label("deleteErasing", systemImage: "trash")
-                  .foregroundStyle(.primary)
+               SettingsActionRow(iconName: "trash", title: "deleteErasing")
             }
+            .buttonStyle(.plain)
          }
       }
       .navigationTitle("SettingsTitle")
@@ -145,5 +129,56 @@ struct SettingsView: View {
          "did_buy_remove_ad": store.didBuyRemoveAd,
          "is_haptics_enabled": isHapticsEnabled
       ]
+   }
+}
+
+private struct SettingsActionRow: View {
+   let iconName: String
+   let title: LocalizedStringKey
+   var subtitle: LocalizedStringKey?
+   var iconColor: Color = .primary
+   var titleWeight: Font.Weight = .regular
+
+   var body: some View {
+      HStack(spacing: 12) {
+         Image(systemName: iconName)
+            .font(.body)
+            .foregroundStyle(iconColor)
+            .frame(width: 24, alignment: .center)
+
+         VStack(alignment: .leading, spacing: 3) {
+            Text(title)
+               .fontWeight(titleWeight)
+               .foregroundStyle(.primary)
+
+            if let subtitle {
+               Text(subtitle)
+                  .font(.footnote)
+                  .foregroundStyle(.secondary)
+            }
+         }
+
+         Spacer(minLength: 0)
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .contentShape(Rectangle())
+   }
+}
+
+private struct SettingsProgressRow: View {
+   let title: LocalizedStringKey
+
+   var body: some View {
+      HStack(spacing: 12) {
+         ProgressView()
+            .frame(width: 24, alignment: .center)
+
+         Text(title)
+            .foregroundStyle(.primary)
+
+         Spacer(minLength: 0)
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .contentShape(Rectangle())
    }
 }
