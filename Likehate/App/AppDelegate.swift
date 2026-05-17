@@ -1,4 +1,5 @@
 import Firebase
+import FirebaseAnalytics
 import FirebaseMessaging
 import GoogleMobileAds
 import SwiftyStoreKit
@@ -10,6 +11,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
       print("本番のfirebaseにアクセス")
       FirebaseApp.configure()
+      configureAnalyticsCollection()
       MobileAds.shared.start(completionHandler: nil)
       completePendingPurchases()
       configurePushNotifications(application)
@@ -43,6 +45,12 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             }
          }
       }
+   }
+
+   private func configureAnalyticsCollection() {
+      #if DEBUG
+      Analytics.setAnalyticsCollectionEnabled(false)
+      #endif
    }
 
    private func configurePushNotifications(_ application: UIApplication) {
