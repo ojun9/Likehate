@@ -7,21 +7,6 @@ struct ChooseEntryView: View {
    var body: some View {
       GeometryReader { proxy in
          ZStack(alignment: .top) {
-            VStack {
-               if showsLottie {
-                  HStack {
-                     LottieLoopView(name: "Egg")
-                        .frame(width: 96, height: 96)
-                     Spacer()
-                     LottieLoopView(name: "MaruKuru")
-                        .frame(width: 96, height: 96)
-                  }
-               }
-               Spacer()
-            }
-            .padding()
-            .allowsHitTesting(false)
-
             VStack(spacing: 14) {
                ForEach(EntryKind.allCases) { kind in
                   NavigationLink {
@@ -49,6 +34,16 @@ struct ChooseEntryView: View {
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                            .stroke(kind.color.opacity(0.28), lineWidth: 1)
                      )
+                     .overlay(alignment: kind == .like ? .leading : .trailing) {
+                        if showsLottie {
+                           LottieLoopView(name: kind == .like ? "Egg" : "MaruKuru")
+                              .opacity(0.42)
+                              .frame(width: 96, height: 96)
+                              .clipped()
+                              .padding(.horizontal, 12)
+                              .allowsHitTesting(false)
+                        }
+                     }
                      .shadow(color: kind.color.opacity(0.08), radius: 8, x: 0, y: 2)
                   }
                   .buttonStyle(.plain)
