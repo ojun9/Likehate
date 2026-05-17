@@ -2,7 +2,7 @@ import GoogleMobileAds
 import SwiftUI
 import UIKit
 
-enum AdMobUnitID {
+enum AdMobUnitID: Sendable {
     #if DEBUG
    static let hateListBanner = "ca-app-pub-3940256099942544/2934735716"
     #else
