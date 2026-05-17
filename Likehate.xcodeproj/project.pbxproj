@@ -125,7 +125,6 @@
 		BF77128A23DD467200EF0D3C /* SettingTableViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingTableViewController.storyboard; sourceTree = "<group>"; };
 		BF77128C23DD467E00EF0D3C /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		BF77128E23DD60B300EF0D3C /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		BFA4BAB3233F0BA1005421E9 /* AccessibilityIdentifire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifire.swift; sourceTree = "<group>"; };
 		BFAC571820E229EB00813CC9 /* test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		BFB4887123DEA34900BF6602 /* ExViewControllerInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExViewControllerInit.swift; sourceTree = "<group>"; };
 		BFB4887323DEA40F00BF6602 /* ExViewControllerAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExViewControllerAnimation.swift; sourceTree = "<group>"; };
@@ -218,7 +217,6 @@
 			children = (
 				BF4323D022D497B0008DF038 /* ExNotification.swift */,
 				BF371D52233E1B9600EC0D62 /* ExUIColo.swift */,
-				BFA4BAB3233F0BA1005421E9 /* AccessibilityIdentifire.swift */,
 				BF0000010000000000000018 /* Compatibility.swift */,
 			);
 			path = Extention;

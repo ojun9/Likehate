@@ -124,7 +124,7 @@ extension ViewController {
          image = UIImage(named: "setting")!
       }
       let ButtonItems = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(TapSettingButton(sender:)))
-      ButtonItems.accessibilityIdentifier = IdenMane.first.SettingButton
+      ButtonItems.accessibilityIdentifier = "SettingButton"
       self.navigationItem.setLeftBarButton(ButtonItems, animated: true)
       self.navigationItem.title = NSLocalizedString("home", comment: "")
       self.navigationController?.navigationBar.barTintColor = UIColor.flatMagenta()
