@@ -225,7 +225,7 @@ struct ItemListView: View {
       List {
          ForEach(Array(store.items(for: kind).enumerated()), id: \.offset) { _, item in
             Text(item)
-               .font(.title3)
+               .font(.title2)
                .fontDesign(.rounded)
                .lineLimit(5)
                .padding(.vertical, 4)
@@ -238,7 +238,7 @@ struct ItemListView: View {
             store.move(from: source, to: destination, in: kind)
          }
 
-         if kind == .hate && !store.didBuyRemoveAd {
+         if kind == .hate && !store.didBuyRemoveAd && !store.items(for: kind).isEmpty {
             LikehateAdaptiveAdBanner(adUnitID: AdMobUnitID.hateListBanner)
                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                .listRowSeparator(.hidden)
