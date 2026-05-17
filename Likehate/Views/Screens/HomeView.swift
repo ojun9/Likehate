@@ -47,7 +47,7 @@ struct HomeView: View {
             }
          }
       }
-      .navigationTitle("好き嫌いメモ帳")
+      .navigationTitle("AppTitle")
       .navigationBarTitleDisplayMode(.inline)
       .navigationDestination(isPresented: $isShowingChooseEntry) {
          ChooseEntryView()
@@ -59,7 +59,7 @@ struct HomeView: View {
             } label: {
                Image(systemName: "gearshape")
             }
-            .accessibilityLabel(Text("設定"))
+            .accessibilityLabel(Text("SettingsTitle"))
          }
       }
       .alert(item: $store.purchaseMessage) { message in

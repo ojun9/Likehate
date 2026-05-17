@@ -56,7 +56,7 @@ struct ChooseEntryView: View {
             .padding(.top, max(proxy.safeAreaInsets.top + 18, 32))
          }
       }
-      .navigationTitle("登録")
+      .navigationTitle("ChooseEntryTitle")
       .navigationBarTitleDisplayMode(.inline)
       .onAppear {
          HapticsClient.medium()
@@ -86,17 +86,10 @@ struct WriteItemView: View {
             Color(.systemBackground)
                .ignoresSafeArea()
 
-            WriteLottieLayer(kind: kind, topOffset: kind == .like ? 250 : 270)
+            WriteLottieLayer(kind: kind, topOffset: kind == .like ? 222 : 238)
 
             VStack(spacing: 0) {
-               Text(kind.prompt)
-                  .font(.system(.title3, design: .rounded, weight: .semibold))
-                  .lineLimit(1)
-                  .minimumScaleFactor(0.65)
-                  .frame(maxWidth: .infinity)
-                  .padding(.horizontal, 34)
-
-               TextField(kind.prompt, text: $text)
+               TextField(kind.inputPlaceholder, text: $text)
                   .font(.system(.body, design: .rounded, weight: .semibold))
                   .textInputAutocapitalization(.sentences)
                   .submitLabel(.done)
@@ -111,12 +104,13 @@ struct WriteItemView: View {
                         .stroke(fieldBorderColor, lineWidth: isTextFieldFocused ? 1.5 : 1)
                   )
                   .shadow(color: kind.color.opacity(isTextFieldFocused ? 0.14 : 0.06), radius: isTextFieldFocused ? 8 : 4, x: 0, y: 2)
-                  .padding(.top, kind == .like ? 34 : 28)
                   .padding(.horizontal, 36)
 
                Button(action: save) {
-                  Text("register")
+                  Text(kind.inputButtonTitle)
                      .font(.system(.body, design: .rounded, weight: .bold))
+                     .lineLimit(1)
+                     .minimumScaleFactor(0.75)
                      .frame(maxWidth: .infinity)
                      .frame(height: 56)
                }
@@ -125,13 +119,13 @@ struct WriteItemView: View {
                .frame(width: registerButtonWidth(for: proxy.size.width))
                .clipShape(Capsule())
                .controlSize(.regular)
-               .padding(.top, kind == .like ? 24 : 30)
+               .padding(.top, 18)
             }
-            .padding(.top, kind == .like ? 58 : 44)
+            .padding(.top, kind == .like ? 62 : 54)
          }
       }
       .navigationTitle(kind.title)
-      .alert("入力してください", isPresented: $showEmptyAlert) {
+      .alert("EmptyInputAlert", isPresented: $showEmptyAlert) {
          Button("OK", role: .cancel) {}
       }
       .alert(item: $store.reviewPrompt) { prompt in
@@ -161,9 +155,9 @@ struct WriteItemView: View {
    }
 
    private func registerButtonWidth(for containerWidth: CGFloat) -> CGFloat {
-      let availableWidth = min(containerWidth * 0.34, 140)
+      let availableWidth = min(containerWidth * 0.48, 184)
       guard availableWidth.isFinite else { return 0 }
-      return max(116, availableWidth)
+      return max(148, availableWidth)
    }
 
    private var fieldBackgroundColor: Color {
@@ -218,7 +212,7 @@ struct ItemListView: View {
       }
       .overlay {
          if store.items(for: kind).isEmpty {
-            ContentUnavailableView(kind.listTitle, systemImage: "tray", description: Text("まだ登録されていません"))
+            ContentUnavailableView(kind.listTitle, systemImage: "tray", description: Text("EmptyListMessage"))
          }
       }
       .navigationTitle(kind.listTitle)

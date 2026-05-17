@@ -15,8 +15,8 @@ enum EntryKind: String, CaseIterable, Identifiable {
 
    var selectionSubtitle: String {
       switch self {
-      case .like: return "残しておきたいもの"
-      case .hate: return "忘れずに避けたいもの"
+      case .like: return String(localized: "LikeSelectionSubtitle")
+      case .hate: return String(localized: "HateSelectionSubtitle")
       }
    }
 
@@ -31,6 +31,20 @@ enum EntryKind: String, CaseIterable, Identifiable {
       switch self {
       case .like: return String(localized: "WhatLike")
       case .hate: return String(localized: "WhatHate")
+      }
+   }
+
+   var inputPlaceholder: String {
+      switch self {
+      case .like: return String(localized: "LikeInputPlaceholder")
+      case .hate: return String(localized: "HateInputPlaceholder")
+      }
+   }
+
+   var inputButtonTitle: String {
+      switch self {
+      case .like: return String(localized: "LikeInputButton")
+      case .hate: return String(localized: "HateInputButton")
       }
    }
 

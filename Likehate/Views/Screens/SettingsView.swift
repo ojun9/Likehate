@@ -77,7 +77,7 @@ struct SettingsView: View {
 
          }
       }
-      .navigationTitle("設定")
+      .navigationTitle("SettingsTitle")
       .navigationBarTitleDisplayMode(.inline)
       .alert(item: $store.purchaseMessage) { message in
          Alert(

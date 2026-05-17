@@ -32,6 +32,8 @@ Unit test and UI test targets are intentionally removed for now. For verificatio
 
 Use `.xcstrings` for strings: `Resources/Localizable.xcstrings` and `Resources/InfoPlist.xcstrings`. Do not add per-language `.lproj` string files. Use localized asset catalog variants in `Resources/Assets.xcassets` instead of names like `_Ja` or `_Ara`. Keep Lottie files in `Resources/Lottie`.
 
+When adding or changing any user-facing text, update the appropriate `.xcstrings` entry in the same change. Do not leave Japanese or English UI strings hardcoded in Swift unless they are internal identifiers or analytics/event names that are not shown to users.
+
 ## Commit & Pull Request Guidelines
 
 Recent history uses short Japanese commit messages. Keep commits focused and describe the actual change. Pull requests should include a summary, build result, and screenshots for visible UI changes. Call out changes to SPM dependencies, Firebase, AdMob, purchases, localization, or entitlements.
