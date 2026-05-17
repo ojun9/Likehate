@@ -12,6 +12,8 @@ struct RootView: View {
 struct HomeView: View {
    @EnvironmentObject private var store: LikeHateStore
    @State private var isShowingSettings = false
+   @State private var isShowingChooseEntry = false
+   @State private var showsHomeLottie = true
 
    var body: some View {
       GeometryReader { proxy in
@@ -40,8 +42,15 @@ struct HomeView: View {
             }
             .scrollIndicators(.hidden)
 
-            HomeLottieLayer(size: proxy.size)
+            if showsHomeLottie {
+               HomeLottieLayer(size: proxy.size)
+            }
          }
+      }
+      .navigationTitle("Likehate")
+      .navigationBarTitleDisplayMode(.inline)
+      .navigationDestination(isPresented: $isShowingChooseEntry) {
+         ChooseEntryView()
       }
       .toolbar {
          ToolbarItem(placement: .topBarTrailing) {
@@ -82,32 +91,41 @@ struct HomeView: View {
          .presentationCompactAdaptation(.sheet)
       }
       .onAppear {
+         showsHomeLottie = true
          Analytics.logEvent("showSwiftUIHome", parameters: nil)
       }
    }
 
    private func registerButton() -> some View {
-      NavigationLink {
-         ChooseEntryView()
+      Button {
+         showsHomeLottie = false
+         isShowingChooseEntry = true
       } label: {
          HomeImageButton(imageName: "set", accessibilityLabel: "register")
       }
+      .buttonStyle(.plain)
    }
 
    private func likeButton() -> some View {
       NavigationLink {
          ItemListView(kind: .like)
       } label: {
-         HomeImageButton(imageName: "like", accessibilityLabel: "Like", overlayLottie: .kiraKira)
+         HomeImageButton(imageName: "like", accessibilityLabel: "Like", overlayLottie: showsHomeLottie ? .kiraKira : nil)
       }
+      .simultaneousGesture(TapGesture().onEnded {
+         showsHomeLottie = false
+      })
    }
 
    private func hateButton() -> some View {
       NavigationLink {
          ItemListView(kind: .hate)
       } label: {
-         HomeImageButton(imageName: "hate", accessibilityLabel: "Hate", overlayLottie: .fuwa)
+         HomeImageButton(imageName: "hate", accessibilityLabel: "Hate", overlayLottie: showsHomeLottie ? .fuwa : nil)
       }
+      .simultaneousGesture(TapGesture().onEnded {
+         showsHomeLottie = false
+      })
    }
 }
 
@@ -132,7 +150,7 @@ enum HomeButtonLottie {
    func frame(in size: CGSize) -> CGSize {
       switch self {
       case .kiraKira:
-         return CGSize(width: size.width * 0.34, height: size.height * 0.78)
+         return CGSize(width: size.width * 0.26, height: size.height * 0.62)
       case .fuwa:
          return CGSize(width: size.width * 0.28, height: size.height * 0.72)
       }
@@ -141,7 +159,7 @@ enum HomeButtonLottie {
    func position(in size: CGSize) -> CGPoint {
       switch self {
       case .kiraKira:
-         return CGPoint(x: size.width * 0.55, y: size.height * 0.5)
+         return CGPoint(x: size.width * 0.55, y: size.height * 0.52)
       case .fuwa:
          return CGPoint(x: size.width * 0.76, y: size.height * 0.5)
       }
@@ -197,12 +215,12 @@ struct HomeLottieLayer: View {
    var body: some View {
       ZStack {
          let horizontalInset = size.width / 20
-         let earthSize = min(size.width * 0.12, size.height * 0.055)
+         let earthSize = min(size.width * 0.06, size.height * 0.0275)
          let lightningSize = size.height * 0.13
 
          LottieLoopView(name: "earth")
             .frame(width: earthSize, height: earthSize)
-            .position(x: size.width - horizontalInset - earthSize, y: size.height * 0.105)
+            .position(x: size.width - horizontalInset - (earthSize * 1.2), y: size.height * 0.12)
 
          LottieLoopView(name: "Kaminari")
             .opacity(0.7)

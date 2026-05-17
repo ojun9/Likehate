@@ -68,7 +68,7 @@ struct WriteItemView: View {
    var body: some View {
       GeometryReader { proxy in
          ZStack(alignment: .top) {
-            Color.white
+            Color(.systemBackground)
                .ignoresSafeArea()
 
             WriteLottieLayer(kind: kind, topOffset: 275)
@@ -88,8 +88,8 @@ struct WriteItemView: View {
                   .onSubmit(save)
                   .padding(.horizontal, 15)
                   .frame(height: 50)
-                  .foregroundStyle(.black)
-                  .background(Color.white, in: RoundedRectangle(cornerRadius: 3, style: .continuous))
+                  .foregroundStyle(.primary)
+                  .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 3, style: .continuous))
                   .overlay(
                      RoundedRectangle(cornerRadius: 3, style: .continuous)
                         .stroke(Color.cyan, lineWidth: 2)
