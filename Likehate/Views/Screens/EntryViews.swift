@@ -227,9 +227,9 @@ struct ItemListView: View {
             Text(item)
                .font(.title2)
                .fontDesign(.rounded)
-               .lineLimit(5)
+               .lineLimit(12)
                .padding(.vertical, 4)
-               .listRowInsets(EdgeInsets(top: 12, leading: 18, bottom: 12, trailing: 18))
+               .listRowInsets(EdgeInsets(top: 14, leading: 18, bottom: 14, trailing: 18))
          }
          .onDelete { offsets in
             store.delete(at: offsets, from: kind)
