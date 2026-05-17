@@ -202,11 +202,11 @@ struct ItemListView: View {
       List {
          ForEach(Array(store.items(for: kind).enumerated()), id: \.offset) { _, item in
             Text(item)
-               .font(.body)
+               .font(.title3)
                .fontDesign(.rounded)
-               .lineLimit(2)
+               .lineLimit(5)
                .padding(.vertical, 4)
-               .listRowInsets(EdgeInsets(top: 6, leading: 18, bottom: 6, trailing: 18))
+               .listRowInsets(EdgeInsets(top: 12, leading: 18, bottom: 12, trailing: 18))
          }
          .onDelete { offsets in
             store.delete(at: offsets, from: kind)
