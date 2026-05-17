@@ -7,6 +7,7 @@ final class LikeHateStore: ObservableObject {
    private enum Constants {
       static let noAdsProductID = "NO_ADS_LIKEHATE"
       static let receiptSharedSecret = "50822b94b56840bb845871be8d3352ab"
+      static let hateInterstitialCounterKey = "HateInterstitialCounter"
    }
 
    @Published private(set) var likes: [String]
@@ -79,6 +80,17 @@ final class LikeHateStore: ObservableObject {
       defaults.set(likes, forKey: EntryKind.like.storageKey)
       defaults.set(hates, forKey: EntryKind.hate.storageKey)
       Analytics.logEvent("delete all date", parameters: nil)
+   }
+
+   func shouldShowHateInterstitial() -> Bool {
+      let nextCount = defaults.integer(forKey: Constants.hateInterstitialCounterKey) + 1
+      if nextCount >= 3 {
+         defaults.set(0, forKey: Constants.hateInterstitialCounterKey)
+         return true
+      }
+
+      defaults.set(nextCount, forKey: Constants.hateInterstitialCounterKey)
+      return false
    }
 
    func purchaseNoAds() {

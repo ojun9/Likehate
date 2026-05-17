@@ -43,7 +43,7 @@ struct HomeView: View {
             .scrollIndicators(.hidden)
 
             if showsHomeLottie {
-               HomeLottieLayer(size: proxy.size)
+               HomeLottieLayer(size: proxy.size, safeAreaInsets: proxy.safeAreaInsets)
             }
          }
       }
@@ -150,18 +150,18 @@ enum HomeButtonLottie {
    func frame(in size: CGSize) -> CGSize {
       switch self {
       case .kiraKira:
-         return CGSize(width: size.width * 0.18, height: size.height * 0.45)
+         return CGSize(width: size.width * 0.9, height: size.height * 0.72)
       case .fuwa:
-         return CGSize(width: size.width * 0.28, height: size.height * 0.72)
+         return CGSize(width: size.width * 0.46, height: size.height * 0.86)
       }
    }
 
    func position(in size: CGSize) -> CGPoint {
       switch self {
       case .kiraKira:
-         return CGPoint(x: size.width * 0.52, y: size.height * 0.52)
+         return CGPoint(x: size.width * 0.5, y: size.height * 0.5)
       case .fuwa:
-         return CGPoint(x: size.width * 0.76, y: size.height * 0.5)
+         return CGPoint(x: size.width * 0.72, y: size.height * 0.5)
       }
    }
 }
@@ -191,9 +191,11 @@ struct HomeImageButton: View {
                LottieLoopView(name: overlayLottie.name)
                   .opacity(overlayLottie.opacity)
                   .frame(width: lottieSize.width, height: lottieSize.height)
+                  .clipped()
                   .position(lottiePosition)
                   .allowsHitTesting(false)
             }
+            .clipped()
          }
       }
       .frame(maxWidth: .infinity)
@@ -211,22 +213,35 @@ struct HomeImageButton: View {
 
 struct HomeLottieLayer: View {
    let size: CGSize
+   let safeAreaInsets: EdgeInsets
 
    var body: some View {
       ZStack {
-         let horizontalInset = size.width / 20
-         let earthSize = min(size.width * 0.03, size.height * 0.014)
+         let horizontalInset = max(size.width / 20, 12)
+         let earthSize = min(max(size.width * 0.11, 38), 52)
          let lightningSize = size.height * 0.13
 
-         LottieLoopView(name: "earth")
-            .frame(width: earthSize, height: earthSize)
-            .position(x: size.width - horizontalInset - (earthSize * 2), y: size.height * 0.14)
+         VStack {
+            HStack {
+               Spacer()
+               LottieLoopView(name: "earth")
+                  .frame(width: earthSize, height: earthSize)
+                  .clipped()
+                  .padding(.trailing, horizontalInset)
+            }
+            .padding(.top, max(safeAreaInsets.top, 0) + 12)
+
+            Spacer()
+         }
 
          LottieLoopView(name: "Kaminari")
             .opacity(0.7)
             .frame(width: lightningSize, height: lightningSize)
+            .clipped()
             .position(x: size.width / 20 + lightningSize / 2, y: size.height - (size.height / 10 + 15))
       }
+      .frame(width: size.width, height: size.height)
+      .clipped()
       .allowsHitTesting(false)
    }
 }

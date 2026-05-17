@@ -104,7 +104,7 @@ struct WriteItemView: View {
                }
                .buttonStyle(.borderedProminent)
                .tint(kind.color)
-               .frame(width: min(proxy.size.width - 224, 160))
+               .frame(width: registerButtonWidth(for: proxy.size.width))
                .padding(.top, kind == .like ? 30 : 40)
             }
             .padding(.top, kind == .like ? 73 : 48)
@@ -147,10 +147,16 @@ struct WriteItemView: View {
       }
 
       store.add(text, to: kind)
-      if kind == .hate && !store.didBuyRemoveAd {
+      if kind == .hate && !store.didBuyRemoveAd && store.shouldShowHateInterstitial() {
          interstitialAd.present()
       }
       dismiss()
+   }
+
+   private func registerButtonWidth(for containerWidth: CGFloat) -> CGFloat {
+      let availableWidth = min(containerWidth - 224, 160)
+      guard availableWidth.isFinite else { return 0 }
+      return max(0, availableWidth)
    }
 }
 
