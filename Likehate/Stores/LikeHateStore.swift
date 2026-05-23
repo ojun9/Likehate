@@ -102,10 +102,10 @@ final class LikeHateStore: ObservableObject {
    func deleteAll() {
       let likeCount = likes.count
       let hateCount = hates.count
-      likes = []
-      hates = []
-      defaults.set(likes, forKey: EntryKind.like.storageKey)
-      defaults.set(hates, forKey: EntryKind.hate.storageKey)
+      likes.removeAll()
+      hates.removeAll()
+      defaults.removeObject(forKey: EntryKind.like.storageKey)
+      defaults.removeObject(forKey: EntryKind.hate.storageKey)
       Analytics.logEvent("delete all date", parameters: nil)
       Analytics.logEvent("all_entries_deleted", parameters: [
          "like_count": likeCount,
