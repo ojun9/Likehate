@@ -3,7 +3,7 @@ default_platform(:ios)
 platform :ios do
    private_lane :app_store_connect_api do
       app_store_connect_api_key(
-         key_id: "WX8MFJM6N7",
+         key_id: "6972GX473A",
          issuer_id: "bc18c797-f1eb-42a9-a8f2-e90534387f68",
          key_filepath: File.expand_path("~/.private_keys/appstore_connect/AppStoreConnectKeyForFastlane.p8"),
          duration: 1200,
@@ -167,12 +167,22 @@ platform :ios do
    lane :release_upload do |lane_options|
       ipa_path = "./build/Likehate.ipa"
       app_version = lane_options[:app_version] || current_app_version
+      automatic_signing_xcargs = [
+         "-allowProvisioningUpdates",
+         "-authenticationKeyPath #{File.expand_path("~/.private_keys/appstore_connect/AppStoreConnectKeyForFastlane.p8")}",
+         "-authenticationKeyID 6972GX473A",
+         "-authenticationKeyIssuerID bc18c797-f1eb-42a9-a8f2-e90534387f68"
+      ].join(" ")
 
       build_app(
          scheme: "Likehate",
          export_method: "app-store",
          output_directory: "./build",
-         output_name: "Likehate.ipa"
+         output_name: "Likehate.ipa",
+         export_xcargs: automatic_signing_xcargs,
+         export_options: {
+            signingStyle: "automatic"
+         }
       )
 
       upload_to_app_store(
