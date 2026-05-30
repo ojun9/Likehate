@@ -1,0 +1,15 @@
+A simple memo app for keeping track of the things you like and dislike.
+
+Food, places, hobbies, things you are not good with.
+You can save your own preferences, or remember the likes and dislikes of someone important to you.
+
+Using it is simple.
+Choose “Like” or “Dislike,” then write a short note.
+
+Things you like are “likes.”
+Things you dislike are “dislikes.”
+
+Because that is what makes you, you.
+
+Look back at the likes and dislikes you have collected,
+and use them as a small reminder of yourself or someone you care about.

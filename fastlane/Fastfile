@@ -1,0 +1,96 @@
+default_platform(:ios)
+
+platform :ios do
+   private_lane :app_store_connect_api do
+      app_store_connect_api_key(
+         key_id: "4WFPN9U787",
+         issuer_id: "bc18c797-f1eb-42a9-a8f2-e90534387f68",
+         key_filepath: File.expand_path("~/.private_keys/appstore_connect/AppStoreConnectKeyForFastlane.p8"),
+         duration: 1200,
+         in_house: false
+      )
+   end
+
+   private_lane :deliver_configuration do |options|
+      require "deliver"
+      require "deliver/options"
+
+      FastlaneCore::Configuration.create(
+         Deliver::Options.available_options,
+         {
+            api_key: app_store_connect_api,
+            app_identifier: "myfirst.Likehate",
+            username: "eu.bkw7jdcpa2r@gmail.com",
+            platform: "ios",
+            force: true
+         }.merge(options || {})
+      )
+   end
+
+   desc "App Store Connectのmetadataを取得"
+   lane :download_metadata do
+      require "deliver/setup"
+
+      options = deliver_configuration
+      options.load_configuration_file("Deliverfile")
+      Deliver::Runner.new(options)
+
+      containing = FastlaneCore::Helper.fastlane_enabled_folder_path
+      path = options[:metadata_path] || File.join(containing, "metadata")
+      app = Deliver.cache[:app]
+      platform = Spaceship::ConnectAPI::Platform.map(options[:platform])
+      version = app.get_latest_app_store_version(platform: platform)
+
+      if options[:app_version].to_s.length > 0
+         version = app.get_live_app_store_version(platform: platform) if version.version_string != options[:app_version]
+         if version.nil? || version.version_string != options[:app_version]
+            UI.user_error!("Neither the current nor live version match specified app_version \"#{options[:app_version]}\"")
+         end
+      end
+
+      Deliver::Setup.new.generate_metadata_files(app, version, path, options)
+   end
+
+   desc "App Store Connectのscreenshotsを取得"
+   lane :download_screenshots do |lane_options|
+      require "deliver/download_screenshots"
+
+      use_live_version = lane_options.key?(:use_live_version) ? lane_options[:use_live_version] : true
+      options = deliver_configuration(use_live_version: use_live_version)
+      options.load_configuration_file("Deliverfile")
+      Deliver::Runner.new(options, skip_version: true)
+
+      containing = FastlaneCore::Helper.fastlane_enabled_folder_path
+      path = options[:screenshots_path] || File.join(containing, "screenshots")
+      Deliver::DownloadScreenshots.run(options, path)
+   end
+
+   desc "App Store Connectのmetadataとscreenshotsをまとめて反映"
+   lane :store_assets do
+      upload_to_app_store(
+         api_key: app_store_connect_api,
+         skip_binary_upload: true,
+         submit_for_review: false,
+         force: true
+      )
+   end
+
+   desc "リリース用IPAを生成してApp Store Connectへアップロード"
+   lane :release_upload do
+      ipa_path = "./build/Likehate.ipa"
+
+      build_app(
+         scheme: "Likehate",
+         export_method: "app-store",
+         output_directory: "./build",
+         output_name: "Likehate.ipa"
+      )
+
+      upload_to_app_store(
+         api_key: app_store_connect_api,
+         ipa: ipa_path,
+         submit_for_review: false,
+         force: true
+      )
+   end
+end
