@@ -27,6 +27,24 @@ platform :ios do
       )
    end
 
+   private_lane :current_app_version do
+      get_version_number(
+         xcodeproj: "Likehate.xcodeproj",
+         target: "Likehate"
+      )
+   end
+
+   private_lane :app_review_submission_information do
+      {
+         export_compliance_uses_encryption: false,
+         add_id_info_uses_idfa: true,
+         add_id_info_serves_ads: true,
+         add_id_info_tracks_install: false,
+         add_id_info_tracks_action: false,
+         add_id_info_limits_tracking: true
+      }
+   end
+
    desc "App Store Connectのmetadataを取得"
    lane :download_metadata do
       require "deliver/setup"
@@ -66,18 +84,89 @@ platform :ios do
    end
 
    desc "App Store Connectのmetadataとscreenshotsをまとめて反映"
-   lane :store_assets do
+   lane :store_assets do |lane_options|
+      app_version = lane_options[:app_version]
+
       upload_to_app_store(
          api_key: app_store_connect_api,
+         app_version: app_version,
          skip_binary_upload: true,
          submit_for_review: false,
+         run_precheck_before_submit: false,
+         force: true
+      )
+   end
+
+   desc "処理済みbuildをApp Store Connectの編集バージョンに紐付け"
+   lane :select_app_store_build do |lane_options|
+      require "fastlane_core/build_watcher"
+
+      app_version = lane_options[:app_version] || current_app_version
+      build_number = lane_options[:build_number]
+
+      app_store_connect_api
+
+      app = Spaceship::ConnectAPI::App.find("myfirst.Likehate")
+      UI.user_error!("Could not find app with app identifier 'myfirst.Likehate'") unless app
+
+      platform = Spaceship::ConnectAPI::Platform.map("ios")
+      version = app.get_edit_app_store_version(platform: platform)
+      UI.user_error!("Editable App Store version not found for iOS") unless version
+      if version.version_string != app_version
+         UI.user_error!("Editable App Store version is #{version.version_string}, expected #{app_version}")
+      end
+
+      build =
+         if build_number
+            UI.message("Selecting existing build number #{build_number} for #{app_version}...")
+            Spaceship::ConnectAPI::Build.all(
+               app_id: app.id,
+               version: app_version,
+               build_number: build_number,
+               platform: platform
+            ).first
+         else
+            UI.message("Waiting for the latest processed build for #{app_version}...")
+            FastlaneCore::BuildWatcher.wait_for_build_processing_to_be_complete(
+               app_id: app.id,
+               platform: platform,
+               app_version: app_version,
+               poll_interval: 15,
+               return_when_build_appears: false,
+               return_spaceship_testflight_build: false,
+               select_latest: true
+            )
+         end
+
+      UI.user_error!("Build not found for #{app_version}") unless build
+
+      version.select_build(build_id: build.id)
+      UI.success("Selected build #{build.app_version} (#{build.version}) for App Store version #{version.version_string}")
+   end
+
+   desc "App Store Connectの編集バージョンを審査提出"
+   lane :submit_app_store_review do |lane_options|
+      app_version = lane_options[:app_version] || current_app_version
+      build_number = lane_options[:build_number] || "latest"
+
+      upload_to_app_store(
+         api_key: app_store_connect_api,
+         app_version: app_version,
+         build_number: build_number,
+         skip_binary_upload: true,
+         skip_metadata: true,
+         skip_screenshots: true,
+         submit_for_review: true,
+         run_precheck_before_submit: false,
+         submission_information: app_review_submission_information,
          force: true
       )
    end
 
    desc "リリース用IPAを生成してApp Store Connectへアップロード"
-   lane :release_upload do
+   lane :release_upload do |lane_options|
       ipa_path = "./build/Likehate.ipa"
+      app_version = lane_options[:app_version] || current_app_version
 
       build_app(
          scheme: "Likehate",
@@ -88,9 +177,16 @@ platform :ios do
 
       upload_to_app_store(
          api_key: app_store_connect_api,
+         app_version: app_version,
          ipa: ipa_path,
          submit_for_review: false,
+         run_precheck_before_submit: false,
          force: true
+      )
+
+      select_app_store_build(
+         app_version: app_version,
+         build_number: lane_options[:build_number]
       )
    end
 end
