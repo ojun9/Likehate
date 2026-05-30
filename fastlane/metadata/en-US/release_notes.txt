@@ -1,4 +1,2 @@
-■ Improved the Settings screen to make actions easier to understand.
-■ Refined the add and list screens for likes and dislikes.
-■ Updated some wording and localization.
+■ Improved how changes are saved after deleting all data.
 ■ Improved stability and made minor refinements.
