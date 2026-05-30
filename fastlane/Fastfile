@@ -3,7 +3,7 @@ default_platform(:ios)
 platform :ios do
    private_lane :app_store_connect_api do
       app_store_connect_api_key(
-         key_id: "4WFPN9U787",
+         key_id: "WX8MFJM6N7",
          issuer_id: "bc18c797-f1eb-42a9-a8f2-e90534387f68",
          key_filepath: File.expand_path("~/.private_keys/appstore_connect/AppStoreConnectKeyForFastlane.p8"),
          duration: 1200,
