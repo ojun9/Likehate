@@ -3190,39 +3190,8 @@
     "Passed." : {
 
     },
-    "ProfileImageOptionFormat" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profile image %d"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "プロフィール画像 %d"
-          }
-        }
-      }
-    },
-    "ProfileImageSectionTitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profile image"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "プロフィール画像"
-          }
-        }
-      }
-    },
     "PersonColorSectionTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3271,6 +3240,7 @@
       }
     },
     "PersonIconSectionTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3347,6 +3317,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "好き %d件 / 嫌い %d件"
+          }
+        }
+      }
+    },
+    "ProfileImageOptionFormat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile image %d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィール画像 %d"
+          }
+        }
+      }
+    },
+    "ProfileImageSectionTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile image"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィール画像"
           }
         }
       }
