@@ -5,9 +5,9 @@ import UIKit
 
 enum AdMobUnitID: Sendable {
     #if DEBUG
-   static let hateListBanner = "ca-app-pub-3940256099942544/2934735716"
+   static let itemListBanner = "ca-app-pub-3940256099942544/2934735716"
     #else
-   static let hateListBanner = "ca-app-pub-1460017825820383/1086930169"
+   static let itemListBanner = "ca-app-pub-1460017825820383/1086930169"
     #endif
 }
 
@@ -48,7 +48,7 @@ struct LikehateAdBannerView: UIViewRepresentable {
       func bannerViewDidReceiveAd(_ bannerView: BannerView) {
          print("AdMob banner loaded: \(adUnitID)")
          Analytics.logEvent("ad_banner_loaded", parameters: [
-            "placement": "hate_list"
+            "placement": "item_list"
          ])
       }
 
@@ -56,7 +56,7 @@ struct LikehateAdBannerView: UIViewRepresentable {
          let nsError = error as NSError
          print("AdMob banner failed: \(error)")
          Analytics.logEvent("ad_banner_failed", parameters: [
-            "placement": "hate_list",
+            "placement": "item_list",
             "error_domain": nsError.domain,
             "error_code": nsError.code
          ])
@@ -76,7 +76,7 @@ struct LikehateAdaptiveAdBanner: View {
          .frame(maxWidth: .infinity)
          .onAppear {
             Analytics.logEvent("ad_banner_container_appeared", parameters: [
-               "placement": "hate_list",
+               "placement": "item_list",
                "available_width": availableWidth
             ])
          }

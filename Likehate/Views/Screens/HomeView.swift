@@ -11,46 +11,111 @@ struct RootView: View {
 
 struct HomeView: View {
    @EnvironmentObject private var store: LikeHateStore
+   @Environment(\.colorScheme) private var colorScheme
+   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
    @State private var isShowingSettings = false
-   @State private var isShowingChooseEntry = false
-   @State private var showsHomeLottie = true
+   @State private var isShowingAddPerson = false
+   @State private var pendingAddedPerson: PersonDetailRoute?
+   @State private var selectedPersonRoute: PersonDetailRoute?
 
    var body: some View {
-      GeometryReader { proxy in
-         let horizontalPadding = proxy.size.width / 20
-         let isLandscape = proxy.size.width > proxy.size.height
-         let spacing = isLandscape ? 10.0 : max(proxy.size.width / 24, 14)
-         let contentMinHeight = max(proxy.size.height - proxy.safeAreaInsets.top - proxy.safeAreaInsets.bottom - 24, 0)
+      let typography = store.typography(for: dynamicTypeSize)
+      let layout = store.layoutMetrics
 
-         ZStack {
-            Color(.systemGray6)
-               .ignoresSafeArea()
-
-            ScrollView(.vertical) {
-               VStack(spacing: spacing) {
-                  Spacer(minLength: isLandscape ? 8 : 18)
-
-                  VStack(spacing: spacing) {
-                     registerButton()
-                     likeButton()
-                     hateButton()
-                  }
-
-                  Spacer(minLength: isLandscape ? 14 : 56)
-               }
-               .frame(maxWidth: .infinity)
-               .frame(minHeight: contentMinHeight)
-               .padding(.horizontal, horizontalPadding)
-               .padding(.top, max(proxy.safeAreaInsets.top + 8, 12))
-               .padding(.bottom, max(proxy.safeAreaInsets.bottom + 12, 16))
+      ScrollView {
+         VStack(alignment: .leading, spacing: layout.cardSpacing) {
+            if store.animationEnabled {
+               LottieLoopView(name: "KiraKira")
+                 .frame(height: 64)
+                  .frame(maxWidth: .infinity)
+                  .opacity(colorScheme == .dark ? 0.34 : 0.24)
+                  .clipped()
+                  .padding(.top, 8)
+                  .accessibilityHidden(true)
             }
-            .scrollIndicators(.hidden)
+
+            Text("HomePeopleSectionTitle")
+               .font(typography.sectionTitle)
+               .padding(.top, store.animationEnabled ? 2 : 22)
+
+            VStack(spacing: layout.cardSpacing) {
+               ForEach(store.persons) { person in
+                  NavigationLink {
+                     PersonDetailView(personID: person.id)
+                  } label: {
+                     HomePersonCard(person: person)
+                  }
+                  .buttonStyle(.plain)
+                  .simultaneousGesture(TapGesture().onEnded {
+                     Analytics.logEvent("home_person_tapped", parameters: personAnalyticsParameters(person))
+                  })
+               }
+            }
+
+            if store.persons.filter({ !$0.isMe }).isEmpty {
+               Text("HomeAddPeopleHint")
+                  .font(typography.subtext)
+                  .foregroundStyle(.secondary)
+                  .frame(maxWidth: .infinity, alignment: .leading)
+                  .padding(.horizontal, 4)
+            }
+
+            Button {
+               Analytics.logEvent("home_add_person_tapped", parameters: homeAnalyticsParameters)
+               isShowingAddPerson = true
+            } label: {
+               Label("AddPersonButton", systemImage: "plus")
+                  .font(typography.button)
+                  .foregroundStyle(LikehateTheme.likeAccent)
+                  .frame(minHeight: 48)
+            }
+            .buttonStyle(.plain)
+            .padding(.leading, 4)
+            .padding(.vertical, 2)
+
+            if store.persons.count > 1 {
+               NavigationLink {
+                  ComparisonSelectionView()
+               } label: {
+                  VStack(alignment: .leading, spacing: 3) {
+                     Text("HomeCompareTitle")
+                        .font(typography.button)
+                        .foregroundStyle(.primary)
+
+                     Text("HomeCompareSubtitle")
+                        .font(typography.subtext)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                  }
+                  .frame(maxWidth: .infinity, minHeight: 58, alignment: .leading)
+                  .padding(.horizontal, 18)
+                  .padding(.vertical, 12)
+                  .background(compareBackground, in: Capsule())
+                  .overlay(
+                     Capsule()
+                        .stroke(LikehateTheme.border.opacity(0.65), lineWidth: 1)
+                  )
+               }
+               .buttonStyle(.plain)
+               .simultaneousGesture(TapGesture().onEnded {
+                  Analytics.logEvent("home_compare_tapped", parameters: homeAnalyticsParameters)
+               })
+            } else {
+               Text("HomeCompareDisabledHint")
+                  .font(typography.subtext)
+                  .foregroundStyle(.secondary)
+                  .padding(.leading, 4)
+                  .padding(.top, 2)
+            }
          }
+         .padding(.horizontal, layout.screenPadding)
+         .padding(.bottom, layout.sectionSpacing)
       }
+      .background(LikehateTheme.background.ignoresSafeArea())
       .navigationTitle("AppTitle")
       .navigationBarTitleDisplayMode(.inline)
-      .navigationDestination(isPresented: $isShowingChooseEntry) {
-         ChooseEntryView()
+      .navigationDestination(item: $selectedPersonRoute) { route in
+         PersonDetailView(personID: route.id)
       }
       .toolbar {
          ToolbarItem(placement: .topBarTrailing) {
@@ -87,147 +152,104 @@ struct HomeView: View {
          NavigationStack {
             SettingsView()
          }
-         .presentationDetents([.medium, .large])
-         .presentationDragIndicator(.visible)
-         .presentationCompactAdaptation(.sheet)
+      }
+      .sheet(isPresented: $isShowingAddPerson, onDismiss: showAddedPersonIfNeeded) {
+         NavigationStack {
+            PersonFormView(mode: .add) { person in
+               pendingAddedPerson = PersonDetailRoute(id: person.id)
+            }
+         }
       }
       .onAppear {
-         showsHomeLottie = true
          Analytics.logEvent("showSwiftUIHome", parameters: homeAnalyticsParameters)
          Analytics.logEvent("screen_view_home", parameters: homeAnalyticsParameters)
       }
    }
 
-   private func registerButton() -> some View {
-      Button {
-         Analytics.logEvent("home_register_tapped", parameters: homeAnalyticsParameters)
-         showsHomeLottie = false
-         isShowingChooseEntry = true
-      } label: {
-         HomeImageButton(imageName: "set", accessibilityLabel: "register")
-      }
-      .buttonStyle(.plain)
-   }
-
-   private func likeButton() -> some View {
-      NavigationLink {
-         ItemListView(kind: .like)
-      } label: {
-         HomeImageButton(imageName: "like", accessibilityLabel: "Like", overlayLottie: showsHomeLottie ? .kiraKira : nil)
-      }
-      .simultaneousGesture(TapGesture().onEnded {
-         Analytics.logEvent("home_list_tapped", parameters: listAnalyticsParameters(for: .like))
-         showsHomeLottie = false
-      })
-   }
-
-   private func hateButton() -> some View {
-      NavigationLink {
-         ItemListView(kind: .hate)
-      } label: {
-         HomeImageButton(imageName: "hate", accessibilityLabel: "Hate", overlayLottie: showsHomeLottie ? .kaminari : nil)
-      }
-      .simultaneousGesture(TapGesture().onEnded {
-         Analytics.logEvent("home_list_tapped", parameters: listAnalyticsParameters(for: .hate))
-         showsHomeLottie = false
-      })
+   private func showAddedPersonIfNeeded() {
+      guard let pendingAddedPerson else { return }
+      self.pendingAddedPerson = nil
+      selectedPersonRoute = pendingAddedPerson
    }
 
    private var homeAnalyticsParameters: [String: Any] {
       [
          "like_count": store.likes.count,
          "hate_count": store.hates.count,
+         "entry_count": store.totalItemCount,
+         "person_count": store.persons.count,
          "total_count": store.likes.count + store.hates.count,
-         "did_buy_remove_ad": store.didBuyRemoveAd
+         "did_buy_remove_ad": store.didBuyRemoveAd,
+         "animation_enabled": store.animationEnabled
       ]
    }
 
-   private func listAnalyticsParameters(for kind: EntryKind) -> [String: Any] {
+   private func personAnalyticsParameters(_ person: Person) -> [String: Any] {
       homeAnalyticsParameters.merging([
-         "kind": kind.rawValue,
-         "kind_count": store.items(for: kind).count
+         "person_id": person.id.uuidString,
+         "is_me": person.isMe
       ]) { _, new in new }
    }
-}
 
-enum HomeButtonLottie {
-   case kiraKira
-   case kaminari
-
-   var name: String {
-      switch self {
-      case .kiraKira: return "KiraKira"
-      case .kaminari: return "Kaminari"
-      }
-   }
-
-   var opacity: Double {
-      switch self {
-      case .kiraKira: return 0.78
-      case .kaminari: return 0.7
-      }
-   }
-
-   func frame(in size: CGSize) -> CGSize {
-      switch self {
-      case .kiraKira:
-         return CGSize(width: size.width * 0.9, height: size.height * 0.72)
-      case .kaminari:
-         return CGSize(width: size.height * 0.95, height: size.height * 0.95)
-      }
-   }
-
-   func position(in size: CGSize) -> CGPoint {
-      switch self {
-      case .kiraKira:
-         return CGPoint(x: size.width * 0.5, y: size.height * 0.5)
-      case .kaminari:
-         return CGPoint(x: size.width * 0.16, y: size.height * 0.62)
-      }
+   private var compareBackground: Color {
+      colorScheme == .dark ? Color.white.opacity(0.045) : LikehateTheme.surface.opacity(0.72)
    }
 }
 
-struct HomeImageButton: View {
-   private static let imageAspectRatio = 2058.0 / 690.0
+struct PersonDetailRoute: Identifiable, Hashable {
+   let id: UUID
+}
 
-   let imageName: String
-   let accessibilityLabel: LocalizedStringKey
-   var overlayLottie: HomeButtonLottie?
+private struct HomePersonCard: View {
+   @EnvironmentObject private var store: LikeHateStore
+   @Environment(\.colorScheme) private var colorScheme
+   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+   let person: Person
 
    var body: some View {
-      ZStack {
-         RoundedRectangle(cornerRadius: 25, style: .continuous)
-            .fill(Color(.systemBackground))
+      let typography = store.typography(for: dynamicTypeSize)
+      let layout = store.layoutMetrics
+      let likeCount = store.items(for: person.id, kind: .like).count
+      let hateCount = store.items(for: person.id, kind: .hate).count
+      let countFormat = String(localized: "PersonCountFormat")
+      let countText = String.localizedStringWithFormat(countFormat, likeCount, hateCount)
 
-         Image(imageName)
-            .resizable()
-            .scaledToFit()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+      HStack(spacing: 14) {
+         PersonAvatar(person: person, size: layout.homePersonAvatarSize)
 
-         if let overlayLottie {
-            GeometryReader { proxy in
-               let lottieSize = overlayLottie.frame(in: proxy.size)
-               let lottiePosition = overlayLottie.position(in: proxy.size)
+         VStack(alignment: .leading, spacing: 5) {
+            Text(verbatim: person.displayName)
+               .font(typography.cardTitle)
+               .foregroundStyle(.primary)
+               .lineLimit(2)
 
-               LottieLoopView(name: overlayLottie.name)
-                  .opacity(overlayLottie.opacity)
-                  .frame(width: lottieSize.width, height: lottieSize.height)
-                  .clipped()
-                  .position(lottiePosition)
-                  .allowsHitTesting(false)
-            }
-            .clipped()
+            Text(verbatim: countText)
+               .font(typography.subtext)
+               .foregroundStyle(.secondary)
+               .lineLimit(2)
          }
+
+         Spacer(minLength: 8)
+
+         Image(systemName: "chevron.right")
+            .font(typography.subtext)
+            .foregroundStyle(.tertiary)
       }
-      .frame(maxWidth: .infinity)
-      .aspectRatio(Self.imageAspectRatio, contentMode: .fit)
-      .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+      .padding(.horizontal, layout.cardPadding)
+      .padding(.vertical, max(18, layout.cardPadding - 2))
+      .frame(maxWidth: .infinity, minHeight: layout.personCardMinHeight, alignment: .leading)
+      .background(cardBackground, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
       .overlay(
-         RoundedRectangle(cornerRadius: 25, style: .continuous)
-            .stroke(Color.primary.opacity(0.48), lineWidth: 1)
+         RoundedRectangle(cornerRadius: 18, style: .continuous)
+            .stroke(LikehateTheme.border.opacity(0.72), lineWidth: 1)
       )
-      .shadow(color: .black.opacity(0.11), radius: 8, x: 0, y: 2)
-      .contentShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-      .accessibilityLabel(Text(accessibilityLabel))
+      .shadow(color: LikehateTheme.cardShadow(for: colorScheme).opacity(0.78), radius: colorScheme == .dark ? 9 : 7, x: 0, y: 3)
+      .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+      .accessibilityElement(children: .combine)
+   }
+
+   private var cardBackground: Color {
+      colorScheme == .dark ? Color.white.opacity(0.06) : LikehateTheme.surface
    }
 }
