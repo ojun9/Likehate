@@ -14,10 +14,23 @@
 		BF0000010000000000000005 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000015 /* FirebaseMessaging */; };
 		BF0000010000000000000006 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000016 /* Lottie */; };
 		BF0000010000000000000007 /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000017 /* SwiftyStoreKit */; };
+		BF083ADB2FCDE83B00C67F9D /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = BF083ADA2FCDE83B00C67F9D /* CropViewController */; };
+		BF083ADD2FCDE83B00C67F9D /* TOCropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = BF083ADC2FCDE83B00C67F9D /* TOCropViewController */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BF9000012FD0000000000009 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF22F45620DE6E4C00B56F99 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF22F45D20DE6E4C00B56F99;
+			remoteInfo = Likehate;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		BF22F45E20DE6E4C00B56F99 /* Likehate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Likehate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF9000012FD0000000000001 /* LikehateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LikehateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -32,6 +45,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BF26683F2FB9858900DA9BBF /* Likehate */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (BF26685D2FB9858A00DA9BBF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Likehate; sourceTree = "<group>"; };
+		BF9000012FD0000000000002 /* LikehateTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = LikehateTests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,12 +54,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF0000010000000000000002 /* FirebaseCore in Frameworks */,
+				BF083ADD2FCDE83B00C67F9D /* TOCropViewController in Frameworks */,
 				BF0000010000000000000003 /* FirebaseAnalytics in Frameworks */,
 				BF0000010000000000000004 /* FirebaseRemoteConfig in Frameworks */,
 				BF0000010000000000000005 /* FirebaseMessaging in Frameworks */,
 				BF0000010000000000000001 /* GoogleMobileAds in Frameworks */,
+				BF083ADB2FCDE83B00C67F9D /* CropViewController in Frameworks */,
 				BF0000010000000000000006 /* Lottie in Frameworks */,
 				BF0000010000000000000007 /* SwiftyStoreKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF9000012FD0000000000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				BF26683F2FB9858900DA9BBF /* Likehate */,
+				BF9000012FD0000000000002 /* LikehateTests */,
 				BF22F45F20DE6E4C00B56F99 /* Products */,
 				B776C712E8F6D795633683E9 /* Frameworks */,
 			);
@@ -72,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				BF22F45E20DE6E4C00B56F99 /* Likehate.app */,
+				BF9000012FD0000000000001 /* LikehateTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -103,10 +128,35 @@
 				BF0000010000000000000015 /* FirebaseMessaging */,
 				BF0000010000000000000016 /* Lottie */,
 				BF0000010000000000000017 /* SwiftyStoreKit */,
+				BF083ADA2FCDE83B00C67F9D /* CropViewController */,
+				BF083ADC2FCDE83B00C67F9D /* TOCropViewController */,
 			);
 			productName = Likehate;
 			productReference = BF22F45E20DE6E4C00B56F99 /* Likehate.app */;
 			productType = "com.apple.product-type.application";
+		};
+		BF9000012FD0000000000004 /* LikehateTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF9000012FD0000000000008 /* Build configuration list for PBXNativeTarget "LikehateTests" */;
+			buildPhases = (
+				BF9000012FD0000000000005 /* Sources */,
+				BF9000012FD0000000000003 /* Frameworks */,
+				BF9000012FD0000000000006 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BF9000012FD000000000000A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				BF9000012FD0000000000002 /* LikehateTests */,
+			);
+			name = LikehateTests;
+			packageProductDependencies = (
+			);
+			productName = LikehateTests;
+			productReference = BF9000012FD0000000000001 /* LikehateTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -125,6 +175,10 @@
 								enabled = 1;
 							};
 						};
+					};
+					BF9000012FD0000000000004 = {
+						CreatedOnToolsVersion = 26.5;
+						TestTargetID = BF22F45D20DE6E4C00B56F99;
 					};
 				};
 			};
@@ -151,18 +205,27 @@
 				BF0000010000000000000022 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				BF0000010000000000000023 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				BF0000010000000000000024 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */,
+				BF083AD92FCDE83B00C67F9D /* XCRemoteSwiftPackageReference "TOCropViewController" */,
 			);
 			productRefGroup = BF22F45F20DE6E4C00B56F99 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				BF22F45D20DE6E4C00B56F99 /* Likehate */,
+				BF9000012FD0000000000004 /* LikehateTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		BF22F45C20DE6E4C00B56F99 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF9000012FD0000000000006 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -179,7 +242,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BF9000012FD0000000000005 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BF9000012FD000000000000A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BF22F45D20DE6E4C00B56F99 /* Likehate */;
+			targetProxy = BF9000012FD0000000000009 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		BF22F46E20DE6E4D00B56F99 /* Debug */ = {
@@ -346,6 +424,52 @@
 			};
 			name = Release;
 		};
+		BF9000012FD000000000000B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9R4W53MKG7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = myfirst.LikehateTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Likehate.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Likehate";
+			};
+			name = Debug;
+		};
+		BF9000012FD000000000000C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9R4W53MKG7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = myfirst.LikehateTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Likehate.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Likehate";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -363,6 +487,15 @@
 			buildConfigurations = (
 				BF22F47120DE6E4D00B56F99 /* Debug */,
 				BF22F47220DE6E4D00B56F99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF9000012FD0000000000008 /* Build configuration list for PBXNativeTarget "LikehateTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF9000012FD000000000000B /* Debug */,
+				BF9000012FD000000000000C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -402,6 +535,14 @@
 				minimumVersion = 0.16.4;
 			};
 		};
+		BF083AD92FCDE83B00C67F9D /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TimOliver/TOCropViewController";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -439,6 +580,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BF0000010000000000000024 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */;
 			productName = SwiftyStoreKit;
+		};
+		BF083ADA2FCDE83B00C67F9D /* CropViewController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF083AD92FCDE83B00C67F9D /* XCRemoteSwiftPackageReference "TOCropViewController" */;
+			productName = CropViewController;
+		};
+		BF083ADC2FCDE83B00C67F9D /* TOCropViewController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF083AD92FCDE83B00C67F9D /* XCRemoteSwiftPackageReference "TOCropViewController" */;
+			productName = TOCropViewController;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

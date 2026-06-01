@@ -197,6 +197,7 @@ struct PersonFormView: View {
    @State private var selectedPhotoItem: PhotosPickerItem?
    @State private var selectedPhotoData: Data?
    @State private var selectedPhotoPreview: UIImage?
+   @State private var cropSourceImage: PersonPhotoCropSource?
    @State private var removesExistingPhoto = false
    @State private var isLoadingPhoto = false
    @State private var isShowingDeleteConfirmation = false
@@ -330,8 +331,17 @@ struct PersonFormView: View {
       } message: {
          Text("DeletePersonConfirmationMessage")
       }
+      .sheet(item: $cropSourceImage) { source in
+         PersonPhotoCropView(sourceImage: source.image) { croppedImage in
+            finishCropping(image: croppedImage)
+         } onCancel: {
+            cropSourceImage = nil
+         }
+      }
       .onAppear {
-         isNameFocused = !isEditingMe
+         if case .add = mode {
+            isNameFocused = true
+         }
       }
       .onChange(of: selectedPhotoItem) { _, item in
          Task {
@@ -404,25 +414,40 @@ struct PersonFormView: View {
       do {
          guard
             let data = try await item.loadTransferable(type: Data.self),
-            let thumbnailData = LikeHateStore.thumbnailPhotoData(from: data),
-            let image = UIImage(data: thumbnailData)
+            let image = UIImage(data: data)
          else {
             return
          }
 
-         selectedPhotoData = thumbnailData
-         selectedPhotoPreview = image
-         removesExistingPhoto = false
+         cropSourceImage = PersonPhotoCropSource(image: image)
       } catch {
          selectedPhotoData = nil
          selectedPhotoPreview = nil
       }
    }
 
+   private func finishCropping(image: UIImage) {
+      let imageData = image.pngData() ?? image.jpegData(compressionQuality: 0.92)
+      guard
+         let imageData,
+         let thumbnailData = LikeHateStore.thumbnailPhotoData(from: imageData),
+         let thumbnail = UIImage(data: thumbnailData)
+      else {
+         cropSourceImage = nil
+         return
+      }
+
+      selectedPhotoData = thumbnailData
+      selectedPhotoPreview = thumbnail
+      removesExistingPhoto = false
+      cropSourceImage = nil
+   }
+
    private func removePhoto() {
       selectedPhotoItem = nil
       selectedPhotoData = nil
       selectedPhotoPreview = nil
+      cropSourceImage = nil
       if case .edit = mode {
          removesExistingPhoto = true
       }
