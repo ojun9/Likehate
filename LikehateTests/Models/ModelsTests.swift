@@ -12,12 +12,12 @@ struct PersonTests {
       #expect(person.displayName != person.name)
    }
 
-   @Test("Me display name stays fixed even when a custom name is stored")
-   func meDisplayNameStaysFixedForCustomStoredName() {
+   @Test("Me display name uses a custom stored name")
+   func meDisplayNameUsesCustomStoredName() {
       let person = makePerson(name: "じゅん", isMe: true)
 
       #expect(person.name == "じゅん")
-      #expect(person.displayName == String(localized: "DefaultMeName"))
+      #expect(person.displayName == "じゅん")
    }
 
    @Test("Other person display name uses the stored name")
@@ -97,10 +97,13 @@ struct PersonFormModeTests {
 
       #expect(PersonFormMode.add.id == "add")
       #expect(PersonFormMode.add.title == String(localized: "AddPersonTitle"))
+      #expect(PersonFormMode.add.allowsNameEditing)
       #expect(PersonFormMode.edit(friend).id == friend.id.uuidString)
       #expect(PersonFormMode.edit(friend).title == String.localizedStringWithFormat(String(localized: "EditPersonTitleFormat"), friend.displayName))
       #expect(PersonFormMode.edit(me).title == String.localizedStringWithFormat(String(localized: "EditPersonTitleFormat"), me.displayName))
       #expect(PersonFormMode.edit(me).title.contains("自分") == false)
+      #expect(PersonFormMode.edit(friend).allowsNameEditing)
+      #expect(PersonFormMode.edit(me).allowsNameEditing)
    }
 }
 
@@ -245,7 +248,7 @@ struct LocalizationTests {
       #expect(String(localized: "AddPersonHelpText", bundle: .main, locale: locale) == "好きなものや苦手なものを、あとで思い出せるように残しておけます。")
       #expect(String(localized: "PersonNamePlaceholder", bundle: .main, locale: locale) == "呼び方を書く")
       #expect(String(localized: "AddPersonSaveButton", bundle: .main, locale: locale) == "この人を追加")
-      #expect(String(localized: "SavePersonChangesButton", bundle: .main, locale: locale) == "変更を保存")
+      #expect(String(localized: "SavePersonChangesButton", bundle: .main, locale: locale) == "保存")
       #expect(String(localized: "EditPersonHelpText", bundle: .main, locale: locale) == "呼び方やアイコンを変えられます。")
       #expect(String.localizedStringWithFormat(String(localized: "EditPersonTitleFormat", bundle: .main, locale: locale), "あかり") == "あかりのこと")
       #expect(String(localized: "DeletePersonConfirmationTitle", bundle: .main, locale: locale) == "この人を削除しますか？")

@@ -143,7 +143,10 @@ struct Person: Identifiable, Codable, Hashable {
    var displayName: String {
       let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
       if isMe {
-         return String(localized: "DefaultMeName")
+         if trimmedName.isEmpty || trimmedName == "自分" {
+            return String(localized: "DefaultMeName")
+         }
+         return trimmedName
       }
 
       return trimmedName.isEmpty ? name : trimmedName

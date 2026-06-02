@@ -191,6 +191,10 @@ enum PersonFormMode: Identifiable {
       case .edit: return "SavePersonChangesButton"
       }
    }
+
+   var allowsNameEditing: Bool {
+      true
+   }
 }
 
 struct PersonFormView: View {
@@ -304,9 +308,13 @@ struct PersonFormView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
          ToolbarItem(placement: .cancellationAction) {
-            Button("cancel") {
+            Button {
                dismiss()
+            } label: {
+               Image(systemName: "xmark")
+                  .font(typography.body)
             }
+            .accessibilityLabel(Text("cancel"))
          }
 
          ToolbarItem(placement: .confirmationAction) {
@@ -355,10 +363,7 @@ struct PersonFormView: View {
    }
 
    private var allowsNameEditing: Bool {
-      if case .edit(let person) = mode {
-         return !person.isMe
-      }
-      return true
+      mode.allowsNameEditing
    }
 
    private var previewImage: UIImage? {
@@ -765,18 +770,7 @@ struct ComparisonSelectionView: View {
 
       Group {
          if store.persons.count < 2 {
-            ContentUnavailableView {
-               Label("CompareEmptyTitle", systemImage: "person.2.slash")
-            } description: {
-               Text("CompareEmptyMessage")
-            } actions: {
-               Button {
-                  formMode = .add
-               } label: {
-                  Label("AddPersonButton", systemImage: "plus")
-               }
-               .buttonStyle(.borderedProminent)
-            }
+            comparisonEmptyState(typography: typography, layout: layout)
          } else {
             ScrollView {
                VStack(alignment: .leading, spacing: layout.cardSpacing) {
@@ -848,6 +842,35 @@ struct ComparisonSelectionView: View {
       .onChange(of: store.persons) {
          normalizeSelection()
       }
+   }
+
+   private func comparisonEmptyState(typography: AppTypography, layout: AppLayoutMetrics) -> some View {
+      ZStack {
+         LikehateTheme.background
+            .ignoresSafeArea()
+
+         VStack(spacing: layout.cardSpacing) {
+            EmptyMemoStateView(
+               systemImage: "person.2",
+               accent: LikehateTheme.likeAccent,
+               title: String(localized: "CompareEmptyTitle"),
+               message: String(localized: "CompareEmptyMessage")
+            )
+
+            Button {
+               formMode = .add
+            } label: {
+               Label("AddPersonButton", systemImage: "plus")
+                  .font(typography.button)
+                  .foregroundStyle(LikehateTheme.likeAccent)
+                  .frame(minHeight: 48)
+            }
+            .buttonStyle(.plain)
+         }
+         .padding(.horizontal, layout.screenPadding)
+         .offset(y: -24)
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
    }
 
    private func normalizeSelection() {
