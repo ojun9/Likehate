@@ -12,11 +12,12 @@ struct PersonTests {
       #expect(person.displayName != person.name)
    }
 
-   @Test("Me display name uses a custom stored name")
-   func meDisplayNameUsesCustomStoredName() {
+   @Test("Me display name stays fixed even when a custom name is stored")
+   func meDisplayNameStaysFixedForCustomStoredName() {
       let person = makePerson(name: "じゅん", isMe: true)
 
-      #expect(person.displayName == "じゅん")
+      #expect(person.name == "じゅん")
+      #expect(person.displayName == String(localized: "DefaultMeName"))
    }
 
    @Test("Other person display name uses the stored name")
@@ -113,6 +114,22 @@ struct LocalizationTests {
       let japaneseMeName = String(localized: "DefaultMeName", bundle: .main, locale: Locale(identifier: "ja"))
 
       #expect(japaneseMeName == "わたし")
+   }
+
+   @Test("Japanese person form copy matches the memo tone")
+   func japanesePersonFormCopyMatchesMemoTone() {
+      let locale = Locale(identifier: "ja")
+
+      #expect(String(localized: "AddPersonTitle", bundle: .main, locale: locale) == "人を追加")
+      #expect(String(localized: "AddPersonHelpText", bundle: .main, locale: locale) == "好きなものや苦手なものを、あとで思い出せるように残しておけます。")
+      #expect(String(localized: "PersonNamePlaceholder", bundle: .main, locale: locale) == "呼び方を書く")
+      #expect(String(localized: "AddPersonSaveButton", bundle: .main, locale: locale) == "この人を追加")
+      #expect(String(localized: "SavePersonChangesButton", bundle: .main, locale: locale) == "変更を保存")
+      #expect(String(localized: "EditPersonHelpText", bundle: .main, locale: locale) == "呼び方やアイコンを変えられます。")
+      #expect(String.localizedStringWithFormat(String(localized: "EditPersonTitleFormat", bundle: .main, locale: locale), "あかり") == "あかりのこと")
+      #expect(String(localized: "DeletePersonConfirmationTitle", bundle: .main, locale: locale) == "この人を削除しますか？")
+      #expect(String(localized: "DeletePersonConfirmationMessage", bundle: .main, locale: locale) == "残していた好きなものや苦手なものも削除されます。")
+      #expect(String(localized: "DeletePersonConfirmButton", bundle: .main, locale: locale) == "削除する")
    }
 
    @Test("Japanese comparison copy uses dislike instead of weak-point wording")

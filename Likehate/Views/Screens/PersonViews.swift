@@ -176,17 +176,19 @@ enum PersonFormMode: Identifiable {
       }
    }
 
-   var title: LocalizedStringKey {
+   var title: String {
       switch self {
-      case .add: return "AddPersonTitle"
-      case .edit: return "EditPersonTitle"
+      case .add:
+         return String(localized: "AddPersonTitle")
+      case .edit(let person):
+         return String.localizedStringWithFormat(String(localized: "EditPersonTitleFormat"), person.displayName)
       }
    }
 
    var saveTitle: LocalizedStringKey {
       switch self {
       case .add: return "AddPersonSaveButton"
-      case .edit: return "SavePersonButton"
+      case .edit: return "SavePersonChangesButton"
       }
    }
 }
@@ -251,26 +253,32 @@ struct PersonFormView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
+         } footer: {
+            if case .edit = mode {
+               Text("EditPersonHelpText")
+            }
          }
 
-         Section {
-            TextField("PersonNamePlaceholder", text: $name)
-               .font(typography.bodyRegular)
-               .textInputAutocapitalization(.words)
-               .autocorrectionDisabled()
-               .focused($isNameFocused)
-               .submitLabel(.done)
-               .onSubmit {
-                  save()
-               }
-               .onChange(of: name) { _, newValue in
-                  if newValue.count > 30 {
-                     name = String(newValue.prefix(30))
+         if allowsNameEditing {
+            Section {
+               TextField("PersonNamePlaceholder", text: $name)
+                  .font(typography.bodyRegular)
+                  .textInputAutocapitalization(.words)
+                  .autocorrectionDisabled()
+                  .focused($isNameFocused)
+                  .submitLabel(.done)
+                  .onSubmit {
+                     save()
                   }
+                  .onChange(of: name) { _, newValue in
+                     if newValue.count > 30 {
+                        name = String(newValue.prefix(30))
+                     }
+                  }
+            } footer: {
+               if case .add = mode {
+                  Text("AddPersonHelpText")
                }
-         } footer: {
-            if case .add = mode {
-               Text("AddPersonHelpText")
             }
          }
 
@@ -305,7 +313,7 @@ struct PersonFormView: View {
             Button(mode.saveTitle) {
                save()
             }
-            .disabled(isLoadingPhoto || trimmedName.isEmpty)
+            .disabled(isLoadingPhoto || (allowsNameEditing && trimmedName.isEmpty))
          }
       }
       .confirmationDialog(
@@ -346,6 +354,13 @@ struct PersonFormView: View {
       name.trimmingCharacters(in: .whitespacesAndNewlines)
    }
 
+   private var allowsNameEditing: Bool {
+      if case .edit(let person) = mode {
+         return !person.isMe
+      }
+      return true
+   }
+
    private var previewImage: UIImage? {
       if let selectedPhotoPreview {
          return selectedPhotoPreview
@@ -367,7 +382,7 @@ struct PersonFormView: View {
    }
 
    private func save() {
-      guard !trimmedName.isEmpty else { return }
+      guard !allowsNameEditing || !trimmedName.isEmpty else { return }
 
       switch mode {
       case .add:
@@ -377,7 +392,7 @@ struct PersonFormView: View {
       case .edit(let person):
          store.updatePerson(
             person.id,
-            name: name,
+            name: allowsNameEditing ? name : person.name,
             profileImage: iconSelection.selectedProfileImage,
             photoData: selectedPhotoData,
             removesPhoto: iconSelection.removesExistingPhoto

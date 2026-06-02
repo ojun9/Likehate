@@ -88,13 +88,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can keep family and friends' likes and dislikes together."
+            "value" : "You can keep likes and dislikes so you can remember them later."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "家族や友だちの好き嫌いも、いっしょに残せます。"
+            "value" : "好きなものや苦手なものを、あとで思い出せるように残しておけます。"
           }
         }
       }
@@ -104,13 +104,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add"
+            "value" : "Add this person"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "追加する"
+            "value" : "この人を追加"
           }
         }
       }
@@ -1771,13 +1771,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Their likes and dislikes will also be deleted."
+            "value" : "The likes and dislikes you kept for them will also be deleted."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "登録した好き嫌いも削除されます。"
+            "value" : "残していた好きなものや苦手なものも削除されます。"
           }
         }
       }
@@ -1932,13 +1932,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edit person"
+            "value" : "Edit this person's details"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "人を編集"
+            "value" : "この人のことを編集"
           }
         }
       }
@@ -1948,13 +1948,45 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edit Person"
+            "value" : "About this person"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "人を編集"
+            "value" : "この人のこと"
+          }
+        }
+      }
+    },
+    "EditPersonHelpText" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can change what you call them and their icon."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "呼び方やアイコンを変えられます。"
+          }
+        }
+      }
+    },
+    "EditPersonTitleFormat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@のこと"
           }
         }
       }
@@ -3434,13 +3466,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Name"
+            "value" : "What you call them"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名前を書く"
+            "value" : "呼び方を書く"
           }
         }
       }
@@ -3726,6 +3758,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保存する"
+          }
+        }
+      }
+    },
+    "SavePersonChangesButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save changes"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "変更を保存"
           }
         }
       }

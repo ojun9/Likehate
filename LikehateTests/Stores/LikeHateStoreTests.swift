@@ -38,8 +38,8 @@ struct LikeHateStorePersonTests {
       #expect(reloadedPerson.profileImageName == DefaultProfileImage.defaultProfileImage7.rawValue)
    }
 
-   @Test("Updating me allows name and profile image changes")
-   func updateMeAllowsNameAndProfileImageChange() throws {
+   @Test("Updating me can store a name but keeps the display name fixed")
+   func updateMeKeepsDisplayNameFixed() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
 
@@ -50,7 +50,7 @@ struct LikeHateStorePersonTests {
       let updatedMe = try #require(store.mePerson)
 
       #expect(updatedMe.name == "別名")
-      #expect(updatedMe.displayName == "別名")
+      #expect(updatedMe.displayName == String(localized: "DefaultMeName"))
       #expect(updatedMe.profileImageName == DefaultProfileImage.defaultProfileImage4.rawValue)
    }
 
