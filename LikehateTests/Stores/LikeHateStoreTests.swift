@@ -397,12 +397,27 @@ struct LikeHateStoreSettingsTests {
       store.setAppStoreScreenshotModeEnabled(true)
 
       let sampleMe = try #require(store.mePerson)
+      let sampleAkari = try #require(store.persons.first { $0.displayName == "あかり" })
+      let sampleHaruto = try #require(store.persons.first { $0.displayName == "はると" })
       #expect(store.isAppStoreScreenshotModeEnabled)
       #expect(store.persons.map(\.displayName) == [String(localized: "DefaultMeName"), "あかり", "はると"])
-      #expect(store.items(for: sampleMe.id, kind: .like).map(\.title) == ["おすし", "映画館", "夜の散歩", "カフェラテ"])
-      #expect(store.items(for: sampleMe.id, kind: .hate).map(\.title) == ["早起き", "人混み", "辛すぎる料理"])
-      #expect(store.entries.count == 21)
+      #expect(sampleHaruto.profileImageName == DefaultProfileImage.defaultProfileImage16.rawValue)
+      #expect(store.items(for: sampleMe.id, kind: .like).count == 15)
+      #expect(store.items(for: sampleMe.id, kind: .hate).count == 15)
+      #expect(store.items(for: sampleAkari.id, kind: .like).count == 15)
+      #expect(store.items(for: sampleAkari.id, kind: .hate).count == 15)
+      #expect(store.items(for: sampleHaruto.id, kind: .like).count == 15)
+      #expect(store.items(for: sampleHaruto.id, kind: .hate).count == 15)
+      #expect(store.entries.count == 90)
       #expect(store.person(for: friend.id) == nil)
+
+      let meAndAkariSections = Dictionary(uniqueKeysWithValues: store
+         .comparisonSections(firstPersonID: sampleMe.id, secondPersonID: sampleAkari.id)
+         .map { ($0.category, $0.titles) })
+      #expect(meAndAkariSections[.commonLike]?.contains("映画館") == true)
+      #expect(meAndAkariSections[.commonHate]?.contains("辛すぎる料理") == true)
+      #expect(meAndAkariSections[.firstOnlyLike]?.contains("夜の散歩") == true)
+      #expect(meAndAkariSections[.secondOnlyLike]?.contains("水族館") == true)
 
       store.setAppStoreScreenshotModeEnabled(false)
 

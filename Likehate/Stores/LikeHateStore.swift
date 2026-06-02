@@ -509,7 +509,7 @@ final class LikeHateStore: ObservableObject {
          makeAppStoreScreenshotPerson(
             id: appStoreScreenshotThirdPersonID,
             name: "はると",
-            profileImage: .defaultProfileImage12,
+            profileImage: .defaultProfileImage16,
             isMe: false,
             now: now,
             sortOrder: 2
@@ -520,37 +520,133 @@ final class LikeHateStore: ObservableObject {
          makeAppStoreScreenshotEntries(
             personID: appStoreScreenshotMeID,
             kind: .like,
-            titles: ["おすし", "映画館", "夜の散歩", "カフェラテ"],
+            titles: [
+               "おすし",
+               "映画館",
+               "夜の散歩",
+               "カフェラテ",
+               "チーズケーキ",
+               "読書",
+               "温泉",
+               "ボードゲーム",
+               "猫カフェ",
+               "美術館",
+               "ハンバーグ",
+               "朝のラジオ",
+               "花火",
+               "パン屋めぐり",
+               "雨上がりの空"
+            ],
             now: now
          ) +
          makeAppStoreScreenshotEntries(
             personID: appStoreScreenshotMeID,
             kind: .hate,
-            titles: ["早起き", "人混み", "辛すぎる料理"],
+            titles: [
+               "早起き",
+               "人混み",
+               "辛すぎる料理",
+               "満員電車",
+               "虫",
+               "大きな音",
+               "長い行列",
+               "冷たい雨",
+               "急な予定変更",
+               "煙草のにおい",
+               "納豆",
+               "ホラー映画",
+               "徹夜",
+               "狭い席",
+               "強い香水"
+            ],
             now: now
          ) +
          makeAppStoreScreenshotEntries(
             personID: appStoreScreenshotSecondPersonID,
             kind: .like,
-            titles: ["チーズケーキ", "映画館", "美術館", "カフェラテ"],
+            titles: [
+               "チーズケーキ",
+               "映画館",
+               "美術館",
+               "カフェラテ",
+               "おすし",
+               "パン屋めぐり",
+               "花火",
+               "水族館",
+               "手紙を書く",
+               "夜景",
+               "読書",
+               "抹茶ラテ",
+               "ピクニック",
+               "古着屋めぐり",
+               "温泉"
+            ],
             now: now
          ) +
          makeAppStoreScreenshotEntries(
             personID: appStoreScreenshotSecondPersonID,
             kind: .hate,
-            titles: ["虫", "満員電車", "辛すぎる料理"],
+            titles: [
+               "虫",
+               "満員電車",
+               "辛すぎる料理",
+               "早起き",
+               "大きな音",
+               "煙草のにおい",
+               "長い行列",
+               "寒すぎる部屋",
+               "ホラー映画",
+               "炭酸飲料",
+               "徹夜",
+               "急な予定変更",
+               "生たまねぎ",
+               "湿気",
+               "電話の長話"
+            ],
             now: now
          ) +
          makeAppStoreScreenshotEntries(
             personID: appStoreScreenshotThirdPersonID,
             kind: .like,
-            titles: ["カレー", "夜の散歩", "ボードゲーム", "キャンプ"],
+            titles: [
+               "カレー",
+               "夜の散歩",
+               "ボードゲーム",
+               "キャンプ",
+               "おすし",
+               "温泉",
+               "ハンバーグ",
+               "朝のラジオ",
+               "雨上がりの空",
+               "サウナ",
+               "海辺のドライブ",
+               "ギター",
+               "映画館",
+               "コーヒー",
+               "花火"
+            ],
             now: now
          ) +
          makeAppStoreScreenshotEntries(
             personID: appStoreScreenshotThirdPersonID,
             kind: .hate,
-            titles: ["トマト", "雨の日の外出", "大きな音"],
+            titles: [
+               "トマト",
+               "雨の日の外出",
+               "大きな音",
+               "早起き",
+               "満員電車",
+               "強い香水",
+               "長い行列",
+               "虫",
+               "辛すぎる料理",
+               "狭い席",
+               "ピーマン",
+               "冷たい雨",
+               "寝不足",
+               "急な予定変更",
+               "煙草のにおい"
+            ],
             now: now
          )
 

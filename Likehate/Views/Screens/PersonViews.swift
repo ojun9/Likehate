@@ -849,26 +849,33 @@ struct ComparisonSelectionView: View {
          LikehateTheme.background
             .ignoresSafeArea()
 
-         VStack(spacing: layout.cardSpacing) {
-            EmptyMemoStateView(
-               systemImage: "person.2",
-               accent: LikehateTheme.likeAccent,
-               title: String(localized: "CompareEmptyTitle"),
-               message: String(localized: "CompareEmptyMessage")
-            )
+         GeometryReader { proxy in
+            ScrollView {
+               VStack(spacing: layout.cardSpacing) {
+                  EmptyMemoStateView(
+                     systemImage: "person.2",
+                     accent: LikehateTheme.likeAccent,
+                     title: String(localized: "CompareEmptyTitle"),
+                     message: String(localized: "CompareEmptyMessage")
+                  )
 
-            Button {
-               formMode = .add
-            } label: {
-               Label("AddPersonButton", systemImage: "plus")
-                  .font(typography.button)
-                  .foregroundStyle(LikehateTheme.likeAccent)
-                  .frame(minHeight: 48)
+                  Button {
+                     formMode = .add
+                  } label: {
+                     Label("AddPersonButton", systemImage: "plus")
+                        .font(typography.button)
+                        .foregroundStyle(LikehateTheme.likeAccent)
+                        .frame(minHeight: 48)
+                  }
+                  .buttonStyle(.plain)
+               }
+               .frame(maxWidth: .infinity)
+               .frame(minHeight: proxy.size.height, alignment: .center)
+               .padding(.horizontal, layout.screenPadding)
+               .padding(.vertical, layout.sectionSpacing)
+               .offset(y: -24)
             }
-            .buttonStyle(.plain)
          }
-         .padding(.horizontal, layout.screenPadding)
-         .offset(y: -24)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
    }
