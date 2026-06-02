@@ -24,19 +24,9 @@ struct HomeView: View {
 
       ScrollView {
          VStack(alignment: .leading, spacing: layout.cardSpacing) {
-            if store.animationEnabled {
-               LottieLoopView(name: "KiraKira")
-                 .frame(height: 64)
-                  .frame(maxWidth: .infinity)
-                  .opacity(colorScheme == .dark ? 0.34 : 0.24)
-                  .clipped()
-                  .padding(.top, 8)
-                  .accessibilityHidden(true)
-            }
-
             Text("HomePeopleSectionTitle")
                .font(typography.sectionTitle)
-               .padding(.top, store.animationEnabled ? 2 : 22)
+               .padding(.top, 22)
 
             VStack(spacing: layout.cardSpacing) {
                ForEach(store.persons) { person in
