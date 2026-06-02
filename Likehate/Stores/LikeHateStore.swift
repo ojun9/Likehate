@@ -161,9 +161,7 @@ final class LikeHateStore: ObservableObject {
       let name = sanitizedPersonName(rawName)
       guard !name.isEmpty, let index = persons.firstIndex(where: { $0.id == personID }) else { return }
 
-      if !persons[index].isMe {
-         persons[index].name = name
-      }
+      persons[index].name = name
       if let profileImage {
          persons[index].profileImageName = profileImage.rawValue
       }
@@ -486,7 +484,13 @@ final class LikeHateStore: ObservableObject {
 
       if !foundMe {
          normalized[0].isMe = true
+         normalized[0].name = String(localized: "DefaultMeName")
          normalized[0].updatedAt = now
+      }
+
+      for index in normalized.indices where normalized[index].isMe && isLegacyMeName(normalized[index].name) {
+         normalized[index].name = String(localized: "DefaultMeName")
+         normalized[index].updatedAt = now
       }
 
       for index in normalized.indices where DefaultProfileImage(rawValue: normalized[index].profileImageName ?? "") == nil {
@@ -495,6 +499,11 @@ final class LikeHateStore: ObservableObject {
       }
 
       return normalized
+   }
+
+   private static func isLegacyMeName(_ name: String) -> Bool {
+      let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+      return trimmedName.isEmpty || trimmedName == "自分"
    }
 
    private func normalizeSortOrders() {

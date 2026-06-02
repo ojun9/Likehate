@@ -141,7 +141,16 @@ struct Person: Identifiable, Codable, Hashable {
    var sortOrder: Int
 
    var displayName: String {
-      isMe ? String(localized: "DefaultMeName") : name
+      let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+      guard isMe else {
+         return trimmedName.isEmpty ? name : trimmedName
+      }
+
+      if trimmedName.isEmpty || trimmedName == "自分" {
+         return String(localized: "DefaultMeName")
+      }
+
+      return trimmedName
    }
 
    var profileImage: DefaultProfileImage {
