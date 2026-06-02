@@ -38,6 +38,20 @@ struct LikeHateStorePersonTests {
       #expect(reloadedPerson.profileImageName == DefaultProfileImage.defaultProfileImage7.rawValue)
    }
 
+   @Test("New person default profile image avoids existing person images")
+   func newPersonDefaultProfileImageAvoidsExistingPersonImages() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+      store.updatePerson(me.id, name: me.name, profileImage: .defaultProfileImage)
+      _ = try #require(store.addPerson(named: "太郎", profileImage: .defaultProfileImage2))
+      _ = try #require(store.addPerson(named: "あかり", profileImage: .defaultProfileImage3))
+
+      #expect(store.defaultProfileImageForNewPerson() == .defaultProfileImage4)
+   }
+
    @Test("Adding and updating a person limits names to forty characters")
    func addAndUpdatePersonLimitNamesToFortyCharacters() throws {
       let context = try StoreTestContext()

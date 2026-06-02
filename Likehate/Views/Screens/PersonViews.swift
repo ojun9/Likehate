@@ -209,6 +209,7 @@ struct PersonFormView: View {
    @State private var cropSourceImage: PersonPhotoCropSource?
    @State private var isLoadingPhoto = false
    @State private var isShowingDeleteConfirmation = false
+   @State private var didApplyInitialAddProfileImage = false
    @FocusState private var isNameFocused: Bool
 
    let mode: PersonFormMode
@@ -220,7 +221,7 @@ struct PersonFormView: View {
       switch mode {
       case .add:
          _name = State(initialValue: "")
-         _iconSelection = State(initialValue: PersonIconSelectionState(selectedProfileImage: .random(), hasExistingPhoto: false))
+         _iconSelection = State(initialValue: PersonIconSelectionState(selectedProfileImage: .defaultProfileImage, hasExistingPhoto: false))
       case .edit(let person):
          _name = State(initialValue: person.displayName)
          _iconSelection = State(initialValue: PersonIconSelectionState(selectedProfileImage: person.profileImage, hasExistingPhoto: person.photoFileName != nil))
@@ -348,6 +349,7 @@ struct PersonFormView: View {
       }
       .onAppear {
          if case .add = mode {
+            applyInitialAddProfileImageIfNeeded()
             isNameFocused = true
          }
       }
@@ -436,6 +438,12 @@ struct PersonFormView: View {
       case .dismissKeyboard:
          isNameFocused = false
       }
+   }
+
+   private func applyInitialAddProfileImageIfNeeded() {
+      guard didApplyInitialAddProfileImage == false else { return }
+      iconSelection = PersonIconSelectionState(selectedProfileImage: store.defaultProfileImageForNewPerson(), hasExistingPhoto: false)
+      didApplyInitialAddProfileImage = true
    }
 
    private func finishCropping(image: UIImage) {

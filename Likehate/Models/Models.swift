@@ -187,6 +187,10 @@ enum DefaultProfileImage: String, CaseIterable, Identifiable, Codable, Hashable 
       Self.allCases.firstIndex(of: self).map { $0 + 1 } ?? 1
    }
 
+   static func firstAvailable(excluding usedImages: Set<DefaultProfileImage>) -> DefaultProfileImage {
+      allCases.first { !usedImages.contains($0) } ?? .defaultProfileImage
+   }
+
    static func random() -> DefaultProfileImage {
       allCases.randomElement() ?? .defaultProfileImage
    }

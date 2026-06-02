@@ -247,7 +247,9 @@ struct LocalizationTests {
       #expect(String(localized: "AddPersonTitle", bundle: .main, locale: locale) == "人を追加")
       #expect(String(localized: "AddPersonHelpText", bundle: .main, locale: locale) == "好きなものや苦手なものを、あとで思い出せるように残しておけます。")
       #expect(String(localized: "PersonNamePlaceholder", bundle: .main, locale: locale) == "呼び方を書く")
-      #expect(String(localized: "AddPersonSaveButton", bundle: .main, locale: locale) == "この人を追加")
+      #expect(String(localized: "AddPersonSaveButton", bundle: .main, locale: locale) == "追加")
+      #expect(String(localized: "ProfileImageSectionTitle", bundle: .main, locale: locale) == "プリセット")
+      #expect(String.localizedStringWithFormat(String(localized: "ProfileImageOptionFormat", bundle: .main, locale: locale), 3) == "プリセット 3")
       #expect(String(localized: "SavePersonChangesButton", bundle: .main, locale: locale) == "保存")
       #expect(String(localized: "EditPersonHelpText", bundle: .main, locale: locale) == "呼び方やアイコンを変えられます。")
       #expect(String.localizedStringWithFormat(String(localized: "EditPersonTitleFormat", bundle: .main, locale: locale), "あかり") == "あかりのこと")
@@ -264,6 +266,8 @@ struct LocalizationTests {
          "AddPersonHelpText",
          "PersonNamePlaceholder",
          "AddPersonSaveButton",
+         "ProfileImageSectionTitle",
+         "ProfileImageOptionFormat",
          "SavePersonChangesButton",
          "EditPersonHelpText",
          "DeletePersonConfirmationTitle",
@@ -378,6 +382,22 @@ struct DefaultProfileImageTests {
       let optionNumbers = DefaultProfileImage.allCases.map(\.optionNumber)
 
       #expect(optionNumbers == Array(1...DefaultProfileImage.allCases.count))
+   }
+
+   @Test("Default profile image picks the first unused image")
+   func profileImagePicksFirstUnusedImage() {
+      let usedImages: Set<DefaultProfileImage> = [
+         .defaultProfileImage,
+         .defaultProfileImage2,
+         .defaultProfileImage3
+      ]
+
+      #expect(DefaultProfileImage.firstAvailable(excluding: usedImages) == .defaultProfileImage4)
+   }
+
+   @Test("Default profile image falls back when every image is already used")
+   func profileImageFallsBackWhenEveryImageIsUsed() {
+      #expect(DefaultProfileImage.firstAvailable(excluding: Set(DefaultProfileImage.allCases)) == .defaultProfileImage)
    }
 }
 

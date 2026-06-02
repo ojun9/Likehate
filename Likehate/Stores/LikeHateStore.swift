@@ -113,6 +113,11 @@ final class LikeHateStore: ObservableObject {
       AppLayoutMetrics(textSize: textSize)
    }
 
+   func defaultProfileImageForNewPerson() -> DefaultProfileImage {
+      let usedImages = Set(persons.map(\.profileImage))
+      return DefaultProfileImage.firstAvailable(excluding: usedImages)
+   }
+
    func person(for id: UUID) -> Person? {
       persons.first { $0.id == id }
    }

@@ -104,13 +104,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add this person"
+            "value" : "Add"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "この人を追加"
+            "value" : "追加"
           }
         }
       }
@@ -3574,13 +3574,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Profile image %d"
+            "value" : "Preset %d"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プロフィール画像 %d"
+            "value" : "プリセット %d"
           }
         }
       }
@@ -3590,13 +3590,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Profile image"
+            "value" : "Preset"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プロフィール画像"
+            "value" : "プリセット"
           }
         }
       }
