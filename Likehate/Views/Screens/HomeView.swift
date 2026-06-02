@@ -212,22 +212,27 @@ private struct HomePersonCard: View {
       let layout = store.layoutMetrics
       let likeCount = store.items(for: person.id, kind: .like).count
       let hateCount = store.items(for: person.id, kind: .hate).count
-      let countFormat = String(localized: "PersonCountFormat")
-      let countText = String.localizedStringWithFormat(countFormat, likeCount, hateCount)
+      let likeCountText = String.localizedStringWithFormat(String(localized: "LikeCountFormat"), likeCount)
+      let hateCountText = String.localizedStringWithFormat(String(localized: "HateCountFormat"), hateCount)
 
-      HStack(spacing: 14) {
-         PersonAvatar(person: person, size: layout.homePersonAvatarSize)
+      HStack(spacing: 18) {
+         PersonAvatar(person: person, size: layout.homePersonAvatarSize, showsShadow: false)
 
-         VStack(alignment: .leading, spacing: 5) {
+         VStack(alignment: .leading, spacing: 9) {
             Text(verbatim: person.displayName)
-               .font(typography.cardTitle)
+               .font(typography.sectionTitle)
                .foregroundStyle(.primary)
                .lineLimit(2)
 
-            Text(verbatim: countText)
-               .font(typography.subtext)
-               .foregroundStyle(.secondary)
-               .lineLimit(2)
+            VStack(alignment: .leading, spacing: 4) {
+               Text(verbatim: likeCountText)
+                  .foregroundStyle(LikehateTheme.likeAccent)
+
+               Text(verbatim: hateCountText)
+                  .foregroundStyle(LikehateTheme.hateAccent)
+            }
+            .font(typography.subtext)
+            .lineLimit(1)
          }
 
          Spacer(minLength: 8)

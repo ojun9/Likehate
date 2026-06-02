@@ -202,21 +202,21 @@ struct AppLayoutMetrics {
 
    var personCardMinHeight: CGFloat {
       switch textSize {
-      case .extraSmall: return 82
-      case .small: return 88
-      case .standard: return 98
-      case .large: return 108
-      case .extraLarge: return 118
+      case .extraSmall: return 104
+      case .small: return 112
+      case .standard: return 124
+      case .large: return 136
+      case .extraLarge: return 148
       }
    }
 
    var homePersonAvatarSize: CGFloat {
       switch textSize {
-      case .extraSmall: return 52
-      case .small: return 56
-      case .standard: return 62
-      case .large: return 68
-      case .extraLarge: return 74
+      case .extraSmall: return 78
+      case .small: return 84
+      case .standard: return 93
+      case .large: return 102
+      case .extraLarge: return 111
       }
    }
 }
