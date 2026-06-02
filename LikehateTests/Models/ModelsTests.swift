@@ -12,6 +12,13 @@ struct PersonTests {
       #expect(person.displayName != person.name)
    }
 
+   @Test("Me display name uses a custom stored name")
+   func meDisplayNameUsesCustomStoredName() {
+      let person = makePerson(name: "じゅん", isMe: true)
+
+      #expect(person.displayName == "じゅん")
+   }
+
    @Test("Other person display name uses the stored name")
    func otherPersonDisplayNameUsesStoredName() {
       let person = makePerson(name: "太郎", isMe: false)
@@ -28,6 +35,39 @@ struct PersonTests {
       person.profileImage = .defaultProfileImage9
       #expect(person.profileImageName == DefaultProfileImage.defaultProfileImage9.rawValue)
       #expect(person.profileImage == .defaultProfileImage9)
+   }
+}
+
+struct PersonIconSelectionStateTests {
+   @Test("Beginning photo selection keeps the selected preset and existing photo state")
+   func beginPhotoSelectionDoesNotResetPreset() {
+      var state = PersonIconSelectionState(selectedProfileImage: .defaultProfileImage7, hasExistingPhoto: true)
+
+      state.beginPhotoSelection()
+
+      #expect(state.selectedProfileImage == .defaultProfileImage7)
+      #expect(state.removesExistingPhoto == false)
+   }
+
+   @Test("Selecting a preset profile image marks the existing photo for removal")
+   func selectingPresetRemovesExistingPhoto() {
+      var state = PersonIconSelectionState(selectedProfileImage: .defaultProfileImage2, hasExistingPhoto: true)
+
+      state.selectProfileImage(.defaultProfileImage9)
+
+      #expect(state.selectedProfileImage == .defaultProfileImage9)
+      #expect(state.removesExistingPhoto)
+   }
+
+   @Test("Selecting a cropped photo keeps the preset value and cancels pending photo removal")
+   func selectingPhotoCancelsPendingPhotoRemoval() {
+      var state = PersonIconSelectionState(selectedProfileImage: .defaultProfileImage3, hasExistingPhoto: true)
+
+      state.selectProfileImage(.defaultProfileImage12)
+      state.didSelectPhoto()
+
+      #expect(state.selectedProfileImage == .defaultProfileImage12)
+      #expect(state.removesExistingPhoto == false)
    }
 }
 
@@ -87,6 +127,26 @@ struct LocalizationTests {
       #expect(firstOnlyHate.contains("苦手") == false)
       #expect(secondOnlyHate.contains("苦手") == false)
       #expect(commonHate.contains("苦手") == false)
+   }
+
+   @Test("Comparison empty state localization keys resolve")
+   func comparisonEmptyStateLocalizationKeysResolve() {
+      let keys = [
+         "ComparisonEmptyCommonHate",
+         "ComparisonEmptyCommonHateMessage",
+         "ComparisonEmptyCommonLike",
+         "ComparisonEmptyCommonLikeMessage",
+         "ComparisonEmptyFirstOnlyHateMessage",
+         "ComparisonEmptyFirstOnlyLikeMessage",
+         "ComparisonEmptySecondOnlyHateMessageFormat",
+         "ComparisonEmptySecondOnlyLikeMessageFormat"
+      ]
+
+      for key in keys {
+         let value = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "ja"))
+         #expect(value.isEmpty == false)
+         #expect(value != key)
+      }
    }
 }
 

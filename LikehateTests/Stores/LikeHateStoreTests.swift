@@ -38,20 +38,19 @@ struct LikeHateStorePersonTests {
       #expect(reloadedPerson.profileImageName == DefaultProfileImage.defaultProfileImage7.rawValue)
    }
 
-   @Test("Updating me keeps the display identity fixed but allows profile image changes")
-   func updateMeProtectsNameButAllowsProfileImageChange() throws {
+   @Test("Updating me allows name and profile image changes")
+   func updateMeAllowsNameAndProfileImageChange() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
 
       let store = context.store
       let me = try #require(store.mePerson)
-      let originalName = me.name
 
       store.updatePerson(me.id, name: "別名", profileImage: .defaultProfileImage4)
       let updatedMe = try #require(store.mePerson)
 
-      #expect(updatedMe.name == originalName)
-      #expect(updatedMe.displayName == String(localized: "DefaultMeName"))
+      #expect(updatedMe.name == "別名")
+      #expect(updatedMe.displayName == "別名")
       #expect(updatedMe.profileImageName == DefaultProfileImage.defaultProfileImage4.rawValue)
    }
 
@@ -105,7 +104,7 @@ struct LikeHateStorePersonTests {
       #expect(store.persons.count == 2)
       #expect(store.persons.filter(\.isMe).count == 1)
       #expect(me.isMe)
-      #expect(me.name == "自分")
+      #expect(me.name == String(localized: "DefaultMeName"))
       #expect(me.displayName == String(localized: "DefaultMeName"))
       #expect(DefaultProfileImage(rawValue: me.profileImageName ?? "") != nil)
       #expect(duplicateMe.isMe == false)
@@ -210,6 +209,28 @@ struct LikeHateStorePhotoTests {
 
       store.deletePerson(person.id)
       #expect(FileManager.default.fileExists(atPath: replacedPhotoURL.path) == false)
+   }
+
+   @Test("Preset profile image update removes an existing photo")
+   func presetProfileImageUpdateRemovesExistingPhoto() throws {
+      let context = try StoreTestContext()
+      defer {
+         context.store.deleteAll()
+         context.cleanup()
+      }
+
+      let store = context.store
+      let photoData = try TestImageFactory.jpegData(size: CGSize(width: 96, height: 96), color: .systemPurple)
+      let person = try #require(store.addPerson(named: "太郎", profileImage: .defaultProfileImage3, photoData: photoData))
+      let photoPerson = try #require(store.person(for: person.id))
+      let photoURL = try #require(store.photoURL(for: photoPerson))
+
+      store.updatePerson(person.id, name: "太郎", profileImage: .defaultProfileImage11, removesPhoto: true)
+      let updatedPerson = try #require(store.person(for: person.id))
+
+      #expect(updatedPerson.profileImageName == DefaultProfileImage.defaultProfileImage11.rawValue)
+      #expect(updatedPerson.photoFileName == nil)
+      #expect(FileManager.default.fileExists(atPath: photoURL.path) == false)
    }
 }
 
