@@ -908,7 +908,36 @@
       }
     },
     "ComparisonEmptyCommonHate" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No shared dislikes yet."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共通で嫌いなものはまだありません"
+          }
+        }
+      }
+    },
+    "ComparisonEmptyCommonHateMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add dislikes to see what you may want to avoid together."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "嫌いなものを追加すると、避けたいものを確認できます。"
+          }
+        }
+      }
     },
     "ComparisonEmptyCommonLike" : {
       "localizations" : {
@@ -922,6 +951,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共通で好きなものはまだありません"
+          }
+        }
+      }
+    },
+    "ComparisonEmptyCommonLikeMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add likes to discover what you both enjoy."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好きなものを追加すると、共通点が見つかります。"
           }
         }
       }
@@ -959,6 +1004,22 @@
         }
       }
     },
+    "ComparisonEmptyFirstOnlyHateMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add dislikes to discover differences."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "嫌いなものを追加すると、違いが見つかります。"
+          }
+        }
+      }
+    },
     "ComparisonEmptyFirstOnlyLikeFormat" : {
       "localizations" : {
         "en" : {
@@ -971,6 +1032,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@だけが好きなものはまだありません"
+          }
+        }
+      }
+    },
+    "ComparisonEmptyFirstOnlyLikeMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add likes to discover differences."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好きなものを追加すると、違いが見つかります。"
           }
         }
       }
@@ -1008,6 +1085,22 @@
         }
       }
     },
+    "ComparisonEmptySecondOnlyHateMessageFormat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add %@'s dislikes to discover differences."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の嫌いなものを追加すると、違いが見つかります。"
+          }
+        }
+      }
+    },
     "ComparisonEmptySecondOnlyLikeFormat" : {
       "localizations" : {
         "en" : {
@@ -1020,6 +1113,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@だけが好きなものはまだありません"
+          }
+        }
+      }
+    },
+    "ComparisonEmptySecondOnlyLikeMessageFormat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add %@'s likes to discover differences."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の好きなものを追加すると、違いが見つかります。"
           }
         }
       }
@@ -2134,6 +2243,22 @@
         }
       }
     },
+    "HateCountFormat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dislikes %d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "嫌い %d件"
+          }
+        }
+      }
+    },
     "HateInputButton" : {
       "localizations" : {
         "ar" : {
@@ -2709,6 +2834,22 @@
         }
       }
     },
+    "LikeCountFormat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likes %d"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好き %d件"
+          }
+        }
+      }
+    },
     "LikeInputButton" : {
       "localizations" : {
         "ar" : {
@@ -3268,6 +3409,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@の好きなもの"
+          }
+        }
+      }
+    },
+    "PersonPairSeparator" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "and"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "と"
           }
         }
       }

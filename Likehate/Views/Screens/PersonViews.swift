@@ -124,12 +124,14 @@ struct PersonAvatar: View {
 
    let person: Person
    var size: CGFloat = 38
+   var showsShadow = true
 
    var body: some View {
       PersonAvatarContent(
          image: store.photoImage(for: person),
          profileImage: person.profileImage,
-         size: size
+         size: size,
+         showsShadow: showsShadow
       )
    }
 }
@@ -138,6 +140,7 @@ private struct PersonAvatarContent: View {
    let image: UIImage?
    let profileImage: DefaultProfileImage
    let size: CGFloat
+   var showsShadow = true
 
    var body: some View {
       avatarImage
@@ -149,7 +152,7 @@ private struct PersonAvatarContent: View {
             Circle()
                .stroke(.white.opacity(0.16), lineWidth: 1)
          }
-         .shadow(color: Color.black.opacity(0.08), radius: 5, x: 0, y: 2)
+         .shadow(color: showsShadow ? Color.black.opacity(0.08) : .clear, radius: showsShadow ? 5 : 0, x: 0, y: showsShadow ? 2 : 0)
    }
 
    private var avatarImage: Image {
@@ -193,12 +196,11 @@ struct PersonFormView: View {
    @Environment(\.dismiss) private var dismiss
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
    @State private var name: String
-   @State private var selectedProfileImage: DefaultProfileImage
+   @State private var iconSelection: PersonIconSelectionState
    @State private var selectedPhotoItem: PhotosPickerItem?
    @State private var selectedPhotoData: Data?
    @State private var selectedPhotoPreview: UIImage?
    @State private var cropSourceImage: PersonPhotoCropSource?
-   @State private var removesExistingPhoto = false
    @State private var isLoadingPhoto = false
    @State private var isShowingDeleteConfirmation = false
    @FocusState private var isNameFocused: Bool
@@ -212,10 +214,10 @@ struct PersonFormView: View {
       switch mode {
       case .add:
          _name = State(initialValue: "")
-         _selectedProfileImage = State(initialValue: .random())
+         _iconSelection = State(initialValue: PersonIconSelectionState(selectedProfileImage: .random(), hasExistingPhoto: false))
       case .edit(let person):
          _name = State(initialValue: person.displayName)
-         _selectedProfileImage = State(initialValue: person.profileImage)
+         _iconSelection = State(initialValue: PersonIconSelectionState(selectedProfileImage: person.profileImage, hasExistingPhoto: person.photoFileName != nil))
       }
    }
 
@@ -228,7 +230,7 @@ struct PersonFormView: View {
             VStack(spacing: 12) {
                PersonAvatarContent(
                   image: previewImage,
-                  profileImage: selectedProfileImage,
+                  profileImage: iconSelection.selectedProfileImage,
                   size: 84
                )
 
@@ -238,15 +240,9 @@ struct PersonFormView: View {
                      .foregroundStyle(LikehateTheme.likeAccent)
                }
                .disabled(isLoadingPhoto)
-
-               if canRemovePhoto {
-                  Button(role: .destructive) {
-                     removePhoto()
-                  } label: {
-                     Label("DeletePersonPhotoButton", systemImage: "xmark.circle")
-                        .font(typography.button)
-                  }
-               }
+               .simultaneousGesture(TapGesture().onEnded {
+                  iconSelection.beginPhotoSelection()
+               })
 
                if isLoadingPhoto {
                   ProgressView("LoadingPersonPhoto")
@@ -258,26 +254,20 @@ struct PersonFormView: View {
          }
 
          Section {
-            if isEditingMe {
-               Text("DefaultMeName")
-                  .font(typography.body)
-                  .foregroundStyle(.secondary)
-            } else {
-               TextField("PersonNamePlaceholder", text: $name)
-                  .font(typography.bodyRegular)
-                  .textInputAutocapitalization(.words)
-                  .autocorrectionDisabled()
-                  .focused($isNameFocused)
-                  .submitLabel(.done)
-                  .onSubmit {
-                     save()
+            TextField("PersonNamePlaceholder", text: $name)
+               .font(typography.bodyRegular)
+               .textInputAutocapitalization(.words)
+               .autocorrectionDisabled()
+               .focused($isNameFocused)
+               .submitLabel(.done)
+               .onSubmit {
+                  save()
+               }
+               .onChange(of: name) { _, newValue in
+                  if newValue.count > 30 {
+                     name = String(newValue.prefix(30))
                   }
-                  .onChange(of: name) { _, newValue in
-                     if newValue.count > 30 {
-                        name = String(newValue.prefix(30))
-                     }
-                  }
-            }
+               }
          } footer: {
             if case .add = mode {
                Text("AddPersonHelpText")
@@ -285,7 +275,9 @@ struct PersonFormView: View {
          }
 
          Section("ProfileImageSectionTitle") {
-            DefaultProfileImagePicker(selectedProfileImage: $selectedProfileImage)
+            DefaultProfileImagePicker(selectedProfileImage: iconSelection.selectedProfileImage) { profileImage in
+               selectProfileImage(profileImage)
+            }
          }
 
          if case .edit(let person) = mode, !person.isMe {
@@ -313,7 +305,7 @@ struct PersonFormView: View {
             Button(mode.saveTitle) {
                save()
             }
-            .disabled(isLoadingPhoto || (!isEditingMe && trimmedName.isEmpty))
+            .disabled(isLoadingPhoto || trimmedName.isEmpty)
          }
       }
       .confirmationDialog(
@@ -359,7 +351,7 @@ struct PersonFormView: View {
          return selectedPhotoPreview
       }
 
-      guard !removesExistingPhoto else { return nil }
+      guard !iconSelection.removesExistingPhoto else { return nil }
       if case .edit(let person) = mode {
          return store.photoImage(for: person)
       }
@@ -374,28 +366,21 @@ struct PersonFormView: View {
       String(localized: canRemovePhoto ? "ChangePersonPhotoButton" : "SelectPersonPhotoButton")
    }
 
-   private var isEditingMe: Bool {
-      if case .edit(let person) = mode {
-         return person.isMe
-      }
-      return false
-   }
-
    private func save() {
-      guard isEditingMe || !trimmedName.isEmpty else { return }
+      guard !trimmedName.isEmpty else { return }
 
       switch mode {
       case .add:
-         if let person = store.addPerson(named: name, profileImage: selectedProfileImage, photoData: selectedPhotoData) {
+         if let person = store.addPerson(named: name, profileImage: iconSelection.selectedProfileImage, photoData: selectedPhotoData) {
             onAdd?(person)
          }
       case .edit(let person):
          store.updatePerson(
             person.id,
             name: name,
-            profileImage: selectedProfileImage,
+            profileImage: iconSelection.selectedProfileImage,
             photoData: selectedPhotoData,
-            removesPhoto: removesExistingPhoto
+            removesPhoto: iconSelection.removesExistingPhoto
          )
       }
 
@@ -439,23 +424,46 @@ struct PersonFormView: View {
 
       selectedPhotoData = thumbnailData
       selectedPhotoPreview = thumbnail
-      removesExistingPhoto = false
+      iconSelection.didSelectPhoto()
       cropSourceImage = nil
    }
 
-   private func removePhoto() {
+   private func selectProfileImage(_ profileImage: DefaultProfileImage) {
+      iconSelection.selectProfileImage(profileImage)
       selectedPhotoItem = nil
       selectedPhotoData = nil
       selectedPhotoPreview = nil
       cropSourceImage = nil
-      if case .edit = mode {
-         removesExistingPhoto = true
-      }
+   }
+}
+
+struct PersonIconSelectionState: Equatable {
+   var selectedProfileImage: DefaultProfileImage
+   private(set) var removesExistingPhoto: Bool
+
+   private let hasExistingPhoto: Bool
+
+   init(selectedProfileImage: DefaultProfileImage, hasExistingPhoto: Bool) {
+      self.selectedProfileImage = selectedProfileImage
+      self.hasExistingPhoto = hasExistingPhoto
+      self.removesExistingPhoto = false
+   }
+
+   mutating func beginPhotoSelection() {}
+
+   mutating func didSelectPhoto() {
+      removesExistingPhoto = false
+   }
+
+   mutating func selectProfileImage(_ profileImage: DefaultProfileImage) {
+      selectedProfileImage = profileImage
+      removesExistingPhoto = hasExistingPhoto
    }
 }
 
 private struct DefaultProfileImagePicker: View {
-   @Binding var selectedProfileImage: DefaultProfileImage
+   let selectedProfileImage: DefaultProfileImage
+   let onSelect: (DefaultProfileImage) -> Void
 
    private let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 4)
 
@@ -463,7 +471,7 @@ private struct DefaultProfileImagePicker: View {
       LazyVGrid(columns: columns, spacing: 12) {
          ForEach(DefaultProfileImage.allCases) { profileImage in
             Button {
-               selectedProfileImage = profileImage
+               onSelect(profileImage)
             } label: {
                let isSelected = selectedProfileImage == profileImage
 
@@ -510,8 +518,8 @@ struct PersonDetailView: View {
          if let person = store.person(for: personID) {
             ScrollView {
                VStack(alignment: .leading, spacing: layout.sectionSpacing) {
-                  HStack(spacing: 12) {
-                     PersonAvatar(person: person, size: 52)
+                  HStack(spacing: 16) {
+                     PersonAvatar(person: person, size: 83)
 
                      Text(verbatim: person.displayName)
                         .font(typography.screenTitle)
@@ -956,9 +964,9 @@ private struct ComparisonPeopleHeader: View {
       let typography = store.typography(for: dynamicTypeSize)
       let layout = store.layoutMetrics
 
-      HStack(alignment: .center, spacing: 12) {
-         HStack(spacing: 8) {
-            PersonAvatar(person: firstPerson, size: 38)
+      HStack(alignment: .center, spacing: 14) {
+         HStack(spacing: 10) {
+            PersonAvatar(person: firstPerson, size: ComparisonAvatarMetrics.headerSize)
 
             Text(verbatim: firstPerson.displayName)
                .font(typography.cardTitle)
@@ -975,21 +983,21 @@ private struct ComparisonPeopleHeader: View {
             .padding(.horizontal, 6)
             .fixedSize(horizontal: true, vertical: false)
 
-         HStack(spacing: 8) {
+         HStack(spacing: 10) {
+            PersonAvatar(person: secondPerson, size: ComparisonAvatarMetrics.headerSize)
+
             Text(verbatim: secondPerson.displayName)
                .font(typography.cardTitle)
                .foregroundStyle(.primary)
                .lineLimit(2)
                .multilineTextAlignment(.trailing)
-
-            PersonAvatar(person: secondPerson, size: 38)
          }
          .frame(maxWidth: .infinity, alignment: .trailing)
          .layoutPriority(1)
       }
       .padding(.horizontal, layout.cardPadding)
-      .padding(.vertical, 14)
-      .frame(maxWidth: .infinity, minHeight: layout.rowMinHeight)
+      .padding(.vertical, 16)
+      .frame(maxWidth: .infinity, minHeight: max(84, layout.rowMinHeight + 20))
       .background(headerBackground, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
       .overlay(
          RoundedRectangle(cornerRadius: 18, style: .continuous)
@@ -1010,6 +1018,14 @@ private struct ComparisonPeopleHeader: View {
          secondPerson.displayName
       )
    }
+}
+
+private enum ComparisonAvatarMetrics {
+   static let headerSize: CGFloat = 53
+   static let categorySize: CGFloat = 42
+   static let categoryOverlapOffset: CGFloat = 25
+   static let categoryOverlapWidth: CGFloat = 68
+   static let categoryOverlapHeight: CGFloat = 48
 }
 
 private struct ComparisonResultGroup: View {
@@ -1072,10 +1088,10 @@ private struct ComparisonCard: View {
       let typography = store.typography(for: dynamicTypeSize)
       let layout = store.layoutMetrics
 
-      HStack(spacing: 8) {
+      HStack(spacing: 12) {
          Capsule()
             .fill(category.kind.color.opacity(colorScheme == .dark ? 0.78 : 0.64))
-            .frame(width: 3, height: 30)
+            .frame(width: 3, height: ComparisonAvatarMetrics.categorySize)
 
          ComparisonCategoryAvatar(
             category: category,
@@ -1101,8 +1117,8 @@ private struct ComparisonCard: View {
             .foregroundStyle(.tertiary)
       }
       .padding(.horizontal, layout.cardPadding)
-      .padding(.vertical, 14)
-      .frame(maxWidth: .infinity, minHeight: max(66, layout.rowMinHeight), alignment: .leading)
+      .padding(.vertical, 16)
+      .frame(maxWidth: .infinity, minHeight: max(82, layout.rowMinHeight + 18), alignment: .leading)
       .background(cardBackground, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
       .overlay(
          RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -1126,12 +1142,12 @@ private struct ComparisonCategoryAvatar: View {
       case .commonLike, .commonHate:
          OverlappingComparisonAvatars(firstPerson: firstPerson, secondPerson: secondPerson)
       case .firstOnlyLike, .firstOnlyHate:
-         PersonAvatar(person: firstPerson, size: 30)
-            .frame(width: 30, alignment: .leading)
+         PersonAvatar(person: firstPerson, size: ComparisonAvatarMetrics.categorySize)
+            .frame(width: ComparisonAvatarMetrics.categorySize, alignment: .leading)
             .accessibilityHidden(true)
       case .secondOnlyLike, .secondOnlyHate:
-         PersonAvatar(person: secondPerson, size: 30)
-            .frame(width: 30, alignment: .leading)
+         PersonAvatar(person: secondPerson, size: ComparisonAvatarMetrics.categorySize)
+            .frame(width: ComparisonAvatarMetrics.categorySize, alignment: .leading)
             .accessibilityHidden(true)
       }
    }
@@ -1145,15 +1161,19 @@ private struct OverlappingComparisonAvatars: View {
 
    var body: some View {
       ZStack(alignment: .leading) {
-         PersonAvatar(person: firstPerson, size: 30)
+         PersonAvatar(person: firstPerson, size: ComparisonAvatarMetrics.categorySize)
 
-         PersonAvatar(person: secondPerson, size: 30)
+         PersonAvatar(person: secondPerson, size: ComparisonAvatarMetrics.categorySize)
             .padding(2)
             .background(overlapBorder, in: Circle())
-            .offset(x: 18)
+            .offset(x: ComparisonAvatarMetrics.categoryOverlapOffset)
       }
-      .frame(width: 48, height: 34, alignment: .leading)
-      .padding(4)
+      .frame(
+         width: ComparisonAvatarMetrics.categoryOverlapWidth,
+         height: ComparisonAvatarMetrics.categoryOverlapHeight,
+         alignment: .leading
+      )
+      .padding(5)
       .background(avatarBackground, in: Capsule())
       .accessibilityHidden(true)
    }
@@ -1176,7 +1196,6 @@ struct ComparisonCategoryDetailView: View {
    let secondPersonID: UUID
 
    var body: some View {
-      let typography = store.typography(for: dynamicTypeSize)
       let layout = store.layoutMetrics
 
       Group {
@@ -1184,28 +1203,28 @@ struct ComparisonCategoryDetailView: View {
             let section = store.comparisonSections(firstPersonID: firstPersonID, secondPersonID: secondPersonID).first { $0.category == category }
             let titles = section?.titles ?? []
 
-            VStack(alignment: .leading, spacing: 0) {
-               Text(verbatim: comparisonSubtitle(firstPerson: firstPerson, secondPerson: secondPerson))
-                  .font(typography.body)
-                  .foregroundStyle(.secondary)
-                  .padding(.horizontal, layout.screenPadding)
-                  .padding(.top, 14)
-                  .padding(.bottom, 6)
+            ScrollView {
+               VStack(alignment: .leading, spacing: layout.cardSpacing + 8) {
+                  PersonPairHeaderView(firstPerson: firstPerson, secondPerson: secondPerson, avatarSize: ComparisonAvatarMetrics.categorySize)
+                     .padding(.top, 24)
 
-               List {
                   if titles.isEmpty {
-                     Text(verbatim: emptyMessage(category: category, firstPerson: firstPerson, secondPerson: secondPerson))
-                        .font(typography.bodyRegular)
-                        .foregroundStyle(.secondary)
+                     EmptyMemoStateView(
+                        systemImage: emptyStateIcon,
+                        accent: category.kind.color,
+                        title: emptyTitle(category: category, firstPerson: firstPerson, secondPerson: secondPerson),
+                        message: emptyMessage(category: category, firstPerson: firstPerson, secondPerson: secondPerson)
+                     )
+                     .padding(.top, 44)
                   } else {
-                     ForEach(titles, id: \.self) { title in
-                        Text(verbatim: title)
-                           .font(typography.bodyRegular)
-                     }
+                     LikeDislikeListCard(titles: titles, accent: category.kind.color)
                   }
                }
+               .padding(.horizontal, layout.screenPadding)
+               .padding(.bottom, layout.sectionSpacing)
             }
-            .background(LikehateTheme.background)
+            .background(LikehateTheme.background.ignoresSafeArea())
+            .scrollContentBackground(.hidden)
             .navigationTitle(category.title(first: firstPerson, second: secondPerson))
             .navigationBarTitleDisplayMode(.inline)
          } else {
@@ -1214,7 +1233,14 @@ struct ComparisonCategoryDetailView: View {
       }
    }
 
-   private func emptyMessage(category: ComparisonCategory, firstPerson: Person, secondPerson: Person) -> String {
+   private var emptyStateIcon: String {
+      switch category.kind {
+      case .like: return "heart"
+      case .hate: return "moon"
+      }
+   }
+
+   private func emptyTitle(category: ComparisonCategory, firstPerson: Person, secondPerson: Person) -> String {
       switch category {
       case .commonLike:
          return String(localized: "ComparisonEmptyCommonLike")
@@ -1231,11 +1257,20 @@ struct ComparisonCategoryDetailView: View {
       }
    }
 
-   private func comparisonSubtitle(firstPerson: Person, secondPerson: Person) -> String {
-      String.localizedStringWithFormat(
-         String(localized: "ComparisonSubtitleFormat"),
-         firstPerson.displayName,
-         secondPerson.displayName
-      )
+   private func emptyMessage(category: ComparisonCategory, firstPerson: Person, secondPerson: Person) -> String {
+      switch category {
+      case .commonLike:
+         return String(localized: "ComparisonEmptyCommonLikeMessage")
+      case .commonHate:
+         return String(localized: "ComparisonEmptyCommonHateMessage")
+      case .firstOnlyLike:
+         return String(localized: "ComparisonEmptyFirstOnlyLikeMessage")
+      case .secondOnlyLike:
+         return String.localizedStringWithFormat(String(localized: "ComparisonEmptySecondOnlyLikeMessageFormat"), secondPerson.displayName)
+      case .firstOnlyHate:
+         return String(localized: "ComparisonEmptyFirstOnlyHateMessage")
+      case .secondOnlyHate:
+         return String.localizedStringWithFormat(String(localized: "ComparisonEmptySecondOnlyHateMessageFormat"), secondPerson.displayName)
+      }
    }
 }
