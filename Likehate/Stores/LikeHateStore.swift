@@ -19,9 +19,14 @@ final class LikeHateStore: ObservableObject {
       static let hapticsEnabledKey = "HapticsEnabled"
       static let adRemovedKey = "BuyRemoveAd"
       static let textSizeKey = "AppTextSize"
-      static let personNameLimit = 30
       static let personPhotosDirectoryName = "PersonPhotos"
       static let personPhotoSize = CGSize(width: 512, height: 512)
+
+      #if DEBUG
+      static let appStoreScreenshotModeEnabledKey = "DebugAppStoreScreenshotModeEnabled"
+      static let appStoreScreenshotBackupPersonsKey = "DebugAppStoreScreenshotBackupPersonsV1"
+      static let appStoreScreenshotBackupItemsKey = "DebugAppStoreScreenshotBackupItemsV1"
+      #endif
    }
 
    @Published private(set) var persons: [Person]
@@ -42,6 +47,10 @@ final class LikeHateStore: ObservableObject {
    @Published var isPurchasing = false
    @Published var isRestoring = false
 
+   #if DEBUG
+   @Published private(set) var isAppStoreScreenshotModeEnabled: Bool
+   #endif
+
    private let defaults: UserDefaults
 
    init(defaults: UserDefaults = .standard) {
@@ -49,6 +58,9 @@ final class LikeHateStore: ObservableObject {
       self.didBuyRemoveAd = defaults.bool(forKey: Constants.adRemovedKey)
       self.animationEnabled = defaults.object(forKey: Constants.animationEnabledKey) as? Bool ?? true
       self.textSize = AppTextSize(rawValue: defaults.string(forKey: Constants.textSizeKey) ?? "") ?? .standard
+      #if DEBUG
+      self.isAppStoreScreenshotModeEnabled = defaults.bool(forKey: Constants.appStoreScreenshotModeEnabledKey)
+      #endif
 
       let now = Date()
       if let loadedPersons: [Person] = Self.decode([Person].self, forKey: Constants.personsKey, defaults: defaults) {
@@ -319,6 +331,18 @@ final class LikeHateStore: ObservableObject {
       ])
    }
 
+   #if DEBUG
+   func setAppStoreScreenshotModeEnabled(_ isEnabled: Bool) {
+      guard isEnabled != isAppStoreScreenshotModeEnabled else { return }
+
+      if isEnabled {
+         enableAppStoreScreenshotMode()
+      } else {
+         restoreDataFromAppStoreScreenshotMode()
+      }
+   }
+   #endif
+
    func comparisonSections(firstPersonID: UUID, secondPersonID: UUID) -> [ComparisonSection] {
       let firstLikes = uniqueComparisonTitles(from: items(for: firstPersonID, kind: .like))
       let secondLikes = uniqueComparisonTitles(from: items(for: secondPersonID, kind: .like))
@@ -459,6 +483,121 @@ final class LikeHateStore: ObservableObject {
       )
    }
 
+   #if DEBUG
+   private static let appStoreScreenshotMeID = UUID(uuidString: "00000000-0000-0000-0000-000000000101") ?? UUID()
+   private static let appStoreScreenshotSecondPersonID = UUID(uuidString: "00000000-0000-0000-0000-000000000102") ?? UUID()
+   private static let appStoreScreenshotThirdPersonID = UUID(uuidString: "00000000-0000-0000-0000-000000000103") ?? UUID()
+
+   private static func makeAppStoreScreenshotData(now: Date) -> (persons: [Person], entries: [LikeDislikeItem]) {
+      let persons = [
+         makeAppStoreScreenshotPerson(
+            id: appStoreScreenshotMeID,
+            name: String(localized: "DefaultMeName"),
+            profileImage: .defaultProfileImage,
+            isMe: true,
+            now: now,
+            sortOrder: 0
+         ),
+         makeAppStoreScreenshotPerson(
+            id: appStoreScreenshotSecondPersonID,
+            name: "あかり",
+            profileImage: .defaultProfileImage6,
+            isMe: false,
+            now: now,
+            sortOrder: 1
+         ),
+         makeAppStoreScreenshotPerson(
+            id: appStoreScreenshotThirdPersonID,
+            name: "はると",
+            profileImage: .defaultProfileImage12,
+            isMe: false,
+            now: now,
+            sortOrder: 2
+         )
+      ]
+
+      let entries =
+         makeAppStoreScreenshotEntries(
+            personID: appStoreScreenshotMeID,
+            kind: .like,
+            titles: ["おすし", "映画館", "夜の散歩", "カフェラテ"],
+            now: now
+         ) +
+         makeAppStoreScreenshotEntries(
+            personID: appStoreScreenshotMeID,
+            kind: .hate,
+            titles: ["早起き", "人混み", "辛すぎる料理"],
+            now: now
+         ) +
+         makeAppStoreScreenshotEntries(
+            personID: appStoreScreenshotSecondPersonID,
+            kind: .like,
+            titles: ["チーズケーキ", "映画館", "美術館", "カフェラテ"],
+            now: now
+         ) +
+         makeAppStoreScreenshotEntries(
+            personID: appStoreScreenshotSecondPersonID,
+            kind: .hate,
+            titles: ["虫", "満員電車", "辛すぎる料理"],
+            now: now
+         ) +
+         makeAppStoreScreenshotEntries(
+            personID: appStoreScreenshotThirdPersonID,
+            kind: .like,
+            titles: ["カレー", "夜の散歩", "ボードゲーム", "キャンプ"],
+            now: now
+         ) +
+         makeAppStoreScreenshotEntries(
+            personID: appStoreScreenshotThirdPersonID,
+            kind: .hate,
+            titles: ["トマト", "雨の日の外出", "大きな音"],
+            now: now
+         )
+
+      return (persons, entries)
+   }
+
+   private static func makeAppStoreScreenshotPerson(
+      id: UUID,
+      name: String,
+      profileImage: DefaultProfileImage,
+      isMe: Bool,
+      now: Date,
+      sortOrder: Int
+   ) -> Person {
+      Person(
+         id: id,
+         name: name,
+         profileImageName: profileImage.rawValue,
+         photoFileName: nil,
+         isMe: isMe,
+         createdAt: now.addingTimeInterval(TimeInterval(sortOrder)),
+         updatedAt: now,
+         sortOrder: sortOrder
+      )
+   }
+
+   private static func makeAppStoreScreenshotEntries(
+      personID: UUID,
+      kind: EntryKind,
+      titles: [String],
+      now: Date
+   ) -> [LikeDislikeItem] {
+      titles.enumerated().map { offset, title in
+         LikeDislikeItem(
+            id: UUID(),
+            personId: personID,
+            type: kind,
+            title: title,
+            note: nil,
+            createdAt: now.addingTimeInterval(TimeInterval(offset)),
+            updatedAt: now,
+            sortOrder: offset
+         )
+      }
+   }
+   #endif
+
    private static func normalizedPersons(_ rawPersons: [Person], now: Date) -> [Person] {
       var normalized = rawPersons.sorted {
          if $0.sortOrder == $1.sortOrder {
@@ -506,6 +645,47 @@ final class LikeHateStore: ObservableObject {
       return trimmedName.isEmpty || trimmedName == "自分"
    }
 
+   #if DEBUG
+   private func enableAppStoreScreenshotMode() {
+      backupCurrentDataForAppStoreScreenshotMode()
+
+      let sampleData = Self.makeAppStoreScreenshotData(now: Date())
+      persons = sampleData.persons
+      entries = sampleData.entries
+      isAppStoreScreenshotModeEnabled = true
+      defaults.set(true, forKey: Constants.appStoreScreenshotModeEnabledKey)
+      persistPeopleAndEntries()
+   }
+
+   private func restoreDataFromAppStoreScreenshotMode() {
+      let now = Date()
+      if
+         let backedUpPersons: [Person] = Self.decode([Person].self, forKey: Constants.appStoreScreenshotBackupPersonsKey, defaults: defaults),
+         let backedUpEntries: [LikeDislikeItem] = Self.decode([LikeDislikeItem].self, forKey: Constants.appStoreScreenshotBackupItemsKey, defaults: defaults)
+      {
+         let restoredPersons = Self.normalizedPersons(backedUpPersons, now: now)
+         let validPersonIDs = Set(restoredPersons.map(\.id))
+         persons = restoredPersons
+         entries = backedUpEntries.filter { validPersonIDs.contains($0.personId) }
+         normalizeSortOrders()
+      } else {
+         persons = [Self.makeMePerson(now: now, sortOrder: 0)]
+         entries = []
+      }
+
+      defaults.removeObject(forKey: Constants.appStoreScreenshotBackupPersonsKey)
+      defaults.removeObject(forKey: Constants.appStoreScreenshotBackupItemsKey)
+      isAppStoreScreenshotModeEnabled = false
+      defaults.set(false, forKey: Constants.appStoreScreenshotModeEnabledKey)
+      persistPeopleAndEntries()
+   }
+
+   private func backupCurrentDataForAppStoreScreenshotMode() {
+      persist(persons, forKey: Constants.appStoreScreenshotBackupPersonsKey)
+      persist(entries, forKey: Constants.appStoreScreenshotBackupItemsKey)
+   }
+   #endif
+
    private func normalizeSortOrders() {
       for index in persons.indices {
          persons[index].sortOrder = index
@@ -535,8 +715,7 @@ final class LikeHateStore: ObservableObject {
    }
 
    private func sanitizedPersonName(_ rawName: String) -> String {
-      let trimmed = rawName.trimmingCharacters(in: .whitespacesAndNewlines)
-      return String(trimmed.prefix(Constants.personNameLimit))
+      PersonNameRules.sanitized(rawName)
    }
 
    private func uniqueComparisonTitles(from items: [LikeDislikeItem]) -> [(title: String, key: String)] {

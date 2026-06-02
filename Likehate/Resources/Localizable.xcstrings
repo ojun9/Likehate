@@ -407,6 +407,38 @@
         }
       }
     },
+    "AppStoreScreenshotModeSubtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replace current data with sample screenshot data"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スクショ用のサンプルデータに差し替えます"
+          }
+        }
+      }
+    },
+    "AppStoreScreenshotModeTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store screenshot mode"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Storeスクショモード"
+          }
+        }
+      }
+    },
     "AppTitle" : {
       "localizations" : {
         "ar" : {
@@ -810,6 +842,7 @@
       }
     },
     "ComparisonAvoidTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -875,6 +908,7 @@
       }
     },
     "ComparisonDifferencesTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1281,6 +1315,7 @@
       }
     },
     "ComparisonSummaryCommonHateFormat" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1297,6 +1332,7 @@
       }
     },
     "ComparisonSummaryCommonLikeFormat" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1330,6 +1366,7 @@
       }
     },
     "ComparisonSummaryNoCommonLike" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1346,6 +1383,7 @@
       }
     },
     "ComparisonTogetherTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1637,6 +1675,22 @@
         }
       }
     },
+    "DebugSectionTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Debug"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デバッグ"
+          }
+        }
+      }
+    },
     "DeleteAllConfirmationMessage" : {
       "localizations" : {
         "en" : {
@@ -1815,6 +1869,7 @@
       }
     },
     "DeletePersonPhotoButton" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1943,22 +1998,6 @@
         }
       }
     },
-    "EditPersonTitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About this person"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "この人のこと"
-          }
-        }
-      }
-    },
     "EditPersonHelpText" : {
       "localizations" : {
         "en" : {
@@ -1971,6 +2010,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "呼び方やアイコンを変えられます。"
+          }
+        }
+      }
+    },
+    "EditPersonTitle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About this person"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この人のこと"
           }
         }
       }
@@ -3445,22 +3501,6 @@
         }
       }
     },
-    "PersonPairSeparator" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "and"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "と"
-          }
-        }
-      }
-    },
     "PersonNamePlaceholder" : {
       "localizations" : {
         "en" : {
@@ -3489,6 +3529,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "人物が見つかりません"
+          }
+        }
+      }
+    },
+    "PersonPairSeparator" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "and"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "と"
           }
         }
       }

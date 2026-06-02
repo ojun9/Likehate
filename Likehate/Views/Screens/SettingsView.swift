@@ -86,6 +86,24 @@ struct SettingsView: View {
             }
             .buttonStyle(.plain)
          }
+
+         #if DEBUG
+         Section("DebugSectionTitle") {
+            Toggle(
+               isOn: Binding(
+                  get: { store.isAppStoreScreenshotModeEnabled },
+                  set: { store.setAppStoreScreenshotModeEnabled($0) }
+               )
+            ) {
+               SettingsActionRow(
+                  iconName: "camera.viewfinder",
+                  title: "AppStoreScreenshotModeTitle",
+                  subtitle: "AppStoreScreenshotModeSubtitle",
+                  iconColor: .orange
+               )
+            }
+         }
+         #endif
       }
       .font(typography.bodyRegular)
       .navigationTitle("SettingsTitle")

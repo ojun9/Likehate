@@ -111,6 +111,22 @@ struct PersonNameSubmitActionTests {
    }
 }
 
+struct PersonNameRulesTests {
+   @Test("Person name limit is forty characters")
+   func personNameLimitIsFortyCharacters() {
+      #expect(PersonNameRules.maxLength == 40)
+   }
+
+   @Test("Person names are trimmed and limited")
+   func personNamesAreTrimmedAndLimited() {
+      let rawName = "  " + String(repeating: "あ", count: 41) + "  "
+      let sanitizedName = PersonNameRules.sanitized(rawName)
+
+      #expect(sanitizedName.count == 40)
+      #expect(sanitizedName == String(repeating: "あ", count: 40))
+   }
+}
+
 struct EntryKindTests {
    @Test("EntryKind exposes stable storage keys")
    func storageKeysAreStable() {
@@ -122,6 +138,35 @@ struct EntryKindTests {
    func analyticsNamesAreStable() {
       #expect(EntryKind.like.analyticsName == "RegiLike")
       #expect(EntryKind.hate.analyticsName == "RegiHate")
+   }
+}
+
+struct EntryPreviewItemsTests {
+   @Test("Entry previews use the first items from the current order")
+   func previewsUseFirstItemsFromCurrentOrder() {
+      let personID = UUID()
+      let items = [
+         makeItem(title: "おすし", personID: personID, sortOrder: 0),
+         makeItem(title: "カレー", personID: personID, sortOrder: 1),
+         makeItem(title: "映画", personID: personID, sortOrder: 2),
+         makeItem(title: "散歩", personID: personID, sortOrder: 3)
+      ]
+
+      let previewTitles = EntryPreviewItems.items(from: items).map(\.title)
+
+      #expect(previewTitles == ["おすし", "カレー", "映画"])
+   }
+
+   @Test("Entry previews can be limited and reject empty limits")
+   func previewsRespectLimit() {
+      let personID = UUID()
+      let items = [
+         makeItem(title: "おすし", personID: personID, sortOrder: 0),
+         makeItem(title: "カレー", personID: personID, sortOrder: 1)
+      ]
+
+      #expect(EntryPreviewItems.items(from: items, limit: 1).map(\.title) == ["おすし"])
+      #expect(EntryPreviewItems.items(from: items, limit: 0).isEmpty)
    }
 }
 
@@ -274,6 +319,25 @@ struct LocalizationTests {
       #expect(title != "違いを見る")
    }
 
+   @Test("Debug menu localization keys resolve")
+   func debugMenuLocalizationKeysResolve() {
+      let keys = [
+         "DebugSectionTitle",
+         "AppStoreScreenshotModeTitle",
+         "AppStoreScreenshotModeSubtitle"
+      ]
+
+      for key in keys {
+         let japaneseValue = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "ja"))
+         let englishValue = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "en"))
+
+         #expect(japaneseValue.isEmpty == false)
+         #expect(englishValue.isEmpty == false)
+         #expect(japaneseValue != key)
+         #expect(englishValue != key)
+      }
+   }
+
    @Test("Comparison empty state localization keys resolve")
    func comparisonEmptyStateLocalizationKeysResolve() {
       let keys = [
@@ -358,5 +422,23 @@ private func makePerson(
       createdAt: Date(),
       updatedAt: Date(),
       sortOrder: 0
+   )
+}
+
+private func makeItem(
+   title: String,
+   personID: UUID,
+   kind: EntryKind = .like,
+   sortOrder: Int
+) -> LikeDislikeItem {
+   LikeDislikeItem(
+      id: UUID(),
+      personId: personID,
+      type: kind,
+      title: title,
+      note: nil,
+      createdAt: Date(),
+      updatedAt: Date(),
+      sortOrder: sortOrder
    )
 }

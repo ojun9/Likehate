@@ -189,6 +189,19 @@ enum DefaultProfileImage: String, CaseIterable, Identifiable, Codable, Hashable 
    }
 }
 
+enum PersonNameRules {
+   static let maxLength = 40
+
+   static func limited(_ name: String) -> String {
+      String(name.prefix(maxLength))
+   }
+
+   static func sanitized(_ rawName: String) -> String {
+      let trimmedName = rawName.trimmingCharacters(in: .whitespacesAndNewlines)
+      return limited(trimmedName)
+   }
+}
+
 struct LikeDislikeItem: Identifiable, Codable, Hashable {
    var id: UUID
    var personId: UUID
@@ -198,6 +211,15 @@ struct LikeDislikeItem: Identifiable, Codable, Hashable {
    var createdAt: Date
    var updatedAt: Date
    var sortOrder: Int
+}
+
+enum EntryPreviewItems {
+   static let maxCount = 3
+
+   static func items(from items: [LikeDislikeItem], limit: Int = maxCount) -> [LikeDislikeItem] {
+      guard limit > 0 else { return [] }
+      return Array(items.prefix(limit))
+   }
 }
 
 struct AppSettings: Codable, Hashable {

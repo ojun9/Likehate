@@ -38,6 +38,26 @@ struct LikeHateStorePersonTests {
       #expect(reloadedPerson.profileImageName == DefaultProfileImage.defaultProfileImage7.rawValue)
    }
 
+   @Test("Adding and updating a person limits names to forty characters")
+   func addAndUpdatePersonLimitNamesToFortyCharacters() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let longName = String(repeating: "あ", count: 41)
+      let person = try #require(store.addPerson(named: "  \(longName)  ", profileImage: .defaultProfileImage7))
+
+      #expect(person.name.count == 40)
+      #expect(person.name == String(repeating: "あ", count: 40))
+
+      let updateName = String(repeating: "い", count: 45)
+      store.updatePerson(person.id, name: updateName, profileImage: .defaultProfileImage8)
+      let updatedPerson = try #require(store.person(for: person.id))
+
+      #expect(updatedPerson.name.count == 40)
+      #expect(updatedPerson.name == String(repeating: "い", count: 40))
+   }
+
    @Test("Updating me can store a name but keeps the display name fixed")
    func updateMeKeepsDisplayNameFixed() throws {
       let context = try StoreTestContext()
@@ -172,6 +192,27 @@ struct LikeHateStoreEntryTests {
 
       store.delete(at: IndexSet(integer: 0), from: .like, personID: me.id)
       #expect(store.items(for: me.id, kind: .like).map(\.title) == ["お寿司"])
+   }
+
+   @Test("Entry preview follows reordered list order")
+   func entryPreviewFollowsReorderedListOrder() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+
+      store.add("おすし", to: .like, personID: me.id)
+      store.add("カレー", to: .like, personID: me.id)
+      store.add("映画", to: .like, personID: me.id)
+      store.add("散歩", to: .like, personID: me.id)
+
+      #expect(EntryPreviewItems.items(from: store.items(for: me.id, kind: .like)).map(\.title) == ["おすし", "カレー", "映画"])
+
+      store.move(from: IndexSet(integer: 3), to: 0, in: .like, personID: me.id)
+
+      #expect(store.items(for: me.id, kind: .like).map(\.title) == ["散歩", "おすし", "カレー", "映画"])
+      #expect(EntryPreviewItems.items(from: store.items(for: me.id, kind: .like)).map(\.title) == ["散歩", "おすし", "カレー"])
    }
 
    @Test("Legacy like and hate arrays migrate into the me person")
@@ -337,6 +378,64 @@ struct LikeHateStoreSettingsTests {
       #expect(reloadedStore.textSize == .extraLarge)
       #expect(reloadedStore.appSettings.textSize == .extraLarge)
    }
+
+   #if DEBUG
+   @Test("App Store screenshot mode swaps in sample data and restores original data")
+   func appStoreScreenshotModeSwapsAndRestoresOriginalData() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+      let friend = try #require(store.addPerson(named: "太郎", profileImage: .defaultProfileImage8))
+      store.add("焼き魚", to: .like, personID: friend.id)
+      store.add("梅干し", to: .hate, personID: me.id)
+
+      let originalPersonIDs = store.persons.map(\.id)
+      let originalEntryTitles = store.entries.map(\.title)
+
+      store.setAppStoreScreenshotModeEnabled(true)
+
+      let sampleMe = try #require(store.mePerson)
+      #expect(store.isAppStoreScreenshotModeEnabled)
+      #expect(store.persons.map(\.displayName) == [String(localized: "DefaultMeName"), "あかり", "はると"])
+      #expect(store.items(for: sampleMe.id, kind: .like).map(\.title) == ["おすし", "映画館", "夜の散歩", "カフェラテ"])
+      #expect(store.items(for: sampleMe.id, kind: .hate).map(\.title) == ["早起き", "人混み", "辛すぎる料理"])
+      #expect(store.entries.count == 21)
+      #expect(store.person(for: friend.id) == nil)
+
+      store.setAppStoreScreenshotModeEnabled(false)
+
+      #expect(store.isAppStoreScreenshotModeEnabled == false)
+      #expect(store.persons.map(\.id) == originalPersonIDs)
+      #expect(store.entries.map(\.title) == originalEntryTitles)
+      #expect(store.items(for: friend.id, kind: .like).map(\.title) == ["焼き魚"])
+      #expect(store.items(for: me.id, kind: .hate).map(\.title) == ["梅干し"])
+   }
+
+   @Test("App Store screenshot mode can restore after store reload")
+   func appStoreScreenshotModeRestoresAfterReload() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+      store.add("プリン", to: .like, personID: me.id)
+      let originalPersonIDs = store.persons.map(\.id)
+
+      store.setAppStoreScreenshotModeEnabled(true)
+
+      let reloadedStore = LikeHateStore(defaults: context.defaults)
+      #expect(reloadedStore.isAppStoreScreenshotModeEnabled)
+      #expect(reloadedStore.persons.map(\.displayName) == [String(localized: "DefaultMeName"), "あかり", "はると"])
+
+      reloadedStore.setAppStoreScreenshotModeEnabled(false)
+
+      #expect(reloadedStore.isAppStoreScreenshotModeEnabled == false)
+      #expect(reloadedStore.persons.map(\.id) == originalPersonIDs)
+      #expect(reloadedStore.items(for: me.id, kind: .like).map(\.title) == ["プリン"])
+   }
+   #endif
 
    @Test("Delete all resets entries and recreates only me")
    func deleteAllResetsPeopleAndEntries() throws {

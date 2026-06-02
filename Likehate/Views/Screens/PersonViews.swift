@@ -271,8 +271,8 @@ struct PersonFormView: View {
                      applyNameSubmitAction(PersonNameSubmitAction.done.action())
                   }
                   .onChange(of: name) { _, newValue in
-                     if newValue.count > 30 {
-                        name = String(newValue.prefix(30))
+                     if newValue.count > PersonNameRules.maxLength {
+                        name = PersonNameRules.limited(newValue)
                      }
                   }
             } footer: {
@@ -664,7 +664,7 @@ private struct PersonEntryPreviewSection: View {
       let typography = store.typography(for: dynamicTypeSize)
       let layout = store.layoutMetrics
       let items = store.items(for: person.id, kind: kind)
-      let previewItems = Array(items.suffix(3).reversed())
+      let previewItems = EntryPreviewItems.items(from: items)
       let countText = String.localizedStringWithFormat(String(localized: "ItemsCountFormat"), items.count)
 
       VStack(alignment: .leading, spacing: 16) {
