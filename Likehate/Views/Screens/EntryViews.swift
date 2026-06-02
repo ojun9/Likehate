@@ -378,58 +378,94 @@ struct ItemListView: View {
       let typography = store.typography(for: dynamicTypeSize)
       let layout = store.layoutMetrics
 
-      return List {
-         ForEach(items) { item in
-            Button {
-               editingItem = item
-            } label: {
-               HStack(spacing: 12) {
-                  Text(verbatim: item.title)
-                     .font(typography.body)
-                     .foregroundStyle(.primary)
-                     .lineLimit(12)
-                     .multilineTextAlignment(.leading)
-                     .frame(maxWidth: .infinity, alignment: .leading)
+      return ZStack {
+         LikehateTheme.background
+            .ignoresSafeArea()
 
-                  Image(systemName: "pencil")
-                     .font(typography.subtext)
-                     .foregroundStyle(.tertiary)
-               }
-               .padding(.vertical, max(4, layout.cardSpacing - 12))
-               .frame(minHeight: layout.rowMinHeight, alignment: .leading)
-            }
-            .buttonStyle(.plain)
-            .listRowInsets(EdgeInsets(top: 10, leading: layout.cardPadding, bottom: 10, trailing: layout.cardPadding))
-            .swipeActions(edge: .leading, allowsFullSwipe: false) {
-               Button {
-                  editingItem = item
-               } label: {
-                  Label("EditItemButton", systemImage: "pencil")
-               }
-               .tint(kind.color)
-            }
-         }
-         .onDelete { offsets in
-            store.delete(at: offsets, from: kind, personID: person.id)
-         }
-         .onMove { source, destination in
-            store.move(from: source, to: destination, in: kind, personID: person.id)
-         }
-
-         if showsBanner {
-            LikehateAdaptiveAdBanner(adUnitID: AdMobUnitID.itemListBanner)
-               .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-               .listRowSeparator(.hidden)
-               .onAppear {
-                  Analytics.logEvent("list_banner_visible", parameters: listAnalyticsParameters(person: person, itemCount: itemCount, showsBanner: showsBanner))
-               }
-         }
-      }
-      .overlay {
          if itemCount == 0 {
-            ContentUnavailableView(kind.emptyListTitle(for: person), systemImage: "tray", description: Text(kind.emptyListMessage(for: person)))
+            EmptyMemoStateView(
+               systemImage: kind == .like ? "heart" : "moon",
+               accent: kind.color,
+               title: emptyListTitle,
+               message: emptyListMessage
+            )
+            .padding(.horizontal, layout.screenPadding)
+            .offset(y: -36)
+         } else {
+            List {
+               Section {
+                  ForEach(items) { item in
+                     Button {
+                        editingItem = item
+                     } label: {
+                        HStack(spacing: 12) {
+                           Text(verbatim: item.title)
+                              .font(typography.body)
+                              .foregroundStyle(.primary)
+                              .lineLimit(12)
+                              .multilineTextAlignment(.leading)
+                              .frame(maxWidth: .infinity, alignment: .leading)
+
+                           Image(systemName: "pencil")
+                              .font(typography.subtext)
+                              .foregroundStyle(.tertiary)
+                        }
+                        .padding(.vertical, 8)
+                        .frame(minHeight: layout.rowMinHeight, alignment: .leading)
+                     }
+                     .buttonStyle(.plain)
+                     .listRowInsets(EdgeInsets(top: 0, leading: layout.cardPadding, bottom: 0, trailing: layout.cardPadding))
+                     .listRowBackground(LikehateTheme.elevatedSurface)
+                     .listRowSeparatorTint(LikehateTheme.separator)
+                     .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                        Button {
+                           editingItem = item
+                        } label: {
+                           Label("EditItemButton", systemImage: "pencil")
+                        }
+                        .tint(kind.color)
+                     }
+                  }
+                  .onDelete { offsets in
+                     store.delete(at: offsets, from: kind, personID: person.id)
+                  }
+                  .onMove { source, destination in
+                     store.move(from: source, to: destination, in: kind, personID: person.id)
+                  }
+               } header: {
+                  HStack(alignment: .firstTextBaseline) {
+                     Text(verbatim: kind.title(for: person))
+                        .font(typography.cardTitle)
+                        .foregroundStyle(.primary)
+
+                     Spacer()
+
+                     Text(verbatim: String.localizedStringWithFormat(String(localized: "ItemsCountFormat"), itemCount))
+                        .font(typography.count)
+                        .foregroundStyle(.secondary)
+                        .monospacedDigit()
+                  }
+                  .padding(.horizontal, 2)
+                  .padding(.bottom, 8)
+                  .textCase(nil)
+               }
+
+               if showsBanner {
+                  LikehateAdaptiveAdBanner(adUnitID: AdMobUnitID.itemListBanner)
+                     .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+                     .listRowSeparator(.hidden)
+                     .listRowBackground(Color.clear)
+                     .onAppear {
+                        Analytics.logEvent("list_banner_visible", parameters: listAnalyticsParameters(person: person, itemCount: itemCount, showsBanner: showsBanner))
+                     }
+               }
+            }
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
+            .background(LikehateTheme.background)
          }
       }
+      .background(LikehateTheme.background.ignoresSafeArea())
       .navigationTitle(kind.listTitle(for: person))
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -446,6 +482,20 @@ struct ItemListView: View {
       .onAppear {
          Analytics.logEvent(kind == .like ? "showLikeTableView" : "showHateTableView", parameters: listAnalyticsParameters(person: person, itemCount: itemCount, showsBanner: showsBanner))
          Analytics.logEvent("screen_view_item_list", parameters: listAnalyticsParameters(person: person, itemCount: itemCount, showsBanner: showsBanner))
+      }
+   }
+
+   private var emptyListTitle: String {
+      switch kind {
+      case .like: return String(localized: "EmptyLikesTitle")
+      case .hate: return String(localized: "EmptyHatesTitle")
+      }
+   }
+
+   private var emptyListMessage: String {
+      switch kind {
+      case .like: return String(localized: "EmptyLikesMessage")
+      case .hate: return String(localized: "EmptyHatesMessage")
       }
    }
 
