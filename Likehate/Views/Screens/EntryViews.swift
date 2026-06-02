@@ -400,7 +400,7 @@ struct ItemListView: View {
                      } label: {
                         HStack(spacing: 12) {
                            Text(verbatim: item.title)
-                              .font(typography.body)
+                              .font(typography.prominentListBody)
                               .foregroundStyle(.primary)
                               .lineLimit(12)
                               .multilineTextAlignment(.leading)

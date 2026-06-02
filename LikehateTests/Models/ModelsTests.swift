@@ -188,6 +188,15 @@ struct AppTextSizeTests {
       #expect(extraSmall < standard)
       #expect(standard < extraLarge)
    }
+
+   @Test("Text size advancement clamps at the available bounds")
+   func textSizeAdvancementClampsAtBounds() {
+      #expect(AppTextSize.extraSmall.advanced(by: 2) == .standard)
+      #expect(AppTextSize.small.advanced(by: 2) == .large)
+      #expect(AppTextSize.standard.advanced(by: 2) == .extraLarge)
+      #expect(AppTextSize.large.advanced(by: 2) == .extraLarge)
+      #expect(AppTextSize.extraSmall.advanced(by: -2) == .extraSmall)
+   }
 }
 
 private func makePerson(

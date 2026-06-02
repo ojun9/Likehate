@@ -66,16 +66,17 @@ struct AppTypography {
    var cardTitle: Font { font(.cardTitle, weight: .bold, design: .rounded) }
    var body: Font { font(.body, weight: .medium, design: .rounded) }
    var bodyRegular: Font { font(.body, weight: .regular, design: .rounded) }
+   var prominentListBody: Font { font(.body, textSize: textSize.advanced(by: 2), weight: .medium, design: .rounded) }
    var subtext: Font { font(.subtext, weight: .medium, design: .rounded) }
    var button: Font { font(.button, weight: .bold, design: .rounded) }
    var count: Font { font(.count, weight: .semibold, design: .rounded) }
 
-   private func font(_ token: FontToken, weight: Font.Weight, design: Font.Design) -> Font {
-      .system(size: scaledSize(for: token), weight: weight, design: design)
+   private func font(_ token: FontToken, textSize resolvedTextSize: AppTextSize? = nil, weight: Font.Weight, design: Font.Design) -> Font {
+      .system(size: scaledSize(for: token, textSize: resolvedTextSize ?? textSize), weight: weight, design: design)
    }
 
-   private func scaledSize(for token: FontToken) -> CGFloat {
-      token.baseSize(for: textSize) * dynamicTypeScale
+   private func scaledSize(for token: FontToken, textSize resolvedTextSize: AppTextSize) -> CGFloat {
+      token.baseSize(for: resolvedTextSize) * dynamicTypeScale
    }
 
    private var dynamicTypeScale: CGFloat {
