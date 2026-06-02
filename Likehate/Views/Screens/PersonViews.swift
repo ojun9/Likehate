@@ -872,62 +872,30 @@ struct ComparisonSelectionView: View {
 
 struct ComparisonResultView: View {
    @EnvironmentObject private var store: LikeHateStore
-   @Environment(\.colorScheme) private var colorScheme
-   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
    let firstPersonID: UUID
    let secondPersonID: UUID
 
    var body: some View {
-      let typography = store.typography(for: dynamicTypeSize)
       let layout = store.layoutMetrics
 
       Group {
          if let firstPerson = store.person(for: firstPersonID), let secondPerson = store.person(for: secondPersonID) {
             let sections = store.comparisonSections(firstPersonID: firstPersonID, secondPersonID: secondPersonID)
-            let commonSections = sections.filter { $0.category == .commonLike || $0.category == .commonHate }
-            let differenceSections = sections.filter { $0.category != .commonLike && $0.category != .commonHate }
             ScrollView {
                VStack(alignment: .leading, spacing: layout.sectionSpacing) {
                   ComparisonPeopleHeader(firstPerson: firstPerson, secondPerson: secondPerson)
 
-                  Text(verbatim: comparisonSummaryText(sections: sections, secondPerson: secondPerson))
-                     .font(typography.body)
-                     .foregroundStyle(.primary)
-                     .padding(layout.cardPadding)
-                     .frame(maxWidth: .infinity, alignment: .leading)
-                     .background(comparisonSurface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                     .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                           .stroke(LikehateTheme.border, lineWidth: 1)
+                  ForEach(ComparisonResultSectionGroup.ordered) { group in
+                     ComparisonResultGroup(
+                        title: LocalizedStringKey(group.titleKey),
+                        sections: group.sections(from: sections),
+                        firstPerson: firstPerson,
+                        secondPerson: secondPerson,
+                        firstPersonID: firstPersonID,
+                        secondPersonID: secondPersonID
                      )
-
-                  ComparisonResultGroup(
-                     title: "ComparisonTogetherTitle",
-                     sections: commonSections.filter { $0.category == .commonLike },
-                     firstPerson: firstPerson,
-                     secondPerson: secondPerson,
-                     firstPersonID: firstPersonID,
-                     secondPersonID: secondPersonID
-                  )
-
-                  ComparisonResultGroup(
-                     title: "ComparisonAvoidTitle",
-                     sections: commonSections.filter { $0.category == .commonHate },
-                     firstPerson: firstPerson,
-                     secondPerson: secondPerson,
-                     firstPersonID: firstPersonID,
-                     secondPersonID: secondPersonID
-                  )
-
-                  ComparisonResultGroup(
-                     title: "ComparisonDifferencesTitle",
-                     sections: differenceSections,
-                     firstPerson: firstPerson,
-                     secondPerson: secondPerson,
-                     firstPersonID: firstPersonID,
-                     secondPersonID: secondPersonID
-                  )
+                  }
                }
                .padding(layout.screenPadding)
             }
@@ -945,25 +913,6 @@ struct ComparisonResultView: View {
       .navigationTitle("CompareTitle")
       .navigationBarTitleDisplayMode(.inline)
       .background(LikehateTheme.background)
-   }
-
-   private func comparisonSummaryText(sections: [ComparisonSection], secondPerson: Person) -> String {
-      let commonLikeCount = sections.first { $0.category == .commonLike }?.titles.count ?? 0
-      let commonHateCount = sections.first { $0.category == .commonHate }?.titles.count ?? 0
-
-      if commonLikeCount > 0 {
-         return String.localizedStringWithFormat(String(localized: "ComparisonSummaryCommonLikeFormat"), commonLikeCount)
-      }
-
-      if commonHateCount > 0 {
-         return String.localizedStringWithFormat(String(localized: "ComparisonSummaryCommonHateFormat"), commonHateCount)
-      }
-
-      return String(localized: "ComparisonSummaryNoCommonLike")
-   }
-
-   private var comparisonSurface: Color {
-      colorScheme == .dark ? Color.white.opacity(0.055) : LikehateTheme.surface.opacity(0.82)
    }
 }
 

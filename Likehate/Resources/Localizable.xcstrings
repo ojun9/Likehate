@@ -836,7 +836,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共通で嫌い"
+            "value" : "どっちも嫌い"
           }
         }
       }
@@ -852,7 +852,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共通で好き"
+            "value" : "どっちも好き"
           }
         }
       }
@@ -869,7 +869,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共通で嫌い"
+            "value" : "どっちも嫌い"
           }
         }
       }
@@ -879,13 +879,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "See differences"
+            "value" : "Differences between you two"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "違いを見る"
+            "value" : "ふたりの違い"
           }
         }
       }
@@ -918,7 +918,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共通で嫌いなものはまだありません"
+            "value" : "どっちも嫌いなものはまだありません"
           }
         }
       }
@@ -950,7 +950,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共通で好きなものはまだありません"
+            "value" : "どっちも好きなものはまだありません"
           }
         }
       }
@@ -983,7 +983,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共通で嫌いなものはまだありません"
+            "value" : "どっちも嫌いなものはまだありません"
           }
         }
       }
@@ -1340,7 +1340,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共通で好きなものはまだありません"
+            "value" : "どっちも好きなものはまだありません"
           }
         }
       }

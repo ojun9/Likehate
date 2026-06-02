@@ -140,6 +140,43 @@ struct ComparisonCategoryTests {
    }
 }
 
+struct ComparisonResultSectionGroupTests {
+   @Test("Comparison result groups are the only top-level result sections")
+   func resultGroupsAreTheOnlyTopLevelSections() {
+      let groups = ComparisonResultSectionGroup.ordered
+
+      #expect(groups.map(\.titleKey) == [
+         "ComparisonTogetherTitle",
+         "ComparisonAvoidTitle",
+         "ComparisonDifferencesTitle"
+      ])
+      #expect(groups.map(\.id) == [.together, .avoid, .differences])
+      #expect(groups.contains { $0.titleKey.hasPrefix("ComparisonSummary") } == false)
+   }
+
+   @Test("Comparison result groups cover every category once")
+   func resultGroupsCoverEveryCategoryOnce() {
+      let categories = ComparisonResultSectionGroup.ordered.flatMap(\.categories)
+
+      #expect(categories.count == ComparisonCategory.allCases.count)
+      #expect(Set(categories) == Set(ComparisonCategory.allCases))
+   }
+
+   @Test("Comparison result groups filter their own sections")
+   func resultGroupsFilterTheirOwnSections() throws {
+      let sections = ComparisonCategory.allCases.map { category in
+         ComparisonSection(category: category, titles: [category.rawValue])
+      }
+      let together = try #require(ComparisonResultSectionGroup.ordered.first { $0.id == .together })
+      let avoid = try #require(ComparisonResultSectionGroup.ordered.first { $0.id == .avoid })
+      let differences = try #require(ComparisonResultSectionGroup.ordered.first { $0.id == .differences })
+
+      #expect(together.sections(from: sections).map(\.category) == [.commonLike])
+      #expect(avoid.sections(from: sections).map(\.category) == [.commonHate])
+      #expect(differences.sections(from: sections).map(\.category) == [.firstOnlyLike, .secondOnlyLike, .firstOnlyHate, .secondOnlyHate])
+   }
+}
+
 struct LocalizationTests {
    @Test("Japanese first-person localization is watashi")
    func japaneseFirstPersonLocalizationIsWatashi() {
@@ -210,6 +247,24 @@ struct LocalizationTests {
       #expect(firstOnlyHate.contains("苦手") == false)
       #expect(secondOnlyHate.contains("苦手") == false)
       #expect(commonHate.contains("苦手") == false)
+   }
+
+   @Test("Japanese common comparison copy uses both wording")
+   func japaneseCommonComparisonCopyUsesBothWording() {
+      let locale = Locale(identifier: "ja")
+
+      #expect(String(localized: "ComparisonCommonLike", bundle: .main, locale: locale) == "どっちも好き")
+      #expect(String(localized: "ComparisonCommonHate", bundle: .main, locale: locale) == "どっちも嫌い")
+      #expect(String(localized: "ComparisonEmptyCommonLike", bundle: .main, locale: locale) == "どっちも好きなものはまだありません")
+      #expect(String(localized: "ComparisonEmptyCommonHate", bundle: .main, locale: locale) == "どっちも嫌いなものはまだありません")
+   }
+
+   @Test("Japanese comparison difference section uses relationship wording")
+   func japaneseComparisonDifferenceSectionUsesRelationshipWording() {
+      let title = String(localized: "ComparisonDifferencesTitle", bundle: .main, locale: Locale(identifier: "ja"))
+
+      #expect(title == "ふたりの違い")
+      #expect(title != "違いを見る")
    }
 
    @Test("Comparison empty state localization keys resolve")
