@@ -104,6 +104,13 @@ struct PersonFormModeTests {
    }
 }
 
+struct PersonNameSubmitActionTests {
+   @Test("Done submit only dismisses the keyboard")
+   func doneSubmitOnlyDismissesKeyboard() {
+      #expect(PersonNameSubmitAction.done.action() == .dismissKeyboard)
+   }
+}
+
 struct EntryKindTests {
    @Test("EntryKind exposes stable storage keys")
    func storageKeysAreStable() {

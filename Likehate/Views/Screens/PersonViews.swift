@@ -268,7 +268,7 @@ struct PersonFormView: View {
                   .focused($isNameFocused)
                   .submitLabel(.done)
                   .onSubmit {
-                     save()
+                     applyNameSubmitAction(PersonNameSubmitAction.done.action())
                   }
                   .onChange(of: name) { _, newValue in
                      if newValue.count > 30 {
@@ -426,6 +426,13 @@ struct PersonFormView: View {
       }
    }
 
+   private func applyNameSubmitAction(_ action: PersonNameSubmitAction.Action) {
+      switch action {
+      case .dismissKeyboard:
+         isNameFocused = false
+      }
+   }
+
    private func finishCropping(image: UIImage) {
       let imageData = image.pngData() ?? image.jpegData(compressionQuality: 0.92)
       guard
@@ -449,6 +456,21 @@ struct PersonFormView: View {
       selectedPhotoData = nil
       selectedPhotoPreview = nil
       cropSourceImage = nil
+   }
+}
+
+enum PersonNameSubmitAction {
+   enum Action: Equatable {
+      case dismissKeyboard
+   }
+
+   case done
+
+   func action() -> Action {
+      switch self {
+      case .done:
+         return .dismissKeyboard
+      }
    }
 }
 
