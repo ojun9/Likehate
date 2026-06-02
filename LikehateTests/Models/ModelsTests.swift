@@ -27,6 +27,13 @@ struct PersonTests {
       #expect(person.displayName == "太郎")
    }
 
+   @Test("Other person display name trims incidental whitespace")
+   func otherPersonDisplayNameTrimsWhitespace() {
+      let person = makePerson(name: "  あかり  ", isMe: false)
+
+      #expect(person.displayName == "あかり")
+   }
+
    @Test("Profile image falls back to the first bundled image when stored value is invalid")
    func profileImageFallsBackForInvalidStoredValue() {
       var person = makePerson(name: "太郎", profileImageName: "missingAsset", isMe: false)
@@ -60,6 +67,16 @@ struct PersonIconSelectionStateTests {
       #expect(state.removesExistingPhoto)
    }
 
+   @Test("Selecting a preset profile image without an existing photo does not mark removal")
+   func selectingPresetWithoutExistingPhotoDoesNotRemovePhoto() {
+      var state = PersonIconSelectionState(selectedProfileImage: .defaultProfileImage2, hasExistingPhoto: false)
+
+      state.selectProfileImage(.defaultProfileImage9)
+
+      #expect(state.selectedProfileImage == .defaultProfileImage9)
+      #expect(state.removesExistingPhoto == false)
+   }
+
    @Test("Selecting a cropped photo keeps the preset value and cancels pending photo removal")
    func selectingPhotoCancelsPendingPhotoRemoval() {
       var state = PersonIconSelectionState(selectedProfileImage: .defaultProfileImage3, hasExistingPhoto: true)
@@ -69,6 +86,21 @@ struct PersonIconSelectionStateTests {
 
       #expect(state.selectedProfileImage == .defaultProfileImage12)
       #expect(state.removesExistingPhoto == false)
+   }
+}
+
+struct PersonFormModeTests {
+   @Test("Person form mode covers add, friend edit, and me edit titles")
+   func titlesCoverAddFriendAndMeEdit() {
+      let me = makePerson(name: "自分", isMe: true)
+      let friend = makePerson(name: "あかり", isMe: false)
+
+      #expect(PersonFormMode.add.id == "add")
+      #expect(PersonFormMode.add.title == String(localized: "AddPersonTitle"))
+      #expect(PersonFormMode.edit(friend).id == friend.id.uuidString)
+      #expect(PersonFormMode.edit(friend).title == String.localizedStringWithFormat(String(localized: "EditPersonTitleFormat"), friend.displayName))
+      #expect(PersonFormMode.edit(me).title == String.localizedStringWithFormat(String(localized: "EditPersonTitleFormat"), me.displayName))
+      #expect(PersonFormMode.edit(me).title.contains("自分") == false)
    }
 }
 
@@ -130,6 +162,40 @@ struct LocalizationTests {
       #expect(String(localized: "DeletePersonConfirmationTitle", bundle: .main, locale: locale) == "この人を削除しますか？")
       #expect(String(localized: "DeletePersonConfirmationMessage", bundle: .main, locale: locale) == "残していた好きなものや苦手なものも削除されます。")
       #expect(String(localized: "DeletePersonConfirmButton", bundle: .main, locale: locale) == "削除する")
+   }
+
+   @Test("English person form copy resolves to user-facing strings")
+   func englishPersonFormCopyResolves() {
+      let locale = Locale(identifier: "en")
+      let keys = [
+         "AddPersonTitle",
+         "AddPersonHelpText",
+         "PersonNamePlaceholder",
+         "AddPersonSaveButton",
+         "SavePersonChangesButton",
+         "EditPersonHelpText",
+         "DeletePersonConfirmationTitle",
+         "DeletePersonConfirmationMessage",
+         "DeletePersonConfirmButton"
+      ]
+
+      for key in keys {
+         let value = String(localized: String.LocalizationValue(key), bundle: .main, locale: locale)
+         #expect(value.isEmpty == false)
+         #expect(value != key)
+      }
+
+      let title = String.localizedStringWithFormat(String(localized: "EditPersonTitleFormat", bundle: .main, locale: locale), "Akari")
+      #expect(title.contains("Akari"))
+      #expect(title != "EditPersonTitleFormat")
+   }
+
+   @Test("Deprecated person edit copy no longer resolves to the old mechanical wording")
+   func deprecatedPersonEditCopyAvoidsMechanicalWording() {
+      let locale = Locale(identifier: "ja")
+
+      #expect(String(localized: "EditPersonButton", bundle: .main, locale: locale) != "人を編集")
+      #expect(String(localized: "EditPersonTitle", bundle: .main, locale: locale) != "人を編集")
    }
 
    @Test("Japanese comparison copy uses dislike instead of weak-point wording")

@@ -54,6 +54,37 @@ struct LikeHateStorePersonTests {
       #expect(updatedMe.profileImageName == DefaultProfileImage.defaultProfileImage4.rawValue)
    }
 
+   @Test("Updating another person changes the stored and display name")
+   func updateOtherPersonChangesStoredAndDisplayName() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let friend = try #require(store.addPerson(named: "太郎", profileImage: .defaultProfileImage3))
+
+      store.updatePerson(friend.id, name: "  あかり  ", profileImage: .defaultProfileImage8)
+      let updatedFriend = try #require(store.person(for: friend.id))
+
+      #expect(updatedFriend.name == "あかり")
+      #expect(updatedFriend.displayName == "あかり")
+      #expect(updatedFriend.profileImageName == DefaultProfileImage.defaultProfileImage8.rawValue)
+   }
+
+   @Test("Blank person updates are rejected without changing profile image")
+   func blankPersonUpdatesAreRejected() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let friend = try #require(store.addPerson(named: "太郎", profileImage: .defaultProfileImage3))
+
+      store.updatePerson(friend.id, name: "   ", profileImage: .defaultProfileImage8)
+      let unchangedFriend = try #require(store.person(for: friend.id))
+
+      #expect(unchangedFriend.name == "太郎")
+      #expect(unchangedFriend.profileImageName == DefaultProfileImage.defaultProfileImage3.rawValue)
+   }
+
    @Test("Deleting a person removes their entries but keeps me protected")
    func deletePersonRemovesTheirEntriesOnly() throws {
       let context = try StoreTestContext()
