@@ -1,4 +1,3 @@
-import FirebaseAnalytics
 import Foundation
 import SwiftUI
 import UIKit
@@ -191,7 +190,7 @@ final class LikeHateStore: ObservableObject {
       persons.append(person)
       persistPersons()
 
-      Analytics.logEvent("person_added", parameters: personAnalyticsParameters(person, source: "add"))
+      FAAnalytics.log(.track(.personAdded, parameters: personAnalyticsParameters(person, source: "add")))
       HapticsClient.success()
       return person
    }
@@ -214,7 +213,7 @@ final class LikeHateStore: ObservableObject {
       persons[index].updatedAt = Date()
       persistPersons()
 
-      Analytics.logEvent("person_updated", parameters: personAnalyticsParameters(persons[index], source: "edit"))
+      FAAnalytics.log(.track(.personUpdated, parameters: personAnalyticsParameters(persons[index], source: "edit")))
       HapticsClient.success()
    }
 
@@ -231,7 +230,7 @@ final class LikeHateStore: ObservableObject {
 
       var parameters = personAnalyticsParameters(person, source: "delete")
       parameters["deleted_item_count"] = deletedItemCount
-      Analytics.logEvent("person_deleted", parameters: parameters)
+      FAAnalytics.log(.track(.personDeleted, parameters: parameters))
       HapticsClient.success()
    }
 
@@ -258,8 +257,7 @@ final class LikeHateStore: ObservableObject {
       entries.append(item)
       persistEntries()
 
-      Analytics.logEvent(kind.analyticsName, parameters: analyticsParameters(for: kind, person: person, textLength: trimmed.count))
-      Analytics.logEvent("entry_saved", parameters: analyticsParameters(for: kind, person: person, textLength: trimmed.count))
+      FAAnalytics.log(.track(.entrySaved, parameters: analyticsParameters(for: kind, person: person, textLength: trimmed.count)))
       HapticsClient.success()
       recordRegistrationAndRequestReviewIfNeeded()
    }
@@ -273,7 +271,7 @@ final class LikeHateStore: ObservableObject {
       entries[index].updatedAt = Date()
       persistEntries()
 
-      Analytics.logEvent("entry_updated", parameters: analyticsParameters(for: entries[index].type, personID: entries[index].personId, textLength: title.count))
+      FAAnalytics.log(.track(.entryUpdated, parameters: analyticsParameters(for: entries[index].type, personID: entries[index].personId, textLength: title.count)))
       HapticsClient.success()
       return true
    }
@@ -282,14 +280,14 @@ final class LikeHateStore: ObservableObject {
       let nextCount = defaults.integer(forKey: Constants.launchReviewRequestCountKey) + 1
       defaults.set(nextCount, forKey: Constants.launchReviewRequestCountKey)
 
-      Analytics.logEvent("app_launch_count_recorded", parameters: [
+      FAAnalytics.log(.track(.appLaunchCountRecorded, parameters: [
          "launch_count": nextCount,
          "like_count": likes.count,
          "hate_count": hates.count,
          "entry_count": entries.count,
          "person_count": persons.count,
          "did_buy_remove_ad": didBuyRemoveAd
-      ])
+      ]))
       requestReviewIfNeeded(count: nextCount, eventName: "requestReviewByLaunchCount")
    }
 
@@ -309,9 +307,9 @@ final class LikeHateStore: ObservableObject {
       renumberItems(personID: personID, kind: kind)
       persistEntries()
 
-      Analytics.logEvent("entry_deleted", parameters: analyticsParameters(for: kind, personID: personID).merging([
+      FAAnalytics.log(.track(.entryDeleted, parameters: analyticsParameters(for: kind, personID: personID).merging([
          "deleted_count": deletedIDs.count
-      ]) { _, new in new })
+      ]) { _, new in new }))
    }
 
    func move(from source: IndexSet, to destination: Int, in kind: EntryKind) {
@@ -330,10 +328,10 @@ final class LikeHateStore: ObservableObject {
       }
       persistEntries()
 
-      Analytics.logEvent("entry_reordered", parameters: analyticsParameters(for: kind, personID: personID).merging([
+      FAAnalytics.log(.track(.entryReordered, parameters: analyticsParameters(for: kind, personID: personID).merging([
          "moved_count": source.count,
          "destination": destination
-      ]) { _, new in new })
+      ]) { _, new in new }))
    }
 
    func deleteAll() {
@@ -349,13 +347,12 @@ final class LikeHateStore: ObservableObject {
       defaults.removeObject(forKey: EntryKind.hate.storageKey)
       persistPeopleAndEntries()
 
-      Analytics.logEvent("delete all date", parameters: nil)
-      Analytics.logEvent("all_entries_deleted", parameters: [
+      FAAnalytics.log(.track(.allEntriesDeleted, parameters: [
          "like_count": likeCount,
          "hate_count": hateCount,
          "total_count": likeCount + hateCount,
          "person_count": personCount
-      ])
+      ]))
    }
 
    func comparisonSections(firstPersonID: UUID, secondPersonID: UUID) -> [ComparisonSection] {
@@ -384,11 +381,12 @@ final class LikeHateStore: ObservableObject {
 
       Task {
          do {
+            FAAnalytics.log(.track(.premiumProductFetchStarted, parameters: premiumAnalyticsParameters(source: "load")))
             _ = try await fetchPremiumPackage()
          } catch {
-            Analytics.logEvent("premium_product_fetch_failed", parameters: [
+            FAAnalytics.log(.track(.premiumProductFetchFailed, parameters: premiumAnalyticsParameters(source: "load").merging([
                "error_description": error.localizedDescription
-            ])
+            ]) { _, new in new }))
          }
       }
    }
@@ -396,11 +394,7 @@ final class LikeHateStore: ObservableObject {
    func purchasePremium() {
       guard !isPurchasing, !hasPremiumAccess else { return }
       isPurchasing = true
-      Analytics.logEvent("premium_purchase_started", parameters: [
-         "person_count": persons.count,
-         "did_buy_remove_ad": didBuyRemoveAd,
-         "did_buy_premium": didBuyPremium
-      ])
+      FAAnalytics.log(.track(.premiumPurchaseStarted, parameters: premiumAnalyticsParameters(source: "purchase")))
 
       Task {
          await purchasePremiumPackage()
@@ -410,10 +404,7 @@ final class LikeHateStore: ObservableObject {
    func restorePurchases() {
       guard !isRestoring else { return }
       isRestoring = true
-      Analytics.logEvent("restore_purchases_started", parameters: [
-         "did_buy_remove_ad": didBuyRemoveAd,
-         "did_buy_premium": didBuyPremium
-      ])
+      FAAnalytics.log(.track(.premiumRestoreStarted, parameters: premiumAnalyticsParameters(source: "restore")))
 
       Task {
          await restorePremiumPurchases()
@@ -425,13 +416,13 @@ final class LikeHateStore: ObservableObject {
          do {
             let entitlementState = try await premiumPurchaseService.currentEntitlementState()
             applyPremiumEntitlement(isActive: entitlementState.isActive)
-            Analytics.logEvent("premium_status_refreshed", parameters: [
+            FAAnalytics.log(.track(.premiumStatusRefreshed, parameters: [
                "is_premium": hasPremiumAccess
-            ])
+            ]))
          } catch {
-            Analytics.logEvent("premium_status_refresh_failed", parameters: [
+            FAAnalytics.log(.track(.premiumStatusRefreshFailed, parameters: [
                "error_description": error.localizedDescription
-            ])
+            ]))
          }
       }
    }
@@ -440,6 +431,16 @@ final class LikeHateStore: ObservableObject {
       let package = try await premiumPurchaseService.currentPremiumPackage()
       premiumPackage = package
       premiumProductPrice = package?.localizedPrice
+      if let package {
+         FAAnalytics.log(.track(.premiumProductFetchSucceeded, parameters: premiumAnalyticsParameters(source: "fetch").merging([
+            "price": package.localizedPrice,
+            "product_id": LikehateRevenueCatContracts.premiumProductID
+         ]) { _, new in new }))
+      } else {
+         FAAnalytics.log(.track(.premiumProductFetchUnavailable, parameters: premiumAnalyticsParameters(source: "fetch").merging([
+            "product_id": LikehateRevenueCatContracts.premiumProductID
+         ]) { _, new in new }))
+      }
       return package
    }
 
@@ -457,9 +458,9 @@ final class LikeHateStore: ObservableObject {
          handlePremiumPurchaseResult(result, analyticsSource: "purchase")
       } catch {
          purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseFailedTitle"), message: error.localizedDescription)
-         Analytics.logEvent("premium_purchase_failed", parameters: [
+         FAAnalytics.log(.track(.premiumPurchaseFailed, parameters: premiumAnalyticsParameters(source: "purchase").merging([
             "error_description": error.localizedDescription
-         ])
+         ]) { _, new in new }))
       }
    }
 
@@ -471,9 +472,9 @@ final class LikeHateStore: ObservableObject {
          handlePremiumRestoreResult(result)
       } catch {
          purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseFailedTitle"), message: error.localizedDescription)
-         Analytics.logEvent("restore_purchases_failed", parameters: [
+         FAAnalytics.log(.track(.premiumRestoreFailed, parameters: premiumAnalyticsParameters(source: "restore").merging([
             "error_description": error.localizedDescription
-         ])
+         ]) { _, new in new }))
       }
    }
 
@@ -733,22 +734,29 @@ final class LikeHateStore: ObservableObject {
       case .active:
          setPremiumPurchased(true)
          purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseSucceededTitle"), message: String(localized: "PremiumPurchaseSucceededMessage"))
-         Analytics.logEvent("premium_purchase_succeeded", parameters: [
+         let parameters = premiumAnalyticsParameters(source: analyticsSource).merging([
             "source": analyticsSource,
-            "person_count": persons.count
-         ])
+            "person_count": persons.count,
+            "product_id": LikehateRevenueCatContracts.premiumProductID
+         ]) { _, new in new }
+         FAAnalytics.log(.track(.premiumPurchaseSucceeded, parameters: parameters))
+         FAAnalytics.log(.purchase(
+            productID: LikehateRevenueCatContracts.premiumProductID,
+            price: premiumProductPrice,
+            parameters: parameters
+         ))
          HapticsClient.success()
       case .userCancelled:
-         Analytics.logEvent("premium_purchase_cancelled", parameters: [
+         FAAnalytics.log(.track(.premiumPurchaseCancelled, parameters: [
             "source": analyticsSource
-         ])
+         ]))
       case .inactive, .missingCustomerInfo, .missingEntitlement, .missingPackage:
          setPremiumPurchased(false)
          purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseFailedTitle"), message: String(localized: "PremiumPurchaseUnavailableMessage"))
-         Analytics.logEvent("premium_purchase_failed", parameters: [
+         FAAnalytics.log(.track(.premiumPurchaseFailed, parameters: premiumAnalyticsParameters(source: analyticsSource).merging([
             "source": analyticsSource,
             "reason": String(describing: result)
-         ])
+         ]) { _, new in new }))
          HapticsClient.error()
       }
    }
@@ -758,22 +766,22 @@ final class LikeHateStore: ObservableObject {
       case .active:
          setPremiumPurchased(true)
          purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseSucceededTitle"), message: String(localized: "RestorePurchaseSucceededMessage"))
-         Analytics.logEvent("restore_purchases_succeeded", parameters: [
+         FAAnalytics.log(.track(.premiumRestoreSucceeded, parameters: [
             "is_premium": hasPremiumAccess
-         ])
+         ]))
          HapticsClient.success()
       case .userCancelled:
-         Analytics.logEvent("restore_purchases_cancelled", parameters: nil)
+         FAAnalytics.log(.track(.premiumRestoreCancelled, parameters: nil))
       case .inactive, .missingCustomerInfo, .missingEntitlement, .missingPackage:
          setPremiumPurchased(false)
          if hasPremiumAccess {
             purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseSucceededTitle"), message: String(localized: "RestorePurchaseSucceededMessage"))
-            Analytics.logEvent("restore_purchases_succeeded_by_legacy_access", parameters: nil)
+            FAAnalytics.log(.track(.premiumLegacyRestoreSucceeded, parameters: nil))
          } else {
             purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseEmptyTitle"), message: String(localized: "RestorePurchaseEmptyMessage"))
-            Analytics.logEvent("restore_purchases_empty", parameters: [
+            FAAnalytics.log(.track(.premiumRestoreEmpty, parameters: [
                "reason": String(describing: result)
-            ])
+            ]))
          }
       }
    }
@@ -801,14 +809,13 @@ final class LikeHateStore: ObservableObject {
    private func requestReviewIfNeeded(count: Int, eventName: String) {
       guard count == 10 || count == 20 else { return }
 
-      Analytics.logEvent(eventName, parameters: ["count": count])
-      Analytics.logEvent("review_prompt_requested", parameters: [
+      FAAnalytics.log(.track(.reviewPromptRequested, parameters: [
          "trigger": eventName,
          "count": count,
          "like_count": likes.count,
          "hate_count": hates.count,
          "entry_count": entries.count
-      ])
+      ]))
       AppReviewClient.requestReview()
    }
 
@@ -847,6 +854,17 @@ final class LikeHateStore: ObservableObject {
          "person_count": persons.count,
          "entry_count": entries.count,
          "source": source
+      ]
+   }
+
+   private func premiumAnalyticsParameters(source: String) -> [String: Any] {
+      [
+         "source": source,
+         "person_count": persons.count,
+         "entry_count": entries.count,
+         "did_buy_remove_ad": didBuyRemoveAd,
+         "did_buy_premium": didBuyPremium,
+         "has_premium_access": hasPremiumAccess
       ]
    }
 }

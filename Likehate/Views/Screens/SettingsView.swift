@@ -1,4 +1,3 @@
-import FirebaseAnalytics
 import SwiftUI
 #if DEBUG
 import RevenueCat
@@ -17,8 +16,7 @@ struct SettingsView: View {
       List {
          Section {
             Button {
-               Analytics.logEvent("TapAppReview", parameters: nil)
-               Analytics.logEvent("settings_app_review_tapped", parameters: settingsAnalyticsParameters)
+               FAAnalytics.log(.track(.settingsAppReviewTapped, parameters: settingsAnalyticsParameters))
                HapticsClient.heavy()
                AppReviewClient.requestReview()
             } label: {
@@ -45,9 +43,12 @@ struct SettingsView: View {
                   titleWeight: .bold
                )
             }
+            .simultaneousGesture(TapGesture().onEnded {
+               FAAnalytics.log(.track(.settingsPremiumTapped, parameters: settingsAnalyticsParameters))
+            })
 
             Button {
-               Analytics.logEvent("settings_restore_tapped", parameters: settingsAnalyticsParameters)
+               FAAnalytics.log(.track(.settingsRestoreTapped, parameters: settingsAnalyticsParameters))
                store.restorePurchases()
             } label: {
                if store.isRestoring {
@@ -76,8 +77,7 @@ struct SettingsView: View {
             }
 
             Button {
-               Analytics.logEvent("TapDataErasing", parameters: nil)
-               Analytics.logEvent("settings_delete_all_tapped", parameters: settingsAnalyticsParameters)
+               FAAnalytics.log(.track(.settingsDeleteAllTapped, parameters: settingsAnalyticsParameters))
                HapticsClient.heavy()
                showDeleteConfirmation = true
             } label: {
@@ -89,7 +89,7 @@ struct SettingsView: View {
          #if DEBUG
          Section("DebugSectionTitle") {
             Button {
-               Analytics.logEvent("settings_revenue_cat_debug_tapped", parameters: settingsAnalyticsParameters)
+               FAAnalytics.log(.track(.settingsRevenueCatDebugTapped, parameters: settingsAnalyticsParameters))
                showsRevenueCatDebug = true
             } label: {
                SettingsActionRow(
@@ -133,36 +133,34 @@ struct SettingsView: View {
          titleVisibility: .visible
       ) {
          Button(String(localized: "DeleteAllConfirmButton"), role: .destructive) {
-            Analytics.logEvent("settings_delete_all_confirmed", parameters: settingsAnalyticsParameters)
+            FAAnalytics.log(.track(.settingsDeleteAllConfirmed, parameters: settingsAnalyticsParameters))
             HapticsClient.success()
             store.deleteAll()
          }
          Button(String(localized: "cancel"), role: .cancel) {
             HapticsClient.light()
-            Analytics.logEvent("delete cannel", parameters: nil)
-            Analytics.logEvent("settings_delete_all_cancelled", parameters: settingsAnalyticsParameters)
+            FAAnalytics.log(.track(.settingsDeleteAllCancelled, parameters: settingsAnalyticsParameters))
          }
       } message: {
          Text("DeleteAllConfirmationMessage")
       }
       .onAppear {
-         Analytics.logEvent("showSettinVC", parameters: settingsAnalyticsParameters)
-         Analytics.logEvent("screen_view_settings", parameters: settingsAnalyticsParameters)
+         FAAnalytics.log(.screenView(.settings, parameters: settingsAnalyticsParameters))
       }
       .onChange(of: store.animationEnabled) { _, isEnabled in
-         Analytics.logEvent("settings_animation_changed", parameters: settingsAnalyticsParameters.merging([
+         FAAnalytics.log(.track(.settingsAnimationChanged, parameters: settingsAnalyticsParameters.merging([
             "animation_enabled": isEnabled
-         ]) { _, new in new })
+         ]) { _, new in new }))
       }
       .onChange(of: isHapticsEnabled) { _, isEnabled in
-         Analytics.logEvent("settings_haptics_changed", parameters: settingsAnalyticsParameters.merging([
+         FAAnalytics.log(.track(.settingsHapticsChanged, parameters: settingsAnalyticsParameters.merging([
             "is_haptics_enabled": isEnabled
-         ]) { _, new in new })
+         ]) { _, new in new }))
       }
       .onChange(of: store.textSize) { _, textSize in
-         Analytics.logEvent("settings_text_size_changed", parameters: settingsAnalyticsParameters.merging([
+         FAAnalytics.log(.track(.settingsTextSizeChanged, parameters: settingsAnalyticsParameters.merging([
             "text_size": textSize.rawValue
-         ]) { _, new in new })
+         ]) { _, new in new }))
       }
       .debugRevenueCatOverlayIfDebug(isPresented: $showsRevenueCatDebug)
    }
@@ -204,6 +202,10 @@ private struct TextSizeSettingsView: View {
          Section {
             ForEach(AppTextSize.allCases) { textSize in
                Button {
+                  FAAnalytics.log(.track(.settingsTextSizeSelected, parameters: [
+                     "text_size": textSize.rawValue,
+                     "previous_text_size": store.textSize.rawValue
+                  ]))
                   store.textSize = textSize
                } label: {
                   HStack(spacing: 12) {
@@ -233,6 +235,11 @@ private struct TextSizeSettingsView: View {
       }
       .navigationTitle("TextSizeSettingTitle")
       .navigationBarTitleDisplayMode(.inline)
+      .onAppear {
+         FAAnalytics.log(.screenView(.textSizeSettings, parameters: [
+            "text_size": store.textSize.rawValue
+         ]))
+      }
    }
 }
 

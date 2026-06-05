@@ -1,4 +1,3 @@
-import FirebaseAnalytics
 import SwiftUI
 
 struct RootView: View {
@@ -38,7 +37,7 @@ struct HomeView: View {
                   }
                   .buttonStyle(.plain)
                   .simultaneousGesture(TapGesture().onEnded {
-                     Analytics.logEvent("home_person_tapped", parameters: personAnalyticsParameters(person))
+                     FAAnalytics.log(.track(.homePersonTapped, parameters: personAnalyticsParameters(person)))
                   })
                }
             }
@@ -52,7 +51,7 @@ struct HomeView: View {
             }
 
             Button {
-               Analytics.logEvent("home_add_person_tapped", parameters: homeAnalyticsParameters)
+               FAAnalytics.log(.track(.homeAddPersonTapped, parameters: homeAnalyticsParameters))
                showAddPersonOrPremium()
             } label: {
                Label("AddPersonButton", systemImage: "plus")
@@ -89,7 +88,7 @@ struct HomeView: View {
                }
                .buttonStyle(.plain)
                .simultaneousGesture(TapGesture().onEnded {
-                  Analytics.logEvent("home_compare_tapped", parameters: homeAnalyticsParameters)
+                  FAAnalytics.log(.track(.homeCompareTapped, parameters: homeAnalyticsParameters))
                })
             } else {
                Text("HomeCompareDisabledHint")
@@ -111,7 +110,7 @@ struct HomeView: View {
       .toolbar {
          ToolbarItem(placement: .topBarTrailing) {
             Button {
-               Analytics.logEvent("settings_opened_from_home", parameters: homeAnalyticsParameters)
+               FAAnalytics.log(.track(.settingsOpenedFromHome, parameters: homeAnalyticsParameters))
                isShowingSettings = true
             } label: {
                Image(systemName: "gearshape")
@@ -131,11 +130,15 @@ struct HomeView: View {
             title: Text(prompt.title),
             message: Text(prompt.message),
             primaryButton: .default(Text("ThankYou")) {
-               Analytics.logEvent("TapSCLAlertView", parameters: nil)
+               FAAnalytics.log(.track(.reviewPromptConfirmed, parameters: [
+                  "screen": FAScreen.home.rawValue
+               ]))
                AppReviewClient.requestReview()
             },
             secondaryButton: .cancel(Text("Ohthankyou")) {
-               Analytics.logEvent("UserTap_OhThanks...For100", parameters: nil)
+               FAAnalytics.log(.track(.reviewPromptCancelled, parameters: [
+                  "screen": FAScreen.home.rawValue
+               ]))
             }
          )
       }
@@ -157,8 +160,7 @@ struct HomeView: View {
          }
       }
       .onAppear {
-         Analytics.logEvent("showSwiftUIHome", parameters: homeAnalyticsParameters)
-         Analytics.logEvent("screen_view_home", parameters: homeAnalyticsParameters)
+         FAAnalytics.log(.screenView(.home, parameters: homeAnalyticsParameters))
       }
    }
 
@@ -172,6 +174,9 @@ struct HomeView: View {
       if store.canAddPerson {
          isShowingAddPerson = true
       } else {
+         FAAnalytics.log(.track(.homePremiumGateShown, parameters: homeAnalyticsParameters.merging([
+            "reason": "person_limit"
+         ]) { _, new in new }))
          isShowingPremium = true
       }
    }

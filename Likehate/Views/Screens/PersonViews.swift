@@ -1,4 +1,3 @@
-import FirebaseAnalytics
 import PhotosUI
 import SwiftUI
 import UIKit
@@ -54,6 +53,7 @@ struct PersonSelectionView: View {
       .toolbar {
          ToolbarItem(placement: .topBarTrailing) {
             Button {
+               FAAnalytics.log(.track(.personSelectionAddTapped, parameters: personSelectionAnalyticsParameters))
                showAddPersonOrPremium()
             } label: {
                Image(systemName: "plus")
@@ -72,11 +72,7 @@ struct PersonSelectionView: View {
          }
       }
       .onAppear {
-         Analytics.logEvent("screen_view_person_selection", parameters: [
-            "mode": mode == .register ? "register" : "browse",
-            "person_count": store.persons.count,
-            "entry_count": store.totalItemCount
-         ])
+         FAAnalytics.log(.screenView(.personSelection, parameters: personSelectionAnalyticsParameters))
       }
    }
 
@@ -94,8 +90,20 @@ struct PersonSelectionView: View {
       if store.canAddPerson {
          formMode = .add
       } else {
+         FAAnalytics.log(.track(.personSelectionPremiumGateShown, parameters: personSelectionAnalyticsParameters.merging([
+            "reason": "person_limit"
+         ]) { _, new in new }))
          isShowingPremium = true
       }
+   }
+
+   private var personSelectionAnalyticsParameters: [String: Any] {
+      [
+         "mode": mode == .register ? "register" : "browse",
+         "person_count": store.persons.count,
+         "entry_count": store.totalItemCount,
+         "did_buy_premium": store.didBuyPremium
+      ]
    }
 }
 
@@ -263,6 +271,7 @@ struct PersonFormView: View {
                }
                .disabled(isLoadingPhoto)
                .simultaneousGesture(TapGesture().onEnded {
+                  FAAnalytics.log(.track(.personFormPhotoTapped, parameters: formAnalyticsParameters))
                   iconSelection.beginPhotoSelection()
                })
 
@@ -311,6 +320,9 @@ struct PersonFormView: View {
          if case .edit(let person) = mode, !person.isMe {
             Section {
                Button(role: .destructive) {
+                  FAAnalytics.log(.track(.personFormDeleteTapped, parameters: formAnalyticsParameters.merging([
+                     "person_id": person.id.uuidString
+                  ]) { _, new in new }))
                   isShowingDeleteConfirmation = true
                } label: {
                   Text("DeletePersonButton")
@@ -335,6 +347,10 @@ struct PersonFormView: View {
 
          ToolbarItem(placement: .confirmationAction) {
             Button(mode.saveTitle) {
+               FAAnalytics.log(.track(.personFormSaveTapped, parameters: formAnalyticsParameters.merging([
+                  "name_length": trimmedName.count,
+                  "has_selected_photo": selectedPhotoData != nil
+               ]) { _, new in new }))
                save()
             }
             .disabled(isLoadingPhoto || (allowsNameEditing && trimmedName.isEmpty))
@@ -347,11 +363,17 @@ struct PersonFormView: View {
       ) {
          Button(String(localized: "DeletePersonConfirmButton"), role: .destructive) {
             if case .edit(let person) = mode {
+               FAAnalytics.log(.track(.personFormDeleteConfirmed, parameters: formAnalyticsParameters.merging([
+                  "person_id": person.id.uuidString,
+                  "is_me": person.isMe
+               ]) { _, new in new }))
                store.deletePerson(person.id)
             }
             dismiss()
          }
-         Button(String(localized: "cancel"), role: .cancel) {}
+         Button(String(localized: "cancel"), role: .cancel) {
+            FAAnalytics.log(.track(.personFormDeleteCancelled, parameters: formAnalyticsParameters))
+         }
       } message: {
          Text("DeletePersonConfirmationMessage")
       }
@@ -368,6 +390,7 @@ struct PersonFormView: View {
          }
       }
       .onAppear {
+         FAAnalytics.log(.screenView(.personForm, parameters: formAnalyticsParameters))
          if case .add = mode {
             applyInitialAddProfileImageIfNeeded()
             isNameFocused = true
@@ -414,12 +437,18 @@ struct PersonFormView: View {
       switch mode {
       case .add:
          guard store.canAddPerson else {
+            FAAnalytics.log(.track(.personFormPremiumGateShown, parameters: formAnalyticsParameters.merging([
+               "reason": "person_limit"
+            ]) { _, new in new }))
             isShowingPremium = true
             return
          }
          if let person = store.addPerson(named: name, profileImage: iconSelection.selectedProfileImage, photoData: selectedPhotoData) {
             onAdd?(person)
          } else {
+            FAAnalytics.log(.track(.personFormPremiumGateShown, parameters: formAnalyticsParameters.merging([
+               "reason": "person_limit_or_invalid"
+            ]) { _, new in new }))
             isShowingPremium = true
             return
          }
@@ -450,13 +479,20 @@ struct PersonFormView: View {
             let data = try await item.loadTransferable(type: Data.self),
             let image = UIImage(data: data)
          else {
+            FAAnalytics.log(.track(.personFormPhotoLoadFailed, parameters: formAnalyticsParameters.merging([
+               "reason": "missing_image_data"
+            ]) { _, new in new }))
             return
          }
 
+         FAAnalytics.log(.track(.personFormPhotoLoaded, parameters: formAnalyticsParameters))
          cropSourceImage = PersonPhotoCropSource(image: image)
       } catch {
          selectedPhotoData = nil
          selectedPhotoPreview = nil
+         FAAnalytics.log(.track(.personFormPhotoLoadFailed, parameters: formAnalyticsParameters.merging([
+            "error_description": error.localizedDescription
+         ]) { _, new in new }))
       }
    }
 
@@ -481,6 +517,7 @@ struct PersonFormView: View {
          let thumbnail = UIImage(data: thumbnailData)
       else {
          cropSourceImage = nil
+         FAAnalytics.log(.track(.personFormPhotoCropFailed, parameters: formAnalyticsParameters))
          return
       }
 
@@ -488,14 +525,37 @@ struct PersonFormView: View {
       selectedPhotoPreview = thumbnail
       iconSelection.didSelectPhoto()
       cropSourceImage = nil
+      FAAnalytics.log(.track(.personFormPhotoCropped, parameters: formAnalyticsParameters))
    }
 
    private func selectProfileImage(_ profileImage: DefaultProfileImage) {
+      FAAnalytics.log(.track(.personFormPresetSelected, parameters: formAnalyticsParameters.merging([
+         "profile_image": profileImage.rawValue
+      ]) { _, new in new }))
       iconSelection.selectProfileImage(profileImage)
       selectedPhotoItem = nil
       selectedPhotoData = nil
       selectedPhotoPreview = nil
       cropSourceImage = nil
+   }
+
+   private var formAnalyticsParameters: [String: Any] {
+      var parameters: [String: Any] = [
+         "mode": mode.id,
+         "person_count": store.persons.count,
+         "entry_count": store.totalItemCount,
+         "selected_profile_image": iconSelection.selectedProfileImage.rawValue,
+         "has_selected_photo": selectedPhotoData != nil,
+         "removes_existing_photo": iconSelection.removesExistingPhoto
+      ]
+
+      if case .edit(let person) = mode {
+         parameters["person_id"] = person.id.uuidString
+         parameters["is_me"] = person.isMe
+         parameters["has_existing_photo"] = person.photoFileName != nil
+      }
+
+      return parameters
    }
 }
 
@@ -619,6 +679,7 @@ struct PersonDetailView: View {
             .toolbar {
                ToolbarItem(placement: .topBarTrailing) {
                   Button {
+                     FAAnalytics.log(.track(.personDetailEditTapped, parameters: personDetailAnalyticsParameters(person: person)))
                      formMode = .edit(person)
                   } label: {
                      Image(systemName: "pencil")
@@ -637,11 +698,15 @@ struct PersonDetailView: View {
          }
       }
       .onAppear {
-         Analytics.logEvent("screen_view_person_detail", parameters: [
+         var parameters: [String: Any] = [
             "person_id": personID.uuidString,
             "person_count": store.persons.count,
             "entry_count": store.totalItemCount
-         ])
+         ]
+         if let person = store.person(for: personID) {
+            parameters["is_me"] = person.isMe
+         }
+         FAAnalytics.log(.screenView(.personDetail, parameters: parameters))
       }
    }
 
@@ -671,6 +736,11 @@ struct PersonDetailView: View {
             .contentShape(Rectangle())
          }
          .buttonStyle(.plain)
+         .simultaneousGesture(TapGesture().onEnded {
+            FAAnalytics.log(.track(.personDetailCompareTapped, parameters: personDetailAnalyticsParameters(person: person).merging([
+               "target": "direct_compare"
+            ]) { _, new in new }))
+         })
       } else {
          NavigationLink {
             ComparisonSelectionView()
@@ -691,7 +761,21 @@ struct PersonDetailView: View {
             .contentShape(Rectangle())
          }
          .buttonStyle(.plain)
+         .simultaneousGesture(TapGesture().onEnded {
+            FAAnalytics.log(.track(.personDetailCompareTapped, parameters: personDetailAnalyticsParameters(person: person).merging([
+               "target": "compare_selection"
+            ]) { _, new in new }))
+         })
       }
+   }
+
+   private func personDetailAnalyticsParameters(person: Person) -> [String: Any] {
+      [
+         "person_id": person.id.uuidString,
+         "is_me": person.isMe,
+         "person_count": store.persons.count,
+         "entry_count": store.totalItemCount
+      ]
    }
 }
 
@@ -752,6 +836,9 @@ private struct PersonEntryPreviewSection: View {
                   .lineLimit(2)
             }
             .buttonStyle(.plain)
+            .simultaneousGesture(TapGesture().onEnded {
+               FAAnalytics.log(.track(.personDetailAddEntryTapped, parameters: sectionAnalyticsParameters(itemCount: items.count)))
+            })
 
             if !items.isEmpty {
                NavigationLink {
@@ -762,6 +849,9 @@ private struct PersonEntryPreviewSection: View {
                      .foregroundStyle(.secondary)
                }
                .buttonStyle(.plain)
+               .simultaneousGesture(TapGesture().onEnded {
+                  FAAnalytics.log(.track(.personDetailViewAllTapped, parameters: sectionAnalyticsParameters(itemCount: items.count)))
+               })
             }
 
             Spacer(minLength: 0)
@@ -791,6 +881,16 @@ private struct PersonEntryPreviewSection: View {
       case (.hate, _):
          return "AddHateInlineButton"
       }
+   }
+
+   private func sectionAnalyticsParameters(itemCount: Int) -> [String: Any] {
+      [
+         "person_id": person.id.uuidString,
+         "is_me": person.isMe,
+         "kind": kind.rawValue,
+         "item_count": itemCount,
+         "person_count": store.persons.count
+      ]
    }
 }
 
@@ -852,6 +952,12 @@ struct ComparisonSelectionView: View {
                      }
                      .buttonStyle(.borderedProminent)
                      .tint(EntryKind.hate.color)
+                     .simultaneousGesture(TapGesture().onEnded {
+                        FAAnalytics.log(.track(.compareSelectionSubmitTapped, parameters: comparisonSelectionAnalyticsParameters.merging([
+                           "first_person_id": firstPersonID.uuidString,
+                           "second_person_id": secondPersonID.uuidString
+                        ]) { _, new in new }))
+                     })
                   } else {
                      Text("CompareSamePersonMessage")
                         .font(typography.subtext)
@@ -878,10 +984,7 @@ struct ComparisonSelectionView: View {
       }
       .onAppear {
          normalizeSelection()
-         Analytics.logEvent("screen_view_compare_selection", parameters: [
-            "person_count": store.persons.count,
-            "entry_count": store.totalItemCount
-         ])
+         FAAnalytics.log(.screenView(.compareSelection, parameters: comparisonSelectionAnalyticsParameters))
       }
       .onChange(of: store.persons) {
          normalizeSelection()
@@ -904,6 +1007,7 @@ struct ComparisonSelectionView: View {
                   )
 
                   Button {
+                     FAAnalytics.log(.track(.compareSelectionAddPersonTapped, parameters: comparisonSelectionAnalyticsParameters))
                      showAddPersonOrPremium()
                   } label: {
                      Label("AddPersonButton", systemImage: "plus")
@@ -940,6 +1044,10 @@ struct ComparisonSelectionView: View {
          ForEach(store.persons) { person in
             Button {
                selection.wrappedValue = person.id
+               FAAnalytics.log(.track(.compareSelectionPersonChanged, parameters: comparisonSelectionAnalyticsParameters.merging([
+                  "selected_person_id": person.id.uuidString,
+                  "is_me": person.isMe
+               ]) { _, new in new }))
             } label: {
                Text(verbatim: person.displayName)
             }
@@ -978,12 +1086,23 @@ struct ComparisonSelectionView: View {
       if store.canAddPerson {
          formMode = .add
       } else {
+         FAAnalytics.log(.track(.compareSelectionPremiumGateShown, parameters: comparisonSelectionAnalyticsParameters.merging([
+            "reason": "person_limit"
+         ]) { _, new in new }))
          isShowingPremium = true
       }
    }
 
    private var selectionTextColor: Color {
       colorScheme == .dark ? .white.opacity(0.92) : Color(red: 0.24, green: 0.21, blue: 0.29)
+   }
+
+   private var comparisonSelectionAnalyticsParameters: [String: Any] {
+      [
+         "person_count": store.persons.count,
+         "entry_count": store.totalItemCount,
+         "did_buy_premium": store.didBuyPremium
+      ]
    }
 }
 
@@ -1017,11 +1136,11 @@ struct ComparisonResultView: View {
                .padding(layout.screenPadding)
             }
             .onAppear {
-               Analytics.logEvent("screen_view_compare_result", parameters: [
+               FAAnalytics.log(.screenView(.compareResult, parameters: [
                   "first_person_id": firstPersonID.uuidString,
                   "second_person_id": secondPersonID.uuidString,
                   "person_count": store.persons.count
-               ])
+               ]))
             }
          } else {
             ContentUnavailableView("PersonNotFoundTitle", systemImage: "person.crop.circle.badge.questionmark")
@@ -1138,6 +1257,15 @@ private struct ComparisonResultGroup: View {
                   )
                }
                .buttonStyle(.plain)
+               .simultaneousGesture(TapGesture().onEnded {
+                  FAAnalytics.log(.track(.comparisonCategoryTapped, parameters: [
+                     "category": section.category.rawValue,
+                     "kind": section.category.kind.rawValue,
+                     "item_count": section.titles.count,
+                     "first_person_id": firstPersonID.uuidString,
+                     "second_person_id": secondPersonID.uuidString
+                  ]))
+               })
             }
          }
       }
@@ -1242,6 +1370,7 @@ struct ComparisonCategoryDetailView: View {
          if let firstPerson = store.person(for: firstPersonID), let secondPerson = store.person(for: secondPersonID) {
             let section = store.comparisonSections(firstPersonID: firstPersonID, secondPersonID: secondPersonID).first { $0.category == category }
             let titles = section?.titles ?? []
+            let showsBanner = AdDisplayPolicy(adsRemoved: store.appSettings.adsRemoved, isPremium: store.appSettings.isPremium).showsListAd(hasItems: !titles.isEmpty)
 
             ScrollView {
                VStack(alignment: .leading, spacing: layout.cardSpacing + 8) {
@@ -1260,13 +1389,22 @@ struct ComparisonCategoryDetailView: View {
                      VStack(spacing: 0) {
                         LikeDislikeListCard(titles: titles, accent: category.kind.color)
 
-                        ConditionalListAdBanner(
-                           placement: .comparisonCategoryDetail,
-                           hasItems: !titles.isEmpty,
-                           topPadding: max(24, layout.cardSpacing),
-                           bottomPadding: 20
-                        )
-                        .frame(maxWidth: .infinity, alignment: .center)
+                        if showsBanner {
+                           ConditionalListAdBanner(
+                              placement: .comparisonCategoryDetail,
+                              hasItems: !titles.isEmpty,
+                              topPadding: max(24, layout.cardSpacing),
+                              bottomPadding: 20
+                           )
+                           .frame(maxWidth: .infinity, alignment: .center)
+                           .onAppear {
+                              FAAnalytics.log(.track(.comparisonCategoryAdVisible, parameters: categoryDetailAnalyticsParameters(
+                                 firstPerson: firstPerson,
+                                 secondPerson: secondPerson,
+                                 itemCount: titles.count
+                              )))
+                           }
+                        }
                      }
                   }
                }
@@ -1277,6 +1415,13 @@ struct ComparisonCategoryDetailView: View {
             .scrollContentBackground(.hidden)
             .navigationTitle(category.title(first: firstPerson, second: secondPerson))
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+               FAAnalytics.log(.screenView(.comparisonCategoryDetail, parameters: categoryDetailAnalyticsParameters(
+                  firstPerson: firstPerson,
+                  secondPerson: secondPerson,
+                  itemCount: titles.count
+               )))
+            }
          } else {
             ContentUnavailableView("PersonNotFoundTitle", systemImage: "person.crop.circle.badge.questionmark")
          }
@@ -1322,5 +1467,19 @@ struct ComparisonCategoryDetailView: View {
       case .secondOnlyHate:
          return String.localizedStringWithFormat(String(localized: "ComparisonEmptySecondOnlyHateMessageFormat"), secondPerson.displayName)
       }
+   }
+
+   private func categoryDetailAnalyticsParameters(firstPerson: Person, secondPerson: Person, itemCount: Int) -> [String: Any] {
+      [
+         "category": category.rawValue,
+         "kind": category.kind.rawValue,
+         "item_count": itemCount,
+         "is_empty": itemCount == 0,
+         "first_person_id": firstPerson.id.uuidString,
+         "second_person_id": secondPerson.id.uuidString,
+         "first_is_me": firstPerson.isMe,
+         "second_is_me": secondPerson.isMe,
+         "person_count": store.persons.count
+      ]
    }
 }

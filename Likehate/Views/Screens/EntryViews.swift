@@ -1,4 +1,3 @@
-import FirebaseAnalytics
 import SwiftUI
 
 struct ChooseEntryView: View {
@@ -64,11 +63,11 @@ struct ChooseEntryView: View {
                         }
                         .buttonStyle(.plain)
                         .simultaneousGesture(TapGesture().onEnded {
-                           Analytics.logEvent("choose_entry_kind_tapped", parameters: [
+                           FAAnalytics.log(.track(.chooseEntryKindTapped, parameters: [
                               "kind": kind.rawValue,
                               "person_id": person.id.uuidString,
                               "is_me": person.isMe
-                           ])
+                           ]))
                         })
                      }
                   }
@@ -83,7 +82,7 @@ struct ChooseEntryView: View {
       .navigationTitle("ChooseEntryTitle")
       .navigationBarTitleDisplayMode(.inline)
       .onAppear {
-         Analytics.logEvent("screen_view_choose_entry", parameters: chooseAnalyticsParameters)
+         FAAnalytics.log(.screenView(.chooseEntry, parameters: chooseAnalyticsParameters))
          HapticsClient.medium()
       }
       .task {
@@ -214,17 +213,21 @@ struct WriteItemView: View {
             title: Text(prompt.title),
             message: Text(prompt.message),
             primaryButton: .default(Text("ThankYou")) {
-               Analytics.logEvent("TapSCLAlertView", parameters: nil)
+               FAAnalytics.log(.track(.reviewPromptConfirmed, parameters: [
+                  "screen": FAScreen.writeEntry.rawValue
+               ]))
                AppReviewClient.requestReview()
             },
             secondaryButton: .cancel(Text("Ohthankyou")) {
-               Analytics.logEvent("UserTap_OhThanks...For100", parameters: nil)
+               FAAnalytics.log(.track(.reviewPromptCancelled, parameters: [
+                  "screen": FAScreen.writeEntry.rawValue
+               ]))
             }
          )
       }
       .onAppear {
          lottieName = EntryLottieSelection.randomName(for: kind, excluding: lottieName)
-         Analytics.logEvent("screen_view_write_entry", parameters: writeAnalyticsParameters(source: "appear"))
+         FAAnalytics.log(.screenView(.writeEntry, parameters: writeAnalyticsParameters(source: "appear")))
          Task {
             try? await Task.sleep(for: .milliseconds(250))
             isTextFieldFocused = true
@@ -232,10 +235,10 @@ struct WriteItemView: View {
       }
       .onDisappear {
          isTextFieldFocused = false
-         Analytics.logEvent("write_entry_disappeared", parameters: writeAnalyticsParameters(source: "disappear"))
+         FAAnalytics.log(.track(.writeEntryDisappeared, parameters: writeAnalyticsParameters(source: "disappear")))
       }
       .onChange(of: isTextFieldFocused) { _, isFocused in
-         Analytics.logEvent("write_text_field_focus_changed", parameters: writeAnalyticsParameters(source: isFocused ? "focused" : "unfocused"))
+         FAAnalytics.log(.track(.writeTextFieldFocusChanged, parameters: writeAnalyticsParameters(source: isFocused ? "focused" : "unfocused")))
       }
    }
 
@@ -248,13 +251,13 @@ struct WriteItemView: View {
 
    private func save(source: String, person: Person) {
       guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-         Analytics.logEvent("write_entry_empty_submitted", parameters: writeAnalyticsParameters(source: source))
+         FAAnalytics.log(.track(.writeEntryEmptySubmitted, parameters: writeAnalyticsParameters(source: source)))
          HapticsClient.error()
          showEmptyAlert = true
          return
       }
 
-      Analytics.logEvent("write_entry_submit_tapped", parameters: writeAnalyticsParameters(source: source))
+      FAAnalytics.log(.track(.writeEntrySubmitTapped, parameters: writeAnalyticsParameters(source: source)))
       store.add(text, to: kind, personID: person.id)
       dismiss()
    }
@@ -453,7 +456,7 @@ struct ItemListView: View {
                      .listRowSeparator(.hidden)
                      .listRowBackground(Color.clear)
                      .onAppear {
-                        Analytics.logEvent("list_banner_visible", parameters: listAnalyticsParameters(person: person, itemCount: itemCount, showsBanner: showsBanner))
+                        FAAnalytics.log(.track(.itemListAdVisible, parameters: listAnalyticsParameters(person: person, itemCount: itemCount, showsBanner: showsBanner)))
                      }
                }
             }
@@ -477,8 +480,7 @@ struct ItemListView: View {
          }
       }
       .onAppear {
-         Analytics.logEvent(kind == .like ? "showLikeTableView" : "showHateTableView", parameters: listAnalyticsParameters(person: person, itemCount: itemCount, showsBanner: showsBanner))
-         Analytics.logEvent("screen_view_item_list", parameters: listAnalyticsParameters(person: person, itemCount: itemCount, showsBanner: showsBanner))
+         FAAnalytics.log(.screenView(.itemList, parameters: listAnalyticsParameters(person: person, itemCount: itemCount, showsBanner: showsBanner)))
       }
    }
 
@@ -589,6 +591,12 @@ private struct EditItemView: View {
          }
       }
       .onAppear {
+         FAAnalytics.log(.screenView(.editItem, parameters: [
+            "kind": kind.rawValue,
+            "person_id": person.id.uuidString,
+            "is_me": person.isMe,
+            "text_length": text.trimmingCharacters(in: .whitespacesAndNewlines).count
+         ]))
          DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             isTextFieldFocused = true
          }

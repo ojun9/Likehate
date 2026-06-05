@@ -28,15 +28,16 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
    }
 
    private func configureAnalyticsCollection() {
-      #if DEBUG
-      Analytics.setAnalyticsCollectionEnabled(false)
-      #endif
+      Analytics.setAnalyticsCollectionEnabled(true)
    }
 }
 
 extension AppDelegate: @MainActor PurchasesDelegate {
    func purchases(_ purchases: Purchases, receivedUpdated customerInfo: CustomerInfo) {
       guard let isPremiumActive = customerInfo.likehatePremiumEntitlementIsActive else { return }
+      FAAnalytics.log(.track(.premiumEntitlementUpdated, parameters: [
+         "is_premium": isPremiumActive
+      ]))
       NotificationCenter.default.post(
          name: .didUpdatePremiumEntitlement,
          object: nil,

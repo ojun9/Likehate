@@ -1,4 +1,3 @@
-import FirebaseAnalytics
 import SwiftUI
 
 struct PremiumView: View {
@@ -52,14 +51,14 @@ struct PremiumView: View {
       }
       .onAppear {
          store.loadPremiumProductInfo()
-         Analytics.logEvent("screen_view_premium", parameters: premiumAnalyticsParameters)
+         FAAnalytics.log(.screenView(.premium, parameters: premiumAnalyticsParameters))
       }
    }
 
    private func purchaseFooter(typography: AppTypography, layout: AppLayoutMetrics) -> some View {
       VStack(spacing: 10) {
          Button {
-            Analytics.logEvent("premium_purchase_button_tapped", parameters: premiumAnalyticsParameters)
+            FAAnalytics.log(.track(.premiumPurchaseButtonTapped, parameters: premiumAnalyticsParameters))
             store.purchasePremium()
          } label: {
             VStack(spacing: 4) {
@@ -89,7 +88,7 @@ struct PremiumView: View {
 
          HStack(spacing: 14) {
             Button {
-               Analytics.logEvent("premium_restore_tapped", parameters: premiumAnalyticsParameters)
+               FAAnalytics.log(.track(.premiumRestoreTapped, parameters: premiumAnalyticsParameters))
                store.restorePurchases()
             } label: {
                if store.isRestoring {
