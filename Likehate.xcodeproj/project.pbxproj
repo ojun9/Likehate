@@ -11,7 +11,6 @@
 		BF0000010000000000000002 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000012 /* FirebaseCore */; };
 		BF0000010000000000000003 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000013 /* FirebaseAnalytics */; };
 		BF0000010000000000000004 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000014 /* FirebaseRemoteConfig */; };
-		BF0000010000000000000005 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000015 /* FirebaseMessaging */; };
 		BF0000010000000000000006 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000016 /* Lottie */; };
 		BF0000010000000000000007 /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000017 /* SwiftyStoreKit */; };
 		BF083ADB2FCDE83B00C67F9D /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = BF083ADA2FCDE83B00C67F9D /* CropViewController */; };
@@ -57,7 +56,6 @@
 				BF083ADD2FCDE83B00C67F9D /* TOCropViewController in Frameworks */,
 				BF0000010000000000000003 /* FirebaseAnalytics in Frameworks */,
 				BF0000010000000000000004 /* FirebaseRemoteConfig in Frameworks */,
-				BF0000010000000000000005 /* FirebaseMessaging in Frameworks */,
 				BF0000010000000000000001 /* GoogleMobileAds in Frameworks */,
 				BF083ADB2FCDE83B00C67F9D /* CropViewController in Frameworks */,
 				BF0000010000000000000006 /* Lottie in Frameworks */,
@@ -125,7 +123,6 @@
 				BF0000010000000000000012 /* FirebaseCore */,
 				BF0000010000000000000013 /* FirebaseAnalytics */,
 				BF0000010000000000000014 /* FirebaseRemoteConfig */,
-				BF0000010000000000000015 /* FirebaseMessaging */,
 				BF0000010000000000000016 /* Lottie */,
 				BF0000010000000000000017 /* SwiftyStoreKit */,
 				BF083ADA2FCDE83B00C67F9D /* CropViewController */,
@@ -565,11 +562,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BF0000010000000000000022 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
-		};
-		BF0000010000000000000015 /* FirebaseMessaging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BF0000010000000000000022 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseMessaging;
 		};
 		BF0000010000000000000016 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
