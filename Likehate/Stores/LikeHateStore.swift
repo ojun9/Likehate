@@ -281,12 +281,12 @@ final class LikeHateStore: ObservableObject {
       defaults.set(nextCount, forKey: Constants.launchReviewRequestCountKey)
 
       FAAnalytics.log(.track(.appLaunchCountRecorded, parameters: [
-         "launch_count": nextCount,
-         "like_count": likes.count,
-         "hate_count": hates.count,
-         "entry_count": entries.count,
-         "person_count": persons.count,
-         "did_buy_remove_ad": didBuyRemoveAd
+         .launchCount: nextCount,
+         .likeCount: likes.count,
+         .hateCount: hates.count,
+         .entryCount: entries.count,
+         .personCount: persons.count,
+         .didBuyRemoveAd: didBuyRemoveAd
       ]))
       requestReviewIfNeeded(count: nextCount, eventName: "requestReviewByLaunchCount")
    }
@@ -308,8 +308,8 @@ final class LikeHateStore: ObservableObject {
       persistEntries()
 
       FAAnalytics.log(.track(.entryDeleted, parameters: analyticsParameters(for: kind, personID: personID).merging([
-         "deleted_count": deletedIDs.count
-      ]) { _, new in new }))
+         .deletedCount: deletedIDs.count
+      ])))
    }
 
    func move(from source: IndexSet, to destination: Int, in kind: EntryKind) {
@@ -329,9 +329,9 @@ final class LikeHateStore: ObservableObject {
       persistEntries()
 
       FAAnalytics.log(.track(.entryReordered, parameters: analyticsParameters(for: kind, personID: personID).merging([
-         "moved_count": source.count,
-         "destination": destination
-      ]) { _, new in new }))
+         .movedCount: source.count,
+         .destination: destination
+      ])))
    }
 
    func deleteAll() {
@@ -348,10 +348,10 @@ final class LikeHateStore: ObservableObject {
       persistPeopleAndEntries()
 
       FAAnalytics.log(.track(.allEntriesDeleted, parameters: [
-         "like_count": likeCount,
-         "hate_count": hateCount,
-         "total_count": likeCount + hateCount,
-         "person_count": personCount
+         .likeCount: likeCount,
+         .hateCount: hateCount,
+         .totalCount: likeCount + hateCount,
+         .personCount: personCount
       ]))
    }
 
@@ -385,8 +385,8 @@ final class LikeHateStore: ObservableObject {
             _ = try await fetchPremiumPackage()
          } catch {
             FAAnalytics.log(.track(.premiumProductFetchFailed, parameters: premiumAnalyticsParameters(source: "load").merging([
-               "error_description": error.localizedDescription
-            ]) { _, new in new }))
+               .errorDescription: error.localizedDescription
+            ])))
          }
       }
    }
@@ -417,11 +417,11 @@ final class LikeHateStore: ObservableObject {
             let entitlementState = try await premiumPurchaseService.currentEntitlementState()
             applyPremiumEntitlement(isActive: entitlementState.isActive)
             FAAnalytics.log(.track(.premiumStatusRefreshed, parameters: [
-               "is_premium": hasPremiumAccess
+               .isPremium: hasPremiumAccess
             ]))
          } catch {
             FAAnalytics.log(.track(.premiumStatusRefreshFailed, parameters: [
-               "error_description": error.localizedDescription
+               .errorDescription: error.localizedDescription
             ]))
          }
       }
@@ -433,13 +433,13 @@ final class LikeHateStore: ObservableObject {
       premiumProductPrice = package?.localizedPrice
       if let package {
          FAAnalytics.log(.track(.premiumProductFetchSucceeded, parameters: premiumAnalyticsParameters(source: "fetch").merging([
-            "price": package.localizedPrice,
-            "product_id": LikehateRevenueCatContracts.premiumProductID
-         ]) { _, new in new }))
+            .price: package.localizedPrice,
+            .productID: LikehateRevenueCatContracts.premiumProductID
+         ])))
       } else {
          FAAnalytics.log(.track(.premiumProductFetchUnavailable, parameters: premiumAnalyticsParameters(source: "fetch").merging([
-            "product_id": LikehateRevenueCatContracts.premiumProductID
-         ]) { _, new in new }))
+            .productID: LikehateRevenueCatContracts.premiumProductID
+         ])))
       }
       return package
    }
@@ -459,8 +459,8 @@ final class LikeHateStore: ObservableObject {
       } catch {
          purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseFailedTitle"), message: error.localizedDescription)
          FAAnalytics.log(.track(.premiumPurchaseFailed, parameters: premiumAnalyticsParameters(source: "purchase").merging([
-            "error_description": error.localizedDescription
-         ]) { _, new in new }))
+            .errorDescription: error.localizedDescription
+         ])))
       }
    }
 
@@ -473,8 +473,8 @@ final class LikeHateStore: ObservableObject {
       } catch {
          purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseFailedTitle"), message: error.localizedDescription)
          FAAnalytics.log(.track(.premiumRestoreFailed, parameters: premiumAnalyticsParameters(source: "restore").merging([
-            "error_description": error.localizedDescription
-         ]) { _, new in new }))
+            .errorDescription: error.localizedDescription
+         ])))
       }
    }
 
@@ -735,10 +735,10 @@ final class LikeHateStore: ObservableObject {
          setPremiumPurchased(true)
          purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseSucceededTitle"), message: String(localized: "PremiumPurchaseSucceededMessage"))
          let parameters = premiumAnalyticsParameters(source: analyticsSource).merging([
-            "source": analyticsSource,
-            "person_count": persons.count,
-            "product_id": LikehateRevenueCatContracts.premiumProductID
-         ]) { _, new in new }
+            .source: analyticsSource,
+            .personCount: persons.count,
+            .productID: LikehateRevenueCatContracts.premiumProductID
+         ])
          FAAnalytics.log(.track(.premiumPurchaseSucceeded, parameters: parameters))
          FAAnalytics.log(.purchase(
             productID: LikehateRevenueCatContracts.premiumProductID,
@@ -748,15 +748,15 @@ final class LikeHateStore: ObservableObject {
          HapticsClient.success()
       case .userCancelled:
          FAAnalytics.log(.track(.premiumPurchaseCancelled, parameters: [
-            "source": analyticsSource
+            .source: analyticsSource
          ]))
       case .inactive, .missingCustomerInfo, .missingEntitlement, .missingPackage:
          setPremiumPurchased(false)
          purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseFailedTitle"), message: String(localized: "PremiumPurchaseUnavailableMessage"))
          FAAnalytics.log(.track(.premiumPurchaseFailed, parameters: premiumAnalyticsParameters(source: analyticsSource).merging([
-            "source": analyticsSource,
-            "reason": String(describing: result)
-         ]) { _, new in new }))
+            .source: analyticsSource,
+            .reason: String(describing: result)
+         ])))
          HapticsClient.error()
       }
    }
@@ -767,7 +767,7 @@ final class LikeHateStore: ObservableObject {
          setPremiumPurchased(true)
          purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseSucceededTitle"), message: String(localized: "RestorePurchaseSucceededMessage"))
          FAAnalytics.log(.track(.premiumRestoreSucceeded, parameters: [
-            "is_premium": hasPremiumAccess
+            .isPremium: hasPremiumAccess
          ]))
          HapticsClient.success()
       case .userCancelled:
@@ -780,7 +780,7 @@ final class LikeHateStore: ObservableObject {
          } else {
             purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseEmptyTitle"), message: String(localized: "RestorePurchaseEmptyMessage"))
             FAAnalytics.log(.track(.premiumRestoreEmpty, parameters: [
-               "reason": String(describing: result)
+               .reason: String(describing: result)
             ]))
          }
       }
@@ -810,61 +810,61 @@ final class LikeHateStore: ObservableObject {
       guard count == 10 || count == 20 else { return }
 
       FAAnalytics.log(.track(.reviewPromptRequested, parameters: [
-         "trigger": eventName,
-         "count": count,
-         "like_count": likes.count,
-         "hate_count": hates.count,
-         "entry_count": entries.count
+         .trigger: eventName,
+         .count: count,
+         .likeCount: likes.count,
+         .hateCount: hates.count,
+         .entryCount: entries.count
       ]))
       AppReviewClient.requestReview()
    }
 
-   private func analyticsParameters(for kind: EntryKind, personID: UUID, textLength: Int? = nil) -> [String: Any] {
+   private func analyticsParameters(for kind: EntryKind, personID: UUID, textLength: Int? = nil) -> FAParameters {
       analyticsParameters(for: kind, person: person(for: personID), textLength: textLength)
    }
 
-   private func analyticsParameters(for kind: EntryKind, person: Person?, textLength: Int? = nil) -> [String: Any] {
+   private func analyticsParameters(for kind: EntryKind, person: Person?, textLength: Int? = nil) -> FAParameters {
       let personItems = person.map { items(for: $0.id, kind: kind).count } ?? 0
-      var parameters: [String: Any] = [
-         "kind": kind.rawValue,
-         "kind_count": personItems,
-         "like_count": likes.count,
-         "hate_count": hates.count,
-         "entry_count": entries.count,
-         "person_count": persons.count,
-         "total_count": likes.count + hates.count
+      var parameters: FAParameters = [
+         .kind: kind.rawValue,
+         .kindCount: personItems,
+         .likeCount: likes.count,
+         .hateCount: hates.count,
+         .entryCount: entries.count,
+         .personCount: persons.count,
+         .totalCount: likes.count + hates.count
       ]
 
       if let person {
-         parameters["person_id"] = person.id.uuidString
-         parameters["is_me"] = person.isMe
+         parameters[.personID] = person.id.uuidString
+         parameters[.isMe] = person.isMe
       }
 
       if let textLength {
-         parameters["text_length"] = textLength
+         parameters[.textLength] = textLength
       }
 
       return parameters
    }
 
-   private func personAnalyticsParameters(_ person: Person, source: String) -> [String: Any] {
+   private func personAnalyticsParameters(_ person: Person, source: String) -> FAParameters {
       [
-         "person_id": person.id.uuidString,
-         "is_me": person.isMe,
-         "person_count": persons.count,
-         "entry_count": entries.count,
-         "source": source
+         .personID: person.id.uuidString,
+         .isMe: person.isMe,
+         .personCount: persons.count,
+         .entryCount: entries.count,
+         .source: source
       ]
    }
 
-   private func premiumAnalyticsParameters(source: String) -> [String: Any] {
+   private func premiumAnalyticsParameters(source: String) -> FAParameters {
       [
-         "source": source,
-         "person_count": persons.count,
-         "entry_count": entries.count,
-         "did_buy_remove_ad": didBuyRemoveAd,
-         "did_buy_premium": didBuyPremium,
-         "has_premium_access": hasPremiumAccess
+         .source: source,
+         .personCount: persons.count,
+         .entryCount: entries.count,
+         .didBuyRemoveAd: didBuyRemoveAd,
+         .didBuyPremium: didBuyPremium,
+         .hasPremiumAccess: hasPremiumAccess
       ]
    }
 }

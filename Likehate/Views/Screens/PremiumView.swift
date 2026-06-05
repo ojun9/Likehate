@@ -156,11 +156,11 @@ struct PremiumView: View {
       return purchaseButtonTitle
    }
 
-   private var premiumAnalyticsParameters: [String: Any] {
+   private var premiumAnalyticsParameters: FAParameters {
       [
-         "person_count": store.persons.count,
-         "did_buy_remove_ad": store.didBuyRemoveAd,
-         "did_buy_premium": store.didBuyPremium
+         .personCount: store.persons.count,
+         .didBuyRemoveAd: store.didBuyRemoveAd,
+         .didBuyPremium: store.didBuyPremium
       ]
    }
 }
