@@ -108,10 +108,227 @@ enum FAEventName: String, CaseIterable {
    case premiumEntitlementUpdated = "premium_entitlement_updated"
 }
 
+enum FAParameter: CaseIterable, Hashable {
+   case animationEnabled
+   case availableWidth
+   case category
+   case count
+   case deletedCount
+   case deletedItemCount
+   case destination
+   case didBuyPremium
+   case didBuyRemoveAd
+   case entryCount
+   case errorCode
+   case errorDescription
+   case errorDomain
+   case firstIsMe
+   case firstPersonID
+   case hasPremiumAccess
+   case hasSelectedPhoto
+   case hateCount
+   case isEmpty
+   case isFocused
+   case isHapticsEnabled
+   case isMe
+   case isPremium
+   case itemCount
+   case kind
+   case kindCount
+   case launchCount
+   case likeCount
+   case lottieName
+   case mode
+   case movedCount
+   case nameLength
+   case personCount
+   case personID
+   case placement
+   case previousTextSize
+   case price
+   case priceText
+   case productID
+   case profileImage
+   case reason
+   case removesExistingPhoto
+   case screen
+   case secondIsMe
+   case secondPersonID
+   case selectedPersonID
+   case selectedProfileImage
+   case showsBanner
+   case source
+   case target
+   case textLength
+   case textSize
+   case totalCount
+   case trigger
+   case firebaseItemID
+   case firebaseItemName
+   case firebaseScreenClass
+   case firebaseScreenName
+
+   var key: String {
+      switch self {
+      case .animationEnabled:
+         return "animation_enabled"
+      case .availableWidth:
+         return "available_width"
+      case .category:
+         return "category"
+      case .count:
+         return "count"
+      case .deletedCount:
+         return "deleted_count"
+      case .deletedItemCount:
+         return "deleted_item_count"
+      case .destination:
+         return "destination"
+      case .didBuyPremium:
+         return "did_buy_premium"
+      case .didBuyRemoveAd:
+         return "did_buy_remove_ad"
+      case .entryCount:
+         return "entry_count"
+      case .errorCode:
+         return "error_code"
+      case .errorDescription:
+         return "error_description"
+      case .errorDomain:
+         return "error_domain"
+      case .firstIsMe:
+         return "first_is_me"
+      case .firstPersonID:
+         return "first_person_id"
+      case .hasPremiumAccess:
+         return "has_premium_access"
+      case .hasSelectedPhoto:
+         return "has_selected_photo"
+      case .hateCount:
+         return "hate_count"
+      case .isEmpty:
+         return "is_empty"
+      case .isFocused:
+         return "is_focused"
+      case .isHapticsEnabled:
+         return "is_haptics_enabled"
+      case .isMe:
+         return "is_me"
+      case .isPremium:
+         return "is_premium"
+      case .itemCount:
+         return "item_count"
+      case .kind:
+         return "kind"
+      case .kindCount:
+         return "kind_count"
+      case .launchCount:
+         return "launch_count"
+      case .likeCount:
+         return "like_count"
+      case .lottieName:
+         return "lottie_name"
+      case .mode:
+         return "mode"
+      case .movedCount:
+         return "moved_count"
+      case .nameLength:
+         return "name_length"
+      case .personCount:
+         return "person_count"
+      case .personID:
+         return "person_id"
+      case .placement:
+         return "placement"
+      case .previousTextSize:
+         return "previous_text_size"
+      case .price:
+         return "price"
+      case .priceText:
+         return "price_text"
+      case .productID:
+         return "product_id"
+      case .profileImage:
+         return "profile_image"
+      case .reason:
+         return "reason"
+      case .removesExistingPhoto:
+         return "removes_existing_photo"
+      case .screen:
+         return "screen"
+      case .secondIsMe:
+         return "second_is_me"
+      case .secondPersonID:
+         return "second_person_id"
+      case .selectedPersonID:
+         return "selected_person_id"
+      case .selectedProfileImage:
+         return "selected_profile_image"
+      case .showsBanner:
+         return "shows_banner"
+      case .source:
+         return "source"
+      case .target:
+         return "target"
+      case .textLength:
+         return "text_length"
+      case .textSize:
+         return "text_size"
+      case .totalCount:
+         return "total_count"
+      case .trigger:
+         return "trigger"
+      case .firebaseItemID:
+         return AnalyticsParameterItemID
+      case .firebaseItemName:
+         return AnalyticsParameterItemName
+      case .firebaseScreenClass:
+         return AnalyticsParameterScreenClass
+      case .firebaseScreenName:
+         return AnalyticsParameterScreenName
+      }
+   }
+}
+
+struct FAParameters: ExpressibleByDictionaryLiteral {
+   private var storage: [FAParameter: Any]
+
+   init(_ storage: [FAParameter: Any] = [:]) {
+      self.storage = storage
+   }
+
+   init(dictionaryLiteral elements: (FAParameter, Any)...) {
+      storage = Dictionary(uniqueKeysWithValues: elements)
+   }
+
+   subscript(_ parameter: FAParameter) -> Any? {
+      get {
+         storage[parameter]
+      }
+      set {
+         storage[parameter] = newValue
+      }
+   }
+
+   func merging(_ other: FAParameters) -> FAParameters {
+      var merged = self
+      for (key, value) in other.storage {
+         merged.storage[key] = value
+      }
+      return merged
+   }
+
+   var firebaseParameters: [String: Any] {
+      Dictionary(uniqueKeysWithValues: storage.map { parameter, value in
+         (parameter.key, value)
+      })
+   }
+}
+
 enum FAEvent {
-   case screenView(FAScreen, parameters: [String: Any])
-   case track(FAEventName, parameters: [String: Any]?)
-   case purchase(productID: String, price: String?, parameters: [String: Any])
+   case screenView(FAScreen, parameters: FAParameters)
+   case track(FAEventName, parameters: FAParameters?)
+   case purchase(productID: String, price: String?, parameters: FAParameters)
 
    var name: String {
       switch self {
@@ -128,21 +345,20 @@ enum FAEvent {
       switch self {
       case .screenView(let screen, let parameters):
          return parameters.merging([
-            AnalyticsParameterScreenName: screen.rawValue,
-            AnalyticsParameterScreenClass: screen.rawValue
-         ]) { _, new in new }
+            .firebaseScreenName: screen.rawValue,
+            .firebaseScreenClass: screen.rawValue
+         ]).firebaseParameters
       case .track(_, let parameters):
-         return parameters
+         return parameters?.firebaseParameters
       case .purchase(let productID, let price, let parameters):
          var merged = parameters.merging([
-            AnalyticsParameterItemID: productID,
-            AnalyticsParameterItemName: "premium_lifetime",
-            "price_text": price ?? ""
-         ]) { _, new in new }
-         if price == nil {
-            merged.removeValue(forKey: "price_text")
+            .firebaseItemID: productID,
+            .firebaseItemName: "premium_lifetime"
+         ])
+         if let price {
+            merged[.priceText] = price
          }
-         return merged
+         return merged.firebaseParameters
       }
    }
 }
