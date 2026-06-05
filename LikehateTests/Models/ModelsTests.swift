@@ -169,6 +169,23 @@ struct EntryKindTests {
       #expect(String.localizedStringWithFormat(String(localized: "PersonLikesTitleFormat", bundle: .main, locale: locale), "太郎") == "太郎の好きなもの")
       #expect(String.localizedStringWithFormat(String(localized: "PersonHatesTitleFormat", bundle: .main, locale: locale), "太郎") == "太郎の嫌いなもの")
    }
+
+   @Test("Person-aware entry copy uses display names and not legacy me wording")
+   func personAwareEntryCopyUsesDisplayNames() {
+      let me = makePerson(name: "自分", isMe: true)
+      let friend = makePerson(name: "太郎", isMe: false)
+
+      #expect(EntryKind.like.inputButtonTitle(for: me) == String(localized: "LikeInputButtonMe"))
+      #expect(EntryKind.hate.inputButtonTitle(for: me) == String(localized: "HateInputButtonMe"))
+      #expect(EntryKind.like.listTitle(for: me) == String(localized: "MyLikesTitle"))
+      #expect(EntryKind.hate.listTitle(for: me) == String(localized: "MyHatesTitle"))
+      #expect(EntryKind.like.inputButtonTitle(for: friend).contains(friend.displayName))
+      #expect(EntryKind.hate.inputButtonTitle(for: friend).contains(friend.displayName))
+      #expect(EntryKind.like.listTitle(for: friend).contains(friend.displayName))
+      #expect(EntryKind.hate.listTitle(for: friend).contains(friend.displayName))
+      #expect(EntryKind.like.listTitle(for: me).contains("自分") == false)
+      #expect(EntryKind.hate.listTitle(for: me).contains("自分") == false)
+   }
 }
 
 struct EntryPreviewItemsTests {
@@ -391,6 +408,26 @@ struct LocalizationTests {
          let value = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "ja"))
          #expect(value.isEmpty == false)
          #expect(value != key)
+      }
+   }
+
+   @Test("Entry empty list localization keys resolve")
+   func entryEmptyListLocalizationKeysResolve() {
+      let keys = [
+         "EmptyLikesTitle",
+         "EmptyLikesMessage",
+         "EmptyHatesTitle",
+         "EmptyHatesMessage"
+      ]
+
+      for key in keys {
+         let japaneseValue = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "ja"))
+         let englishValue = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "en"))
+
+         #expect(japaneseValue.isEmpty == false)
+         #expect(englishValue.isEmpty == false)
+         #expect(japaneseValue != key)
+         #expect(englishValue != key)
       }
    }
 }

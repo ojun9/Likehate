@@ -292,6 +292,38 @@ struct LikeHateStoreEntryTests {
       #expect(EntryPreviewItems.items(from: store.items(for: me.id, kind: .like)).map(\.title) == ["散歩", "おすし"])
    }
 
+   @Test("Entries reject missing people and missing item updates without mutation")
+   func invalidEntryTargetsAndUpdatesDoNotMutateEntries() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+
+      store.add("おすし", to: .like, personID: UUID())
+      #expect(store.entries.isEmpty)
+
+      store.add("おすし", to: .like, personID: me.id)
+      #expect(store.updateItem(UUID(), title: "カレー") == false)
+      #expect(store.items(for: me.id, kind: .like).map(\.title) == ["おすし"])
+   }
+
+   @Test("Updated entry titles are trimmed and persist after reload")
+   func updatedEntryTitlesPersistTrimmed() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+      store.add("おすし", to: .like, personID: me.id)
+      let item = try #require(store.items(for: me.id, kind: .like).first)
+
+      #expect(store.updateItem(item.id, title: "  焼き魚  "))
+
+      let reloadedStore = LikeHateStore(defaults: context.defaults)
+      #expect(reloadedStore.items(for: me.id, kind: .like).map(\.title) == ["焼き魚"])
+   }
+
    @Test("Moved entries persist their new order after reload")
    func movedEntriesPersistOrderAfterReload() throws {
       let context = try StoreTestContext()
@@ -311,6 +343,29 @@ struct LikeHateStoreEntryTests {
 
       #expect(reloadedItems.map(\.title) == ["映画", "おすし", "カレー"])
       #expect(reloadedItems.map(\.sortOrder) == [0, 1, 2])
+   }
+
+   @Test("Stored entries with matching sort order fall back to creation date")
+   func storedEntriesWithMatchingSortOrderUseCreatedAtOrder() throws {
+      let personID = UUID()
+      let now = Date(timeIntervalSince1970: 1_000)
+      let storedPersons = [
+         makeStoredPerson(id: personID, name: "自分", profileImageName: DefaultProfileImage.defaultProfileImage.rawValue, isMe: true, createdAt: now, sortOrder: 0)
+      ]
+      let storedItems = [
+         makeStoredItem(personID: personID, kind: .like, title: "あと", sortOrder: 0, createdAt: now.addingTimeInterval(30)),
+         makeStoredItem(personID: personID, kind: .like, title: "まえ", sortOrder: 0, createdAt: now),
+         makeStoredItem(personID: personID, kind: .like, title: "まんなか", sortOrder: 0, createdAt: now.addingTimeInterval(10))
+      ]
+      let context = try StoreTestContext(initialValues: { defaults in
+         try? storeEncoded(storedPersons, forKey: "LikehatePersonsV1", defaults: defaults)
+         try? storeEncoded(storedItems, forKey: "LikehateItemsV1", defaults: defaults)
+      })
+      defer { context.cleanup() }
+
+      let store = context.store
+
+      #expect(store.items(for: personID, kind: .like).map(\.title) == ["まえ", "まんなか", "あと"])
    }
 
    @Test("Deleting entries ignores out-of-range offsets and renumbers valid deletions")
@@ -427,6 +482,19 @@ struct LikeHateStorePhotoTests {
       #expect(updatedPerson.profileImageName == DefaultProfileImage.defaultProfileImage11.rawValue)
       #expect(updatedPerson.photoFileName == nil)
       #expect(FileManager.default.fileExists(atPath: photoURL.path) == false)
+   }
+
+   @Test("Missing photo files are ignored")
+   func missingPhotoFileIsIgnored() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      var person = try #require(store.addPerson(named: "太郎", profileImage: .defaultProfileImage3))
+      person.photoFileName = "person_missing.jpg"
+
+      #expect(store.photoURL(for: person) == nil)
+      #expect(store.photoImage(for: person) == nil)
    }
 }
 
@@ -661,6 +729,24 @@ struct LikeHateStoreSettingsTests {
       #expect(store.items(for: resetMe.id, kind: .hate).isEmpty)
       #expect(DefaultProfileImage(rawValue: resetMe.profileImageName ?? "") != nil)
    }
+
+   @Test("Delete all clears legacy entry arrays")
+   func deleteAllClearsLegacyEntryArrays() throws {
+      let context = try StoreTestContext(initialValues: { defaults in
+         defaults.set(["おすし"], forKey: EntryKind.like.storageKey)
+         defaults.set(["雨"], forKey: EntryKind.hate.storageKey)
+      })
+      defer { context.cleanup() }
+
+      let store = context.store
+      #expect(context.defaults.stringArray(forKey: EntryKind.like.storageKey) == ["おすし"])
+      #expect(context.defaults.stringArray(forKey: EntryKind.hate.storageKey) == ["雨"])
+
+      store.deleteAll()
+
+      #expect(context.defaults.stringArray(forKey: EntryKind.like.storageKey) == nil)
+      #expect(context.defaults.stringArray(forKey: EntryKind.hate.storageKey) == nil)
+   }
 }
 
 @MainActor
@@ -734,7 +820,8 @@ private func makeStoredItem(
    personID: UUID,
    kind: EntryKind,
    title: String,
-   sortOrder: Int
+   sortOrder: Int,
+   createdAt: Date = Date()
 ) -> LikeDislikeItem {
    LikeDislikeItem(
       id: UUID(),
@@ -742,8 +829,8 @@ private func makeStoredItem(
       type: kind,
       title: title,
       note: nil,
-      createdAt: Date(),
-      updatedAt: Date(),
+      createdAt: createdAt,
+      updatedAt: createdAt,
       sortOrder: sortOrder
    )
 }
