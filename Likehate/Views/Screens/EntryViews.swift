@@ -365,7 +365,7 @@ struct ItemListView: View {
    private func itemList(for person: Person) -> some View {
       let items = store.items(for: person.id, kind: kind)
       let itemCount = items.count
-      let showsBanner = AdDisplayPolicy(adsRemoved: store.appSettings.adsRemoved).showsListAd(hasItems: !items.isEmpty)
+      let showsBanner = AdDisplayPolicy(adsRemoved: store.appSettings.adsRemoved, isPremium: store.appSettings.isPremium).showsListAd(hasItems: !items.isEmpty)
       let typography = store.typography(for: dynamicTypeSize)
       let layout = store.layoutMetrics
 
@@ -412,7 +412,7 @@ struct ItemListView: View {
                      }
                      .buttonStyle(.plain)
                      .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                     .listRowBackground(listSectionRowBackground)
+                     .listRowBackground(listSectionRowBackground(rowIndex: index, rowCount: items.count))
                      .listRowSeparator(.hidden)
                      .swipeActions(edge: .leading, allowsFullSwipe: false) {
                         Button {
@@ -496,15 +496,19 @@ struct ItemListView: View {
       }
    }
 
-   private var listSectionRowBackground: some View {
-      ZStack(alignment: .leading) {
+   private func listSectionRowBackground(rowIndex: Int, rowCount: Int) -> some View {
+      let topInset: CGFloat = rowIndex == 0 ? 14 : 0
+      let bottomInset: CGFloat = rowIndex == rowCount - 1 ? 14 : 0
+
+      return ZStack(alignment: .leading) {
          LikehateTheme.elevatedSurface
 
          Rectangle()
             .fill(kind.color.opacity(0.32))
             .frame(width: 3)
             .clipShape(.rect(cornerRadius: 2))
-            .padding(.vertical, 14)
+            .padding(.top, topInset)
+            .padding(.bottom, bottomInset)
       }
    }
 

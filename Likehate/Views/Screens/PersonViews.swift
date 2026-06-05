@@ -18,6 +18,7 @@ enum PersonSelectionMode {
 struct PersonSelectionView: View {
    @EnvironmentObject private var store: LikeHateStore
    @State private var formMode: PersonFormMode?
+   @State private var isShowingPremium = false
 
    let mode: PersonSelectionMode
 
@@ -53,7 +54,7 @@ struct PersonSelectionView: View {
       .toolbar {
          ToolbarItem(placement: .topBarTrailing) {
             Button {
-               formMode = .add
+               showAddPersonOrPremium()
             } label: {
                Image(systemName: "plus")
             }
@@ -63,6 +64,11 @@ struct PersonSelectionView: View {
       .sheet(item: $formMode) { formMode in
          NavigationStack {
             PersonFormView(mode: formMode)
+         }
+      }
+      .sheet(isPresented: $isShowingPremium) {
+         NavigationStack {
+            PremiumView()
          }
       }
       .onAppear {
@@ -81,6 +87,14 @@ struct PersonSelectionView: View {
          ChooseEntryView(personID: person.id)
       case .browse:
          PersonDetailView(personID: person.id)
+      }
+   }
+
+   private func showAddPersonOrPremium() {
+      if store.canAddPerson {
+         formMode = .add
+      } else {
+         isShowingPremium = true
       }
    }
 }
@@ -209,6 +223,7 @@ struct PersonFormView: View {
    @State private var cropSourceImage: PersonPhotoCropSource?
    @State private var isLoadingPhoto = false
    @State private var isShowingDeleteConfirmation = false
+   @State private var isShowingPremium = false
    @State private var didApplyInitialAddProfileImage = false
    @FocusState private var isNameFocused: Bool
 
@@ -347,6 +362,11 @@ struct PersonFormView: View {
             cropSourceImage = nil
          }
       }
+      .sheet(isPresented: $isShowingPremium) {
+         NavigationStack {
+            PremiumView()
+         }
+      }
       .onAppear {
          if case .add = mode {
             applyInitialAddProfileImageIfNeeded()
@@ -393,8 +413,15 @@ struct PersonFormView: View {
 
       switch mode {
       case .add:
+         guard store.canAddPerson else {
+            isShowingPremium = true
+            return
+         }
          if let person = store.addPerson(named: name, profileImage: iconSelection.selectedProfileImage, photoData: selectedPhotoData) {
             onAdd?(person)
+         } else {
+            isShowingPremium = true
+            return
          }
       case .edit(let person):
          store.updatePerson(
@@ -774,6 +801,7 @@ struct ComparisonSelectionView: View {
    @State private var firstPersonID: UUID?
    @State private var secondPersonID: UUID?
    @State private var formMode: PersonFormMode?
+   @State private var isShowingPremium = false
 
    var body: some View {
       let typography = store.typography(for: dynamicTypeSize)
@@ -843,6 +871,11 @@ struct ComparisonSelectionView: View {
             PersonFormView(mode: formMode)
          }
       }
+      .sheet(isPresented: $isShowingPremium) {
+         NavigationStack {
+            PremiumView()
+         }
+      }
       .onAppear {
          normalizeSelection()
          Analytics.logEvent("screen_view_compare_selection", parameters: [
@@ -871,7 +904,7 @@ struct ComparisonSelectionView: View {
                   )
 
                   Button {
-                     formMode = .add
+                     showAddPersonOrPremium()
                   } label: {
                      Label("AddPersonButton", systemImage: "plus")
                         .font(typography.button)
@@ -939,6 +972,14 @@ struct ComparisonSelectionView: View {
    private func selectedPerson(for personID: UUID?) -> Person? {
       guard let personID else { return nil }
       return store.person(for: personID)
+   }
+
+   private func showAddPersonOrPremium() {
+      if store.canAddPerson {
+         formMode = .add
+      } else {
+         isShowingPremium = true
+      }
    }
 
    private var selectionTextColor: Color {

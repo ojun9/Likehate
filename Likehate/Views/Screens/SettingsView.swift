@@ -30,21 +30,16 @@ struct SettingsView: View {
          }
 
          Section {
-            if !store.didBuyRemoveAd {
-               Button {
-                  Analytics.logEvent("settings_no_ads_tapped", parameters: settingsAnalyticsParameters)
-                  store.purchaseNoAds()
-               } label: {
-                  if store.isPurchasing {
-                     SettingsProgressRow(title: "No Ads")
-                  } else {
-                     SettingsActionRow(iconName: "nosign", title: "No Ads")
-                  }
-               }
-               .disabled(store.isPurchasing)
-               .buttonStyle(.plain)
-            } else {
-               SettingsActionRow(iconName: "checkmark.seal", title: "AdsRemovedStatus")
+            NavigationLink {
+               PremiumView()
+            } label: {
+               SettingsActionRow(
+                  iconName: store.hasPremiumAccess ? "checkmark.seal.fill" : "sparkles",
+                  title: "PremiumTitle",
+                  subtitle: store.hasPremiumAccess ? "PremiumPurchasedStatus" : "PremiumSettingsSubtitle",
+                  iconColor: store.hasPremiumAccess ? LikehateTheme.likeAccent : .yellow,
+                  titleWeight: .bold
+               )
             }
 
             Button {
@@ -160,6 +155,7 @@ struct SettingsView: View {
          "hate_count": store.hates.count,
          "total_count": store.likes.count + store.hates.count,
          "did_buy_remove_ad": store.didBuyRemoveAd,
+         "did_buy_premium": store.didBuyPremium,
          "animation_enabled": store.animationEnabled,
          "is_haptics_enabled": isHapticsEnabled,
          "text_size": store.textSize.rawValue

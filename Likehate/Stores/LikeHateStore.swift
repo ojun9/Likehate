@@ -8,6 +8,7 @@ import UIKit
 final class LikeHateStore: ObservableObject {
    private enum Constants {
       static let noAdsProductID = "NO_ADS_LIKEHATE"
+      static let premiumProductID = "premium_lifetime"
       static let receiptSharedSecret = "50822b94b56840bb845871be8d3352ab"
       static let launchReviewRequestCountKey = "LaunchReviewRequestCount"
       static let registrationReviewRequestCountKey = "RegistrationReviewRequestCount"
@@ -18,6 +19,7 @@ final class LikeHateStore: ObservableObject {
       static let animationEnabledKey = "AnimationEnabled"
       static let hapticsEnabledKey = "HapticsEnabled"
       static let adRemovedKey = "BuyRemoveAd"
+      static let premiumPurchasedKey = "PremiumLifetimePurchased"
       static let textSizeKey = "AppTextSize"
       static let personPhotosDirectoryName = "PersonPhotos"
       static let personPhotoSize = CGSize(width: 512, height: 512)
@@ -26,6 +28,7 @@ final class LikeHateStore: ObservableObject {
    @Published private(set) var persons: [Person]
    @Published private(set) var entries: [LikeDislikeItem]
    @Published var didBuyRemoveAd: Bool
+   @Published var didBuyPremium: Bool
    @Published var animationEnabled: Bool {
       didSet {
          defaults.set(animationEnabled, forKey: Constants.animationEnabledKey)
@@ -40,14 +43,24 @@ final class LikeHateStore: ObservableObject {
    @Published var reviewPrompt: ReviewPrompt?
    @Published var isPurchasing = false
    @Published var isRestoring = false
+   @Published var premiumProductPrice: String?
 
    let defaults: UserDefaults
 
    init(defaults: UserDefaults = .standard) {
       self.defaults = defaults
-      self.didBuyRemoveAd = defaults.bool(forKey: Constants.adRemovedKey)
+      let storedAdsRemoved = defaults.bool(forKey: Constants.adRemovedKey)
+      let storedPremium = defaults.bool(forKey: Constants.premiumPurchasedKey)
+      let hasStoredPremiumAccess = storedPremium || storedAdsRemoved
+      self.didBuyRemoveAd = hasStoredPremiumAccess
+      self.didBuyPremium = hasStoredPremiumAccess
       self.animationEnabled = defaults.object(forKey: Constants.animationEnabledKey) as? Bool ?? true
       self.textSize = AppTextSize(rawValue: defaults.string(forKey: Constants.textSizeKey) ?? "") ?? .standard
+
+      if hasStoredPremiumAccess {
+         defaults.set(true, forKey: Constants.adRemovedKey)
+         defaults.set(true, forKey: Constants.premiumPurchasedKey)
+      }
 
       let now = Date()
       if let loadedPersons: [Person] = Self.decode([Person].self, forKey: Constants.personsKey, defaults: defaults) {
@@ -88,8 +101,25 @@ final class LikeHateStore: ObservableObject {
          animationEnabled: animationEnabled,
          vibrationEnabled: defaults.object(forKey: Constants.hapticsEnabledKey) as? Bool ?? true,
          adsRemoved: didBuyRemoveAd,
+         isPremium: didBuyPremium,
          textSize: textSize
       )
+   }
+
+   var premiumAccessPolicy: PremiumAccessPolicy {
+      PremiumAccessPolicy(
+         isPremium: didBuyPremium,
+         adsRemoved: didBuyRemoveAd,
+         personCount: persons.count
+      )
+   }
+
+   var hasPremiumAccess: Bool {
+      premiumAccessPolicy.hasPremiumAccess
+   }
+
+   var canAddPerson: Bool {
+      premiumAccessPolicy.canAddPerson
    }
 
    func typography(for dynamicTypeSize: DynamicTypeSize) -> AppTypography {
@@ -143,7 +173,7 @@ final class LikeHateStore: ObservableObject {
 
    func addPerson(named rawName: String, profileImage: DefaultProfileImage = .random(), photoData: Data? = nil) -> Person? {
       let name = sanitizedPersonName(rawName)
-      guard !name.isEmpty else { return nil }
+      guard !name.isEmpty, canAddPerson else { return nil }
 
       let now = Date()
       let personID = UUID()
@@ -349,6 +379,55 @@ final class LikeHateStore: ObservableObject {
       ]
    }
 
+   func loadPremiumProductInfo() {
+      guard premiumProductPrice == nil else { return }
+
+      SwiftyStoreKit.retrieveProductsInfo(Set([Constants.premiumProductID])) { [weak self] result in
+         Task { @MainActor in
+            guard let self else { return }
+            self.premiumProductPrice = result.retrievedProducts.first?.localizedPrice
+         }
+      }
+   }
+
+   func purchasePremium() {
+      guard !isPurchasing, !hasPremiumAccess else { return }
+      isPurchasing = true
+      Analytics.logEvent("premium_purchase_started", parameters: [
+         "person_count": persons.count,
+         "did_buy_remove_ad": didBuyRemoveAd,
+         "did_buy_premium": didBuyPremium
+      ])
+
+      SwiftyStoreKit.purchaseProduct(Constants.premiumProductID, quantity: 1, atomically: true) { [weak self] result in
+         Task { @MainActor in
+            guard let self else { return }
+            self.isPurchasing = false
+
+            switch result {
+            case .success(let purchase):
+               if purchase.needsFinishTransaction {
+                  SwiftyStoreKit.finishTransaction(purchase.transaction)
+               }
+               self.setPremiumPurchased(true)
+               self.verifyPurchase(productID: Constants.premiumProductID)
+               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseSucceededTitle"), message: String(localized: "PremiumPurchaseSucceededMessage"))
+               Analytics.logEvent("premium_purchase_succeeded", parameters: [
+                  "person_count": self.persons.count
+               ])
+            case .error(let error):
+               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseFailedTitle"), message: error.localizedDescription)
+               Analytics.logEvent("premium_purchase_failed", parameters: [
+                  "error_code": error.code.rawValue
+               ])
+            case .deferred:
+               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseDeferredTitle"), message: String(localized: "PremiumPurchaseDeferredMessage"))
+               Analytics.logEvent("premium_purchase_deferred", parameters: nil)
+            }
+         }
+      }
+   }
+
    func purchaseNoAds() {
       guard !isPurchasing else { return }
       isPurchasing = true
@@ -368,16 +447,16 @@ final class LikeHateStore: ObservableObject {
                   SwiftyStoreKit.finishTransaction(purchase.transaction)
                }
                self.setAdRemoved(true)
-               self.verifyNoAdsPurchase()
-               self.purchaseMessage = PurchaseMessage(title: String(localized: "Passed."), message: "Purchase complete")
+               self.verifyPurchase(productID: Constants.noAdsProductID)
+               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseSucceededTitle"), message: String(localized: "PremiumPurchaseSucceededMessage"))
                Analytics.logEvent("purchase_no_ads_succeeded", parameters: nil)
             case .error(let error):
-               self.purchaseMessage = PurchaseMessage(title: "Purchase failed", message: error.localizedDescription)
+               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseFailedTitle"), message: error.localizedDescription)
                Analytics.logEvent("purchase_no_ads_failed", parameters: [
                   "error_code": error.code.rawValue
                ])
             case .deferred:
-               self.purchaseMessage = PurchaseMessage(title: "Purchase deferred", message: "The purchase is pending approval.")
+               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseDeferredTitle"), message: String(localized: "PremiumPurchaseDeferredMessage"))
                Analytics.logEvent("purchase_no_ads_deferred", parameters: nil)
             }
          }
@@ -388,7 +467,8 @@ final class LikeHateStore: ObservableObject {
       guard !isRestoring else { return }
       isRestoring = true
       Analytics.logEvent("restore_purchases_started", parameters: [
-         "did_buy_remove_ad": didBuyRemoveAd
+         "did_buy_remove_ad": didBuyRemoveAd,
+         "did_buy_premium": didBuyPremium
       ])
 
       SwiftyStoreKit.restorePurchases(atomically: true) { [weak self] results in
@@ -398,21 +478,21 @@ final class LikeHateStore: ObservableObject {
 
             if let error = results.restoreFailedPurchases.first?.0 {
                let nsError = error as NSError
-               self.purchaseMessage = PurchaseMessage(title: "Restore failed", message: error.localizedDescription)
+               self.purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseFailedTitle"), message: error.localizedDescription)
                Analytics.logEvent("restore_purchases_failed", parameters: [
                   "failed_count": results.restoreFailedPurchases.count,
                   "restored_count": results.restoredPurchases.count,
                   "error_domain": nsError.domain,
                   "error_code": nsError.code
                ])
-            } else if results.restoredPurchases.contains(where: { $0.productId == Constants.noAdsProductID }) {
-               self.setAdRemoved(true)
-               self.purchaseMessage = PurchaseMessage(title: String(localized: "Passed."), message: "Restore successful")
+            } else if results.restoredPurchases.contains(where: { Self.isPremiumEntitlementProductID($0.productId) }) {
+               self.setPremiumPurchased(true)
+               self.purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseSucceededTitle"), message: String(localized: "RestorePurchaseSucceededMessage"))
                Analytics.logEvent("restore_purchases_succeeded", parameters: [
                   "restored_count": results.restoredPurchases.count
                ])
             } else {
-               self.purchaseMessage = PurchaseMessage(title: "Restore", message: "No purchases were found.")
+               self.purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseEmptyTitle"), message: String(localized: "RestorePurchaseEmptyMessage"))
                Analytics.logEvent("restore_purchases_empty", parameters: [
                   "restored_count": results.restoredPurchases.count
                ])
@@ -654,15 +734,33 @@ final class LikeHateStore: ObservableObject {
    private func setAdRemoved(_ value: Bool) {
       didBuyRemoveAd = value
       defaults.set(value, forKey: Constants.adRemovedKey)
+      if value {
+         didBuyPremium = true
+         defaults.set(true, forKey: Constants.premiumPurchasedKey)
+      }
       NotificationCenter.default.post(name: .didRemoveAds, object: nil)
    }
 
-   private func verifyNoAdsPurchase() {
+   private func setPremiumPurchased(_ value: Bool) {
+      didBuyPremium = value
+      defaults.set(value, forKey: Constants.premiumPurchasedKey)
+      if value {
+         didBuyRemoveAd = true
+         defaults.set(true, forKey: Constants.adRemovedKey)
+         NotificationCenter.default.post(name: .didRemoveAds, object: nil)
+      }
+   }
+
+   private static func isPremiumEntitlementProductID(_ productID: String) -> Bool {
+      productID == Constants.premiumProductID || productID == Constants.noAdsProductID
+   }
+
+   private func verifyPurchase(productID: String) {
       let validator = AppleReceiptValidator(service: .production, sharedSecret: Constants.receiptSharedSecret)
       SwiftyStoreKit.verifyReceipt(using: validator) { result in
          switch result {
          case .success(let receipt):
-            let purchaseResult = SwiftyStoreKit.verifyPurchase(productId: Constants.noAdsProductID, inReceipt: receipt)
+            let purchaseResult = SwiftyStoreKit.verifyPurchase(productId: productID, inReceipt: receipt)
             print("購入の検証: \(purchaseResult)")
          case .error(let error):
             print("verifyPurchaseエラー: \(error)")

@@ -421,6 +421,53 @@ struct LocalizationTests {
       }
    }
 
+   @Test("Japanese premium copy explains one-time purchase and free limit")
+   func japanesePremiumCopyExplainsOneTimePurchaseAndFreeLimit() {
+      let locale = Locale(identifier: "ja")
+
+      #expect(String(localized: "PremiumTitle", bundle: .main, locale: locale) == "プレミアム")
+      #expect(String(localized: "PremiumHeroTitle", bundle: .main, locale: locale) == "もっと人を追加できます")
+      #expect(String(localized: "PremiumFreeLimitMessage", bundle: .main, locale: locale) == "無料版では、わたしを含めて3人まで登録できます。")
+      #expect(String(localized: "PremiumUpgradeMessage", bundle: .main, locale: locale) == "プレミアムにすると、4人以上の好き嫌いも残せて、広告も非表示になります。")
+      #expect(String(localized: "PremiumOneTimeNote", bundle: .main, locale: locale) == "月額ではありません。一度の購入で使えます。")
+      #expect(String(localized: "PremiumPurchaseButton", bundle: .main, locale: locale) == "プレミアムを購入")
+      #expect(String(localized: "PremiumRestoreButton", bundle: .main, locale: locale) == "購入を復元")
+      #expect(String(localized: "PremiumCloseButton", bundle: .main, locale: locale) == "あとで")
+      #expect(String(localized: "PremiumSettingsSubtitle", bundle: .main, locale: locale) == "人数制限解除・広告非表示")
+      #expect(String(localized: "PremiumPurchasedStatus", bundle: .main, locale: locale) == "購入済み")
+   }
+
+   @Test("Premium and restore localization keys resolve")
+   func premiumAndRestoreLocalizationKeysResolve() {
+      let keys = [
+         "PremiumBenefitLifetime",
+         "PremiumBenefitNoAds",
+         "PremiumBenefitPeople",
+         "PremiumHeroMessage",
+         "PremiumPurchaseButtonWithPriceFormat",
+         "PremiumPurchaseDeferredMessage",
+         "PremiumPurchaseDeferredTitle",
+         "PremiumPurchaseFailedTitle",
+         "PremiumPurchaseSucceededMessage",
+         "PremiumPurchaseSucceededTitle",
+         "RestorePurchaseEmptyMessage",
+         "RestorePurchaseEmptyTitle",
+         "RestorePurchaseFailedTitle",
+         "RestorePurchaseSucceededMessage",
+         "RestorePurchaseSucceededTitle"
+      ]
+
+      for key in keys {
+         let japaneseValue = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "ja"))
+         let englishValue = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "en"))
+
+         #expect(japaneseValue.isEmpty == false)
+         #expect(englishValue.isEmpty == false)
+         #expect(japaneseValue != key)
+         #expect(englishValue != key)
+      }
+   }
+
    @Test("Comparison empty state localization keys resolve")
    func comparisonEmptyStateLocalizationKeysResolve() {
       let keys = [
@@ -509,6 +556,25 @@ struct AdDisplayPolicyTests {
       #expect(AdDisplayPolicy(adsRemoved: true, isPremium: false).showsListAd(hasItems: true) == false)
       #expect(AdDisplayPolicy(adsRemoved: false, isPremium: true).showsListAd(hasItems: true) == false)
       #expect(AdDisplayPolicy(adsRemoved: true, isPremium: true).showsListAd(hasItems: true) == false)
+   }
+}
+
+struct PremiumAccessPolicyTests {
+   @Test("Free person limit includes me and stops at three people")
+   func freePersonLimitIncludesMeAndStopsAtThreePeople() {
+      #expect(PremiumAccessPolicy.freePersonLimit == 3)
+      #expect(PremiumAccessPolicy(isPremium: false, adsRemoved: false, personCount: 1).canAddPerson)
+      #expect(PremiumAccessPolicy(isPremium: false, adsRemoved: false, personCount: 2).canAddPerson)
+      #expect(PremiumAccessPolicy(isPremium: false, adsRemoved: false, personCount: 3).canAddPerson == false)
+      #expect(PremiumAccessPolicy(isPremium: false, adsRemoved: false, personCount: 4).canAddPerson == false)
+   }
+
+   @Test("Premium and legacy ad removal both unlock person limit")
+   func premiumAndLegacyAdRemovalBothUnlockPersonLimit() {
+      #expect(PremiumAccessPolicy(isPremium: true, adsRemoved: false, personCount: 3).canAddPerson)
+      #expect(PremiumAccessPolicy(isPremium: false, adsRemoved: true, personCount: 3).canAddPerson)
+      #expect(PremiumAccessPolicy(isPremium: true, adsRemoved: true, personCount: 8).canAddPerson)
+      #expect(PremiumAccessPolicy(isPremium: false, adsRemoved: true, personCount: 3).hasPremiumAccess)
    }
 }
 

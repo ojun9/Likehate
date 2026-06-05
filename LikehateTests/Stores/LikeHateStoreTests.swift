@@ -64,6 +64,67 @@ struct LikeHateStorePersonTests {
       #expect(store.defaultProfileImageForNewPerson() == .defaultProfileImage4)
    }
 
+   @Test("Free users can register up to three people including me")
+   func freeUsersCanRegisterUpToThreePeopleIncludingMe() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+      let firstFriend = try #require(store.addPerson(named: "太郎", profileImage: .defaultProfileImage2))
+      let secondFriend = try #require(store.addPerson(named: "あかり", profileImage: .defaultProfileImage3))
+
+      #expect(store.persons.map(\.id) == [me.id, firstFriend.id, secondFriend.id])
+      #expect(store.canAddPerson == false)
+      #expect(store.addPerson(named: "はると", profileImage: .defaultProfileImage4) == nil)
+      #expect(store.persons.count == PremiumAccessPolicy.freePersonLimit)
+
+      store.add("おすし", to: .like, personID: me.id)
+      store.add("雨", to: .hate, personID: firstFriend.id)
+      #expect(store.items(for: me.id, kind: .like).map(\.title) == ["おすし"])
+      #expect(store.items(for: firstFriend.id, kind: .hate).map(\.title) == ["雨"])
+   }
+
+   @Test("Premium users can add more than three people")
+   func premiumUsersCanAddMoreThanThreePeople() throws {
+      let context = try StoreTestContext(initialValues: { defaults in
+         defaults.set(true, forKey: "PremiumLifetimePurchased")
+      })
+      defer { context.cleanup() }
+
+      let store = context.store
+
+      _ = try #require(store.addPerson(named: "太郎", profileImage: .defaultProfileImage2))
+      _ = try #require(store.addPerson(named: "あかり", profileImage: .defaultProfileImage3))
+      let thirdFriend = try #require(store.addPerson(named: "はると", profileImage: .defaultProfileImage4))
+
+      #expect(store.hasPremiumAccess)
+      #expect(store.canAddPerson)
+      #expect(store.persons.count == PremiumAccessPolicy.freePersonLimit + 1)
+      #expect(store.person(for: thirdFriend.id)?.displayName == "はると")
+   }
+
+   @Test("Existing ad removal purchase is treated as premium access")
+   func existingAdRemovalPurchaseIsTreatedAsPremiumAccess() throws {
+      let context = try StoreTestContext(initialValues: { defaults in
+         defaults.set(true, forKey: "BuyRemoveAd")
+      })
+      defer { context.cleanup() }
+
+      let store = context.store
+
+      #expect(store.didBuyRemoveAd)
+      #expect(store.didBuyPremium)
+      #expect(store.appSettings.adsRemoved)
+      #expect(store.appSettings.isPremium)
+      #expect(store.hasPremiumAccess)
+
+      _ = try #require(store.addPerson(named: "太郎", profileImage: .defaultProfileImage2))
+      _ = try #require(store.addPerson(named: "あかり", profileImage: .defaultProfileImage3))
+      _ = try #require(store.addPerson(named: "はると", profileImage: .defaultProfileImage4))
+      #expect(store.persons.count == PremiumAccessPolicy.freePersonLimit + 1)
+   }
+
    @Test("Adding and updating a person limits names to forty characters")
    func addAndUpdatePersonLimitNamesToFortyCharacters() throws {
       let context = try StoreTestContext()
@@ -577,6 +638,7 @@ struct LikeHateStoreSettingsTests {
       #expect(settings.animationEnabled)
       #expect(settings.vibrationEnabled)
       #expect(settings.adsRemoved == false)
+      #expect(settings.isPremium == false)
       #expect(settings.textSize == .standard)
    }
 
@@ -629,6 +691,7 @@ struct LikeHateStoreSettingsTests {
 
       #expect(settings.vibrationEnabled == false)
       #expect(settings.adsRemoved)
+      #expect(settings.isPremium)
    }
 
    #if DEBUG

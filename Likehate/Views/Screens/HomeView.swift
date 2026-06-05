@@ -15,6 +15,7 @@ struct HomeView: View {
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
    @State private var isShowingSettings = false
    @State private var isShowingAddPerson = false
+   @State private var isShowingPremium = false
    @State private var pendingAddedPerson: PersonDetailRoute?
    @State private var selectedPersonRoute: PersonDetailRoute?
 
@@ -52,7 +53,7 @@ struct HomeView: View {
 
             Button {
                Analytics.logEvent("home_add_person_tapped", parameters: homeAnalyticsParameters)
-               isShowingAddPerson = true
+               showAddPersonOrPremium()
             } label: {
                Label("AddPersonButton", systemImage: "plus")
                   .font(typography.button)
@@ -150,6 +151,11 @@ struct HomeView: View {
             }
          }
       }
+      .sheet(isPresented: $isShowingPremium) {
+         NavigationStack {
+            PremiumView()
+         }
+      }
       .onAppear {
          Analytics.logEvent("showSwiftUIHome", parameters: homeAnalyticsParameters)
          Analytics.logEvent("screen_view_home", parameters: homeAnalyticsParameters)
@@ -162,6 +168,14 @@ struct HomeView: View {
       selectedPersonRoute = pendingAddedPerson
    }
 
+   private func showAddPersonOrPremium() {
+      if store.canAddPerson {
+         isShowingAddPerson = true
+      } else {
+         isShowingPremium = true
+      }
+   }
+
    private var homeAnalyticsParameters: [String: Any] {
       [
          "like_count": store.likes.count,
@@ -170,6 +184,7 @@ struct HomeView: View {
          "person_count": store.persons.count,
          "total_count": store.likes.count + store.hates.count,
          "did_buy_remove_ad": store.didBuyRemoveAd,
+         "did_buy_premium": store.didBuyPremium,
          "animation_enabled": store.animationEnabled
       ]
    }

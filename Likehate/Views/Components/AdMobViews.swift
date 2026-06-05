@@ -118,7 +118,7 @@ struct ConditionalListAdBanner: View {
    var bottomPadding: CGFloat = 16
 
    var body: some View {
-      if AdDisplayPolicy(adsRemoved: store.appSettings.adsRemoved).showsListAd(hasItems: hasItems) {
+      if AdDisplayPolicy(adsRemoved: store.appSettings.adsRemoved, isPremium: store.appSettings.isPremium).showsListAd(hasItems: hasItems) {
          ListAdBanner(placement: placement, topPadding: topPadding, bottomPadding: bottomPadding)
       }
    }
