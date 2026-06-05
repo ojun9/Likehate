@@ -219,6 +219,36 @@ struct EntryPreviewItemsTests {
    }
 }
 
+struct EntryLottieSelectionTests {
+   @Test("Entry lottie names are grouped by entry kind")
+   func lottieNamesAreGroupedByEntryKind() {
+      #expect(EntryLottieSelection.names(for: .like) == ["MoreHarts", "heart1", "heart2"])
+      #expect(EntryLottieSelection.names(for: .hate) == ["fish", "lightiing", "wave", "Bubbles", "Bubbles2", "Bubbbles3"])
+      #expect(EntryLottieSelection.fallbackName(for: .like) == "MoreHarts")
+      #expect(EntryLottieSelection.fallbackName(for: .hate) == "fish")
+   }
+
+   @Test("Entry lottie selection avoids the current animation when possible")
+   func lottieSelectionAvoidsCurrentAnimation() {
+      for name in EntryLottieSelection.names(for: .like) {
+         #expect(EntryLottieSelection.randomName(for: .like, excluding: name) != name)
+      }
+
+      for name in EntryLottieSelection.names(for: .hate) {
+         #expect(EntryLottieSelection.randomName(for: .hate, excluding: name) != name)
+      }
+   }
+
+   @Test("Entry lottie selection stays within each kind's candidates")
+   func lottieSelectionStaysWithinCandidates() {
+      let likeNames = EntryLottieSelection.names(for: .like)
+      let hateNames = EntryLottieSelection.names(for: .hate)
+
+      #expect(likeNames.contains(EntryLottieSelection.randomName(for: .like, excluding: "missing")))
+      #expect(hateNames.contains(EntryLottieSelection.randomName(for: .hate, excluding: "missing")))
+   }
+}
+
 struct ComparisonCategoryTests {
    @Test("Comparison categories are partitioned by entry kind")
    func categoriesArePartitionedByEntryKind() {

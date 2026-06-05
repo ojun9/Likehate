@@ -119,9 +119,6 @@ struct ChooseEntryView: View {
 }
 
 struct WriteItemView: View {
-   private static let likeLottieNames = ["MoreHarts", "heart1", "heart2"]
-   private static let hateLottieNames = ["fish", "lightiing", "wave", "Bubbles", "Bubbles2", "Bubbbles3"]
-
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dismiss) private var dismiss
    @Environment(\.colorScheme) private var colorScheme
@@ -136,12 +133,7 @@ struct WriteItemView: View {
    init(kind: EntryKind, personID: UUID? = nil) {
       self.kind = kind
       self.personID = personID
-      switch kind {
-      case .like:
-         _lottieName = State(initialValue: Self.likeLottieNames.randomElement() ?? "MoreHarts")
-      case .hate:
-         _lottieName = State(initialValue: Self.hateLottieNames.randomElement() ?? "fish")
-      }
+      _lottieName = State(initialValue: EntryLottieSelection.randomName(for: kind))
    }
 
    var body: some View {
@@ -153,7 +145,7 @@ struct WriteItemView: View {
                      .ignoresSafeArea()
 
                   if store.animationEnabled {
-                     WriteLottieLayer(lottieName: lottieName, kind: kind, topOffset: kind == .like ? 238 : 252, keepsFullHeight: isTextFieldFocused)
+                     WriteLottieLayer(lottieName: lottieName, kind: kind, keepsFullHeight: isTextFieldFocused)
                   }
 
                   ScrollView {
@@ -231,6 +223,7 @@ struct WriteItemView: View {
          )
       }
       .onAppear {
+         lottieName = EntryLottieSelection.randomName(for: kind, excluding: lottieName)
          Analytics.logEvent("screen_view_write_entry", parameters: writeAnalyticsParameters(source: "appear"))
          Task {
             try? await Task.sleep(for: .milliseconds(250))
@@ -308,7 +301,6 @@ struct WriteItemView: View {
 struct WriteLottieLayer: View {
    let lottieName: String
    let kind: EntryKind
-   let topOffset: CGFloat
    let keepsFullHeight: Bool
    @State private var largestSize: CGSize = .zero
 
@@ -316,15 +308,13 @@ struct WriteLottieLayer: View {
       GeometryReader { proxy in
          let stableHeight = keepsFullHeight ? max(largestSize.height, proxy.size.height) : proxy.size.height
 
-         VStack {
-            Spacer(minLength: topOffset)
-
+         ZStack(alignment: .top) {
             LottieLoopView(name: lottieName)
-               .frame(width: proxy.size.width * 0.96, height: max(stableHeight - topOffset - 15, 120))
-               .frame(maxWidth: .infinity)
+               .frame(width: proxy.size.width * 0.96, height: max(stableHeight - 15, 120))
+               .frame(maxWidth: .infinity, alignment: .top)
                .padding(.horizontal, proxy.size.width * 0.02)
-               .padding(.bottom, 15)
          }
+         .frame(width: proxy.size.width, height: stableHeight, alignment: .top)
          .onAppear {
             largestSize = proxy.size
          }
@@ -337,6 +327,7 @@ struct WriteLottieLayer: View {
       .opacity(kind == .like ? 0.72 : 0.32)
       .allowsHitTesting(false)
       .accessibilityHidden(true)
+      .ignoresSafeArea(.container, edges: .top)
       .ignoresSafeArea(.keyboard, edges: .bottom)
    }
 }
