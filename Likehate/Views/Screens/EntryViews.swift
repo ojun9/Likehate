@@ -385,25 +385,35 @@ struct ItemListView: View {
          } else {
             List {
                Section {
-                  ForEach(items) { item in
+                  ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
                      Button {
                         editingItem = item
                      } label: {
-                        HStack(spacing: 12) {
-                           Text(verbatim: item.title)
-                              .font(typography.prominentListBody)
-                              .foregroundStyle(.primary)
-                              .lineLimit(12)
-                              .multilineTextAlignment(.leading)
-                              .frame(maxWidth: .infinity, alignment: .leading)
+                        VStack(spacing: 0) {
+                           HStack(spacing: 12) {
+                              Text(verbatim: item.title)
+                                 .font(typography.prominentListBody)
+                                 .foregroundStyle(.primary)
+                                 .lineLimit(12)
+                                 .multilineTextAlignment(.leading)
+                                 .frame(maxWidth: .infinity, alignment: .leading)
+                           }
+                           .padding(.horizontal, layout.cardPadding)
+                           .padding(.vertical, 8)
+                           .frame(minHeight: layout.rowMinHeight, alignment: .leading)
+
+                           if index < items.count - 1 {
+                              Rectangle()
+                                 .fill(LikehateTheme.separator)
+                                 .frame(height: 1)
+                                 .padding(.horizontal, layout.cardPadding)
+                           }
                         }
-                        .padding(.vertical, 8)
-                        .frame(minHeight: layout.rowMinHeight, alignment: .leading)
                      }
                      .buttonStyle(.plain)
-                     .listRowInsets(EdgeInsets(top: 0, leading: layout.cardPadding, bottom: 0, trailing: layout.cardPadding))
-                     .listRowBackground(LikehateTheme.elevatedSurface)
-                     .listRowSeparatorTint(LikehateTheme.separator)
+                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                     .listRowBackground(listSectionRowBackground)
+                     .listRowSeparator(.hidden)
                      .swipeActions(edge: .leading, allowsFullSwipe: false) {
                         Button {
                            editingItem = item
@@ -483,6 +493,18 @@ struct ItemListView: View {
       switch kind {
       case .like: return String(localized: "EmptyLikesMessage")
       case .hate: return String(localized: "EmptyHatesMessage")
+      }
+   }
+
+   private var listSectionRowBackground: some View {
+      ZStack(alignment: .leading) {
+         LikehateTheme.elevatedSurface
+
+         Rectangle()
+            .fill(kind.color.opacity(0.32))
+            .frame(width: 3)
+            .clipShape(.rect(cornerRadius: 2))
+            .padding(.vertical, 14)
       }
    }
 
