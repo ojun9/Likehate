@@ -3568,6 +3568,22 @@
         }
       }
     },
+    "PremiumBadge" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lifetime"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "買い切り"
+          }
+        }
+      }
+    },
     "PremiumBenefitLifetime" : {
       "localizations" : {
         "en" : {
@@ -3632,6 +3648,22 @@
         }
       }
     },
+    "PremiumComparisonTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What changes"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "できることが広がります"
+          }
+        }
+      }
+    },
     "PremiumFreeLimitMessage" : {
       "localizations" : {
         "en" : {
@@ -3644,6 +3676,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無料版では、あなたを含めて3人まで登録できます。"
+          }
+        }
+      }
+    },
+    "PremiumFreePlanBadge" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在"
+          }
+        }
+      }
+    },
+    "PremiumFreePlanMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up to three people, with ads on list screens."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3人まで登録できます。一覧画面には広告が表示されます。"
+          }
+        }
+      }
+    },
+    "PremiumFreePlanTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無料版"
           }
         }
       }
@@ -3692,6 +3772,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "月額ではありません。一度の購入で使えます。"
+          }
+        }
+      }
+    },
+    "PremiumPaidPlanMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add four or more people and use list screens without ads."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4人以上追加できて、一覧画面の広告も非表示になります。"
+          }
+        }
+      }
+    },
+    "PremiumPaidPlanTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lifetime Premium"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "買い切りプレミアム"
+          }
+        }
+      }
+    },
+    "PremiumPriceLoading" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading price"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "価格を読み込み中"
           }
         }
       }

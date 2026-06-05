@@ -12,30 +12,12 @@ struct PremiumView: View {
 
       ScrollView {
          VStack(alignment: .leading, spacing: layout.sectionSpacing) {
-            VStack(alignment: .leading, spacing: 12) {
-               Text("PremiumHeroTitle")
-                  .font(typography.sectionTitle)
-                  .foregroundStyle(.primary)
-                  .lineLimit(3)
+            PremiumHeroPanel()
+               .padding(.top, 18)
 
-               Text("PremiumFreeLimitMessage")
-                  .font(typography.body)
-                  .foregroundStyle(.secondary)
-                  .lineSpacing(4)
+            PremiumPlanComparison(price: store.premiumProductPrice)
 
-               Text("PremiumUpgradeMessage")
-                  .font(typography.body)
-                  .foregroundStyle(.secondary)
-                  .lineSpacing(4)
-
-               Text("PremiumOneTimeNote")
-                  .font(typography.subtext)
-                  .fontWeight(.bold)
-                  .foregroundStyle(LikehateTheme.likeAccent)
-            }
-            .padding(.top, 18)
-
-            VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 16) {
                PremiumBenefitRow(iconName: "person.3.fill", title: "PremiumBenefitPeople")
                PremiumBenefitRow(iconName: "rectangle.badge.xmark", title: "PremiumBenefitNoAds")
                PremiumBenefitRow(iconName: "checkmark.seal.fill", title: "PremiumBenefitLifetime")
@@ -46,81 +28,16 @@ struct PremiumView: View {
                RoundedRectangle(cornerRadius: 22, style: .continuous)
                   .stroke(LikehateTheme.border, lineWidth: 1)
             }
-
-            VStack(spacing: 12) {
-               Button {
-                  Analytics.logEvent("premium_purchase_button_tapped", parameters: premiumAnalyticsParameters)
-                  store.purchasePremium()
-               } label: {
-                  VStack(spacing: 3) {
-                     HStack(spacing: 8) {
-                        if store.isPurchasing {
-                           ProgressView()
-                              .tint(.white)
-                        }
-
-                        Text(verbatim: purchaseButtonTitle)
-                           .font(typography.button)
-                           .fontWeight(.bold)
-                     }
-
-                     if let purchaseButtonPrice {
-                        Text(verbatim: purchaseButtonPrice)
-                           .font(typography.subtext)
-                           .fontWeight(.semibold)
-                           .foregroundStyle(.white.opacity(0.9))
-                     }
-                  }
-                  .frame(maxWidth: .infinity)
-                  .frame(minHeight: purchaseButtonPrice == nil ? 56 : 68)
-               }
-               .buttonStyle(.borderedProminent)
-               .tint(LikehateTheme.likeAccent)
-               .disabled(store.isPurchasing || store.hasPremiumAccess)
-               .accessibilityLabel(Text(verbatim: purchaseButtonAccessibilityLabel))
-
-               Button {
-                  Analytics.logEvent("premium_restore_tapped", parameters: premiumAnalyticsParameters)
-                  store.restorePurchases()
-               } label: {
-                  if store.isRestoring {
-                     HStack(spacing: 8) {
-                        ProgressView()
-                        Text("Restore")
-                     }
-                     .font(typography.button)
-                     .frame(maxWidth: .infinity)
-                     .frame(minHeight: 50)
-                  } else {
-                     Text("PremiumRestoreButton")
-                        .font(typography.button)
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity)
-                        .frame(minHeight: 50)
-                  }
-               }
-               .buttonStyle(.bordered)
-               .tint(LikehateTheme.likeAccent)
-               .disabled(store.isRestoring)
-
-               Button {
-                  dismiss()
-               } label: {
-                  Text("PremiumCloseButton")
-                     .font(typography.button)
-                     .foregroundStyle(.secondary)
-                     .frame(maxWidth: .infinity)
-                     .frame(minHeight: 48)
-               }
-               .buttonStyle(.plain)
-            }
          }
          .padding(.horizontal, layout.screenPadding)
-         .padding(.bottom, layout.sectionSpacing)
+         .padding(.bottom, layout.sectionSpacing + 154)
       }
       .background(LikehateTheme.background.ignoresSafeArea())
       .navigationTitle("PremiumTitle")
       .navigationBarTitleDisplayMode(.inline)
+      .safeAreaInset(edge: .bottom) {
+         purchaseFooter(typography: typography, layout: layout)
+      }
       .alert(item: $store.purchaseMessage) { message in
          Alert(
             title: Text(message.title),
@@ -131,6 +48,86 @@ struct PremiumView: View {
       .onAppear {
          store.loadPremiumProductInfo()
          Analytics.logEvent("screen_view_premium", parameters: premiumAnalyticsParameters)
+      }
+   }
+
+   private func purchaseFooter(typography: AppTypography, layout: AppLayoutMetrics) -> some View {
+      VStack(spacing: 10) {
+         Button {
+            Analytics.logEvent("premium_purchase_button_tapped", parameters: premiumAnalyticsParameters)
+            store.purchasePremium()
+         } label: {
+            VStack(spacing: 4) {
+               HStack(spacing: 8) {
+                  if store.isPurchasing {
+                     ProgressView()
+                        .tint(.white)
+                  }
+
+                  Text(verbatim: purchaseButtonTitle)
+                     .font(typography.button)
+                     .fontWeight(.bold)
+               }
+
+               Text(verbatim: purchaseButtonPrice ?? String(localized: "PremiumPriceLoading"))
+                  .font(typography.subtext)
+                  .fontWeight(.semibold)
+                  .foregroundStyle(.white.opacity(0.92))
+            }
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 70)
+         }
+         .buttonStyle(.borderedProminent)
+         .tint(LikehateTheme.likeAccent)
+         .disabled(store.isPurchasing || store.hasPremiumAccess)
+         .accessibilityLabel(Text(verbatim: purchaseButtonAccessibilityLabel))
+
+         HStack(spacing: 14) {
+            Button {
+               Analytics.logEvent("premium_restore_tapped", parameters: premiumAnalyticsParameters)
+               store.restorePurchases()
+            } label: {
+               if store.isRestoring {
+                  HStack(spacing: 8) {
+                     ProgressView()
+                     Text("Restore")
+                  }
+                  .font(typography.subtext)
+                  .frame(maxWidth: .infinity)
+                  .frame(minHeight: 42)
+               } else {
+                  Text("PremiumRestoreButton")
+                     .font(typography.subtext)
+                     .fontWeight(.semibold)
+                     .frame(maxWidth: .infinity)
+                     .frame(minHeight: 42)
+               }
+            }
+            .buttonStyle(.bordered)
+            .tint(LikehateTheme.likeAccent)
+            .disabled(store.isRestoring)
+
+            Button {
+               dismiss()
+            } label: {
+               Text("PremiumCloseButton")
+                  .font(typography.subtext)
+                  .fontWeight(.semibold)
+                  .foregroundStyle(.secondary)
+                  .frame(maxWidth: .infinity)
+                  .frame(minHeight: 42)
+            }
+            .buttonStyle(.plain)
+         }
+      }
+      .padding(.horizontal, layout.screenPadding)
+      .padding(.top, 12)
+      .padding(.bottom, 8)
+      .background(.thinMaterial)
+      .overlay(alignment: .top) {
+         Rectangle()
+            .fill(LikehateTheme.border)
+            .frame(height: 1)
       }
    }
 
@@ -161,6 +158,193 @@ struct PremiumView: View {
          "did_buy_remove_ad": store.didBuyRemoveAd,
          "did_buy_premium": store.didBuyPremium
       ]
+   }
+}
+
+private struct PremiumHeroPanel: View {
+   @EnvironmentObject private var store: LikeHateStore
+   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+   var body: some View {
+      let typography = store.typography(for: dynamicTypeSize)
+      let layout = store.layoutMetrics
+
+      VStack(alignment: .leading, spacing: 18) {
+         HStack(spacing: 8) {
+            Image(systemName: "sparkles")
+            Text("PremiumBadge")
+         }
+         .font(typography.subtext)
+         .fontWeight(.bold)
+         .foregroundStyle(LikehateTheme.likeAccent)
+         .padding(.horizontal, 12)
+         .padding(.vertical, 7)
+         .background(LikehateTheme.likeAccent.opacity(0.13), in: Capsule())
+
+         VStack(alignment: .leading, spacing: 10) {
+            Text("PremiumHeroTitle")
+               .font(typography.sectionTitle)
+               .foregroundStyle(.primary)
+               .lineLimit(3)
+
+            Text("PremiumUpgradeMessage")
+               .font(typography.body)
+               .foregroundStyle(.secondary)
+               .lineSpacing(4)
+         }
+
+         HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "person.crop.circle.badge.exclamationmark")
+               .font(typography.body)
+               .foregroundStyle(LikehateTheme.hateAccent)
+               .frame(width: 30, height: 30)
+               .background(LikehateTheme.hateAccent.opacity(0.12), in: Circle())
+
+            Text("PremiumFreeLimitMessage")
+               .font(typography.subtext)
+               .foregroundStyle(.secondary)
+               .lineSpacing(3)
+
+            Spacer(minLength: 0)
+         }
+         .padding(14)
+         .background(LikehateTheme.surface.opacity(0.72), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+      }
+      .padding(layout.cardPadding + 4)
+      .background(LikehateTheme.elevatedSurface, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+      .overlay {
+         RoundedRectangle(cornerRadius: 26, style: .continuous)
+            .stroke(LikehateTheme.likeAccent.opacity(0.24), lineWidth: 1)
+      }
+   }
+}
+
+private struct PremiumPlanComparison: View {
+   @EnvironmentObject private var store: LikeHateStore
+   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+   let price: String?
+
+   var body: some View {
+      let typography = store.typography(for: dynamicTypeSize)
+      let layout = store.layoutMetrics
+
+      VStack(alignment: .leading, spacing: 12) {
+         Text("PremiumComparisonTitle")
+            .font(typography.cardTitle)
+            .foregroundStyle(.primary)
+
+         VStack(spacing: 10) {
+            PremiumPlanRow(
+               iconName: "lock.fill",
+               title: "PremiumFreePlanTitle",
+               message: "PremiumFreePlanMessage",
+               badge: "PremiumFreePlanBadge",
+               accent: .secondary,
+               isEmphasized: false
+            )
+
+            PremiumPlanRow(
+               iconName: "checkmark.seal.fill",
+               title: "PremiumPaidPlanTitle",
+               message: "PremiumPaidPlanMessage",
+               badgeText: price ?? String(localized: "PremiumPriceLoading"),
+               accent: LikehateTheme.likeAccent,
+               isEmphasized: true
+            )
+         }
+      }
+      .padding(layout.cardPadding)
+      .background(LikehateTheme.surface.opacity(0.74), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+      .overlay {
+         RoundedRectangle(cornerRadius: 22, style: .continuous)
+            .stroke(LikehateTheme.border, lineWidth: 1)
+      }
+   }
+}
+
+private struct PremiumPlanRow: View {
+   @EnvironmentObject private var store: LikeHateStore
+   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+   let iconName: String
+   let title: LocalizedStringKey
+   let message: LocalizedStringKey
+   let badge: LocalizedStringKey?
+   let badgeText: String?
+   let accent: Color
+   let isEmphasized: Bool
+
+   init(iconName: String, title: LocalizedStringKey, message: LocalizedStringKey, badge: LocalizedStringKey, accent: Color, isEmphasized: Bool) {
+      self.iconName = iconName
+      self.title = title
+      self.message = message
+      self.badge = badge
+      self.badgeText = nil
+      self.accent = accent
+      self.isEmphasized = isEmphasized
+   }
+
+   init(iconName: String, title: LocalizedStringKey, message: LocalizedStringKey, badgeText: String, accent: Color, isEmphasized: Bool) {
+      self.iconName = iconName
+      self.title = title
+      self.message = message
+      self.badge = nil
+      self.badgeText = badgeText
+      self.accent = accent
+      self.isEmphasized = isEmphasized
+   }
+
+   var body: some View {
+      let typography = store.typography(for: dynamicTypeSize)
+
+      HStack(alignment: .top, spacing: 12) {
+         Image(systemName: iconName)
+            .font(typography.body)
+            .foregroundStyle(accent)
+            .frame(width: 34, height: 34)
+            .background(accent.opacity(isEmphasized ? 0.16 : 0.08), in: Circle())
+
+         VStack(alignment: .leading, spacing: 5) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+               Text(title)
+                  .font(typography.body)
+                  .fontWeight(.bold)
+                  .foregroundStyle(.primary)
+
+               Spacer(minLength: 0)
+
+               if let badge {
+                  Text(badge)
+                     .font(typography.subtext)
+                     .fontWeight(.bold)
+                     .foregroundStyle(.secondary)
+                     .lineLimit(1)
+               } else if let badgeText {
+                  Text(verbatim: badgeText)
+                     .font(typography.subtext)
+                     .fontWeight(.bold)
+                     .foregroundStyle(accent)
+                     .lineLimit(1)
+               }
+            }
+
+            Text(message)
+               .font(typography.subtext)
+               .foregroundStyle(.secondary)
+               .lineSpacing(3)
+         }
+      }
+      .padding(14)
+      .background(rowBackground, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+      .overlay {
+         RoundedRectangle(cornerRadius: 16, style: .continuous)
+            .stroke(isEmphasized ? accent.opacity(0.22) : LikehateTheme.border, lineWidth: 1)
+      }
+   }
+
+   private var rowBackground: Color {
+      isEmphasized ? accent.opacity(0.08) : LikehateTheme.elevatedSurface.opacity(0.72)
    }
 }
 
