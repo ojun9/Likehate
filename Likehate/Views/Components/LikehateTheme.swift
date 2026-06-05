@@ -153,41 +153,41 @@ struct AppLayoutMetrics {
 
    var screenPadding: CGFloat {
       switch textSize {
-      case .extraSmall: return 18
-      case .small: return 20
-      case .standard: return 24
-      case .large: return 24
-      case .extraLarge: return 24
+      case .extraSmall: return 16
+      case .small: return 18
+      case .standard: return 20
+      case .large: return 22
+      case .extraLarge: return 22
       }
    }
 
    var cardPadding: CGFloat {
       switch textSize {
-      case .extraSmall: return 16
-      case .small: return 18
-      case .standard: return 22
-      case .large: return 24
-      case .extraLarge: return 26
-      }
-   }
-
-   var cardSpacing: CGFloat {
-      switch textSize {
-      case .extraSmall: return 12
-      case .small: return 14
+      case .extraSmall: return 14
+      case .small: return 16
       case .standard: return 18
       case .large: return 20
       case .extraLarge: return 22
       }
    }
 
+   var cardSpacing: CGFloat {
+      switch textSize {
+      case .extraSmall: return 10
+      case .small: return 12
+      case .standard: return 14
+      case .large: return 16
+      case .extraLarge: return 18
+      }
+   }
+
    var sectionSpacing: CGFloat {
       switch textSize {
-      case .extraSmall: return 22
-      case .small: return 26
-      case .standard: return 32
-      case .large: return 36
-      case .extraLarge: return 40
+      case .extraSmall: return 20
+      case .small: return 22
+      case .standard: return 26
+      case .large: return 30
+      case .extraLarge: return 34
       }
    }
 
