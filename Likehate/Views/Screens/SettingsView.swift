@@ -1,11 +1,15 @@
 import FirebaseAnalytics
 import SwiftUI
+#if DEBUG
+import RevenueCat
+#endif
 
 struct SettingsView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
    @AppStorage("HapticsEnabled") private var isHapticsEnabled = true
    @State private var showDeleteConfirmation = false
+   @State private var showsRevenueCatDebug = false
 
    var body: some View {
       let typography = store.typography(for: dynamicTypeSize)
@@ -84,6 +88,19 @@ struct SettingsView: View {
 
          #if DEBUG
          Section("DebugSectionTitle") {
+            Button {
+               Analytics.logEvent("settings_revenue_cat_debug_tapped", parameters: settingsAnalyticsParameters)
+               showsRevenueCatDebug = true
+            } label: {
+               SettingsActionRow(
+                  iconName: "creditcard",
+                  title: "RevenueCatDebugTitle",
+                  subtitle: "RevenueCatDebugSubtitle",
+                  iconColor: LikehateTheme.likeAccent
+               )
+            }
+            .buttonStyle(.plain)
+
             Toggle(
                isOn: Binding(
                   get: { store.isAppStoreScreenshotModeEnabled },
@@ -147,6 +164,7 @@ struct SettingsView: View {
             "text_size": textSize.rawValue
          ]) { _, new in new })
       }
+      .debugRevenueCatOverlayIfDebug(isPresented: $showsRevenueCatDebug)
    }
 
    private var settingsAnalyticsParameters: [String: Any] {
@@ -160,6 +178,17 @@ struct SettingsView: View {
          "is_haptics_enabled": isHapticsEnabled,
          "text_size": store.textSize.rawValue
       ]
+   }
+}
+
+private extension View {
+   @ViewBuilder
+   func debugRevenueCatOverlayIfDebug(isPresented: Binding<Bool>) -> some View {
+      #if DEBUG
+      debugRevenueCatOverlay(isPresented: isPresented)
+      #else
+      self
+      #endif
    }
 }
 
