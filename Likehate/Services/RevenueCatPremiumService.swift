@@ -3,7 +3,7 @@ import RevenueCat
 
 enum LikehateRevenueCatContracts {
    static let publicSDKKey = "appl_KjaunKCKXyQMEbmdzqjXhbbiEkG"
-   static let premiumProductID = "premium_lifetime"
+   static let premiumProductID = "NO_ADS_LIKEHATE"
    static let premiumEntitlementID = "premium"
 }
 

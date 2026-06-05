@@ -423,16 +423,17 @@ struct LocalizationTests {
       }
    }
 
-   @Test("日本語のプレミアム文言は買い切りと無料上限を説明する")
+   @Test("日本語の買い切りプレミアム文言は買い切りと無料上限を説明する")
    func japanesePremiumCopyExplainsOneTimePurchaseAndFreeLimit() {
       let locale = Locale(identifier: "ja")
 
-      #expect(String(localized: "PremiumTitle", bundle: .main, locale: locale) == "プレミアム")
-      #expect(String(localized: "PremiumHeroTitle", bundle: .main, locale: locale) == "もっと人を追加できます")
-      #expect(String(localized: "PremiumFreeLimitMessage", bundle: .main, locale: locale) == "無料版では、わたしを含めて3人まで登録できます。")
-      #expect(String(localized: "PremiumUpgradeMessage", bundle: .main, locale: locale) == "プレミアムにすると、4人以上の好き嫌いも残せて、広告も非表示になります。")
+      #expect(String(localized: "PremiumTitle", bundle: .main, locale: locale) == "買い切りプレミアム")
+      #expect(String(localized: "PremiumHeroTitle", bundle: .main, locale: locale) == "もっと大切な人を追加できます")
+      #expect(String(localized: "PremiumFreeLimitMessage", bundle: .main, locale: locale) == "無料版では、あなたを含めて3人まで登録できます。")
+      #expect(String(localized: "PremiumUpgradeMessage", bundle: .main, locale: locale) == "買い切りプレミアムにすると、4人以上の好き嫌いも残せて、広告も非表示になります。")
       #expect(String(localized: "PremiumOneTimeNote", bundle: .main, locale: locale) == "月額ではありません。一度の購入で使えます。")
-      #expect(String(localized: "PremiumPurchaseButton", bundle: .main, locale: locale) == "プレミアムを購入")
+      #expect(String(localized: "PremiumPurchaseButton", bundle: .main, locale: locale) == "買い切りプレミアムを購入")
+      #expect(String(format: String(localized: "PremiumPurchaseButtonWithPriceFormat", bundle: .main, locale: locale), "¥800") == "買い切りプレミアムを購入（¥800）")
       #expect(String(localized: "PremiumRestoreButton", bundle: .main, locale: locale) == "購入を復元")
       #expect(String(localized: "PremiumCloseButton", bundle: .main, locale: locale) == "あとで")
       #expect(String(localized: "PremiumSettingsSubtitle", bundle: .main, locale: locale) == "人数制限解除・広告非表示")
@@ -445,7 +446,6 @@ struct LocalizationTests {
          "PremiumBenefitLifetime",
          "PremiumBenefitNoAds",
          "PremiumBenefitPeople",
-         "PremiumHeroMessage",
          "PremiumPurchaseButtonWithPriceFormat",
          "PremiumPurchaseDeferredMessage",
          "PremiumPurchaseDeferredTitle",
@@ -516,7 +516,7 @@ struct RevenueCatContractsTests {
    @Test("レベニューキャット契約は設定済みの公開アイオーエス開発キットキーを使う")
    func revenueCatContractUsesConfiguredPublicIOSSDKKey() {
       #expect(LikehateRevenueCatContracts.publicSDKKey == "appl_KjaunKCKXyQMEbmdzqjXhbbiEkG")
-      #expect(LikehateRevenueCatContracts.premiumProductID == "premium_lifetime")
+      #expect(LikehateRevenueCatContracts.premiumProductID == "NO_ADS_LIKEHATE")
       #expect(LikehateRevenueCatContracts.premiumEntitlementID == "premium")
    }
 }

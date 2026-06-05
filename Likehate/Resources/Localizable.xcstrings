@@ -3637,13 +3637,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The free version lets you register up to three people, including me."
+            "value" : "The free version lets you register up to three people, including you."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "無料版では、わたしを含めて3人まで登録できます。"
+            "value" : "無料版では、あなたを含めて3人まで登録できます。"
           }
         }
       }
@@ -3669,13 +3669,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add more people"
+            "value" : "Add more loved ones"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "もっと人を追加できます"
+            "value" : "もっと大切な人を追加できます"
           }
         }
       }
@@ -3701,13 +3701,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Buy Premium"
+            "value" : "Buy Lifetime Premium"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プレミアムを購入"
+            "value" : "買い切りプレミアムを購入"
           }
         }
       }
@@ -3717,13 +3717,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Buy Premium (%@)"
+            "value" : "Buy Lifetime Premium (%@)"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プレミアムを購入（%@）"
+            "value" : "買い切りプレミアムを購入（%@）"
           }
         }
       }
@@ -3799,13 +3799,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium is now available."
+            "value" : "Lifetime Premium is now available."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プレミアムが使えるようになりました。"
+            "value" : "買い切りプレミアムが使えるようになりました。"
           }
         }
       }
@@ -3831,13 +3831,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium could not be confirmed. Please try again after checking your purchase settings."
+            "value" : "Lifetime Premium could not be confirmed. Please try again after checking your purchase settings."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プレミアムを確認できませんでした。購入設定を確認してから、もう一度お試しください。"
+            "value" : "買い切りプレミアムを確認できませんでした。購入設定を確認してから、もう一度お試しください。"
           }
         }
       }
@@ -3879,13 +3879,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium"
+            "value" : "Lifetime Premium"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プレミアム"
+            "value" : "買い切りプレミアム"
           }
         }
       }
@@ -3895,13 +3895,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "With Premium, you can keep likes and dislikes for four or more people and hide ads."
+            "value" : "With Lifetime Premium, you can keep likes and dislikes for four or more people and hide ads."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プレミアムにすると、4人以上の好き嫌いも残せて、広告も非表示になります。"
+            "value" : "買い切りプレミアムにすると、4人以上の好き嫌いも残せて、広告も非表示になります。"
           }
         }
       }

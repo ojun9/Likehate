@@ -18,11 +18,6 @@ struct PremiumView: View {
                   .foregroundStyle(.primary)
                   .lineLimit(3)
 
-               Text("PremiumHeroMessage")
-                  .font(typography.body)
-                  .foregroundStyle(.secondary)
-                  .lineSpacing(4)
-
                Text("PremiumFreeLimitMessage")
                   .font(typography.body)
                   .foregroundStyle(.secondary)
@@ -57,22 +52,32 @@ struct PremiumView: View {
                   Analytics.logEvent("premium_purchase_button_tapped", parameters: premiumAnalyticsParameters)
                   store.purchasePremium()
                } label: {
-                  HStack(spacing: 8) {
-                     if store.isPurchasing {
-                        ProgressView()
-                           .tint(.white)
+                  VStack(spacing: 3) {
+                     HStack(spacing: 8) {
+                        if store.isPurchasing {
+                           ProgressView()
+                              .tint(.white)
+                        }
+
+                        Text(verbatim: purchaseButtonTitle)
+                           .font(typography.button)
+                           .fontWeight(.bold)
                      }
 
-                     Text(verbatim: purchaseButtonTitle)
-                        .font(typography.button)
-                        .fontWeight(.bold)
+                     if let purchaseButtonPrice {
+                        Text(verbatim: purchaseButtonPrice)
+                           .font(typography.subtext)
+                           .fontWeight(.semibold)
+                           .foregroundStyle(.white.opacity(0.9))
+                     }
                   }
                   .frame(maxWidth: .infinity)
-                  .frame(minHeight: 56)
+                  .frame(minHeight: purchaseButtonPrice == nil ? 56 : 68)
                }
                .buttonStyle(.borderedProminent)
                .tint(LikehateTheme.likeAccent)
                .disabled(store.isPurchasing || store.hasPremiumAccess)
+               .accessibilityLabel(Text(verbatim: purchaseButtonAccessibilityLabel))
 
                Button {
                   Analytics.logEvent("premium_restore_tapped", parameters: premiumAnalyticsParameters)
@@ -134,11 +139,20 @@ struct PremiumView: View {
          return String(localized: "PremiumPurchasedStatus")
       }
 
-      if let premiumProductPrice = store.premiumProductPrice {
-         return String.localizedStringWithFormat(String(localized: "PremiumPurchaseButtonWithPriceFormat"), premiumProductPrice)
+      return String(localized: "PremiumPurchaseButton")
+   }
+
+   private var purchaseButtonPrice: String? {
+      guard !store.hasPremiumAccess else { return nil }
+      return store.premiumProductPrice
+   }
+
+   private var purchaseButtonAccessibilityLabel: String {
+      if let purchaseButtonPrice {
+         return String.localizedStringWithFormat(String(localized: "PremiumPurchaseButtonWithPriceFormat"), purchaseButtonPrice)
       }
 
-      return String(localized: "PremiumPurchaseButton")
+      return purchaseButtonTitle
    }
 
    private var premiumAnalyticsParameters: [String: Any] {
