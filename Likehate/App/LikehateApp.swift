@@ -13,6 +13,7 @@ struct LikehateApp: App {
             .onAppear {
                guard !didRecordLaunch else { return }
                didRecordLaunch = true
+               store.refreshPremiumStatus()
                store.recordLaunchAndRequestReviewIfNeeded()
             }
       }

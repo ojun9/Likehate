@@ -1,5 +1,5 @@
 {
-  "originHash" : "2e02309ee784f039ea91551d051493aa7464013a790967a7edbf9094200834df",
+  "originHash" : "df5fd8c5f1d82e73a7d6bcd48e5ae7092111bef3489829f3fd79df9e4ea6613b",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -152,15 +152,6 @@
       "state" : {
         "revision" : "13b248eaa73b7826f0efb1bcf455e251d65ecb1b",
         "version" : "3.1.0"
-      }
-    },
-    {
-      "identity" : "swiftystorekit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/bizz84/SwiftyStoreKit.git",
-      "state" : {
-        "revision" : "9ce911639680113dac9b554d6243e406a9758ebe",
-        "version" : "0.16.4"
       }
     },
     {

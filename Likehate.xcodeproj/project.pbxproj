@@ -12,7 +12,6 @@
 		BF0000010000000000000003 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000013 /* FirebaseAnalytics */; };
 		BF0000010000000000000004 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000014 /* FirebaseRemoteConfig */; };
 		BF0000010000000000000006 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000016 /* Lottie */; };
-		BF0000010000000000000007 /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000017 /* SwiftyStoreKit */; };
 		BF083ADB2FCDE83B00C67F9D /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = BF083ADA2FCDE83B00C67F9D /* CropViewController */; };
 		BF083ADD2FCDE83B00C67F9D /* TOCropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = BF083ADC2FCDE83B00C67F9D /* TOCropViewController */; };
 		BF083D7B2FD312C300C67F9D /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = BF083D7A2FD312C300C67F9D /* RevenueCat */; };
@@ -61,7 +60,6 @@
 				BF083D7B2FD312C300C67F9D /* RevenueCat in Frameworks */,
 				BF083ADB2FCDE83B00C67F9D /* CropViewController in Frameworks */,
 				BF0000010000000000000006 /* Lottie in Frameworks */,
-				BF0000010000000000000007 /* SwiftyStoreKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,7 +124,6 @@
 				BF0000010000000000000013 /* FirebaseAnalytics */,
 				BF0000010000000000000014 /* FirebaseRemoteConfig */,
 				BF0000010000000000000016 /* Lottie */,
-				BF0000010000000000000017 /* SwiftyStoreKit */,
 				BF083ADA2FCDE83B00C67F9D /* CropViewController */,
 				BF083ADC2FCDE83B00C67F9D /* TOCropViewController */,
 				BF083D7A2FD312C300C67F9D /* RevenueCat */,
@@ -204,7 +201,6 @@
 				BF0000010000000000000021 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				BF0000010000000000000022 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				BF0000010000000000000023 /* XCRemoteSwiftPackageReference "lottie-spm" */,
-				BF0000010000000000000024 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */,
 				BF083AD92FCDE83B00C67F9D /* XCRemoteSwiftPackageReference "TOCropViewController" */,
 				BF083D792FD312C300C67F9D /* XCRemoteSwiftPackageReference "purchases-ios" */,
 			);
@@ -528,14 +524,6 @@
 				minimumVersion = 4.5.1;
 			};
 		};
-		BF0000010000000000000024 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bizz84/SwiftyStoreKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.16.4;
-			};
-		};
 		BF083AD92FCDE83B00C67F9D /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/TimOliver/TOCropViewController";
@@ -579,11 +567,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BF0000010000000000000023 /* XCRemoteSwiftPackageReference "lottie-spm" */;
 			productName = Lottie;
-		};
-		BF0000010000000000000017 /* SwiftyStoreKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BF0000010000000000000024 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */;
-			productName = SwiftyStoreKit;
 		};
 		BF083ADA2FCDE83B00C67F9D /* CropViewController */ = {
 			isa = XCSwiftPackageProductDependency;

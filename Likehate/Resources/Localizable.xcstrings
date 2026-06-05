@@ -183,6 +183,7 @@
       }
     },
     "AdsRemovedStatus" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3295,6 +3296,7 @@
       }
     },
     "No Ads" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -3417,9 +3419,6 @@
       }
     },
     "OK" : {
-
-    },
-    "Passed." : {
 
     },
     "PersonColorSectionTitle" : {
@@ -3730,6 +3729,7 @@
       }
     },
     "PremiumPurchaseDeferredMessage" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3746,6 +3746,7 @@
       }
     },
     "PremiumPurchaseDeferredTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3757,6 +3758,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "購入を保留しています"
+          }
+        }
+      }
+    },
+    "PremiumPurchasedStatus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchased"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "購入済み"
           }
         }
       }
@@ -3809,18 +3826,18 @@
         }
       }
     },
-    "PremiumPurchasedStatus" : {
+    "PremiumPurchaseUnavailableMessage" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Purchased"
+            "value" : "Premium could not be confirmed. Please try again after checking your purchase settings."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "購入済み"
+            "value" : "プレミアムを確認できませんでした。購入設定を確認してから、もう一度お試しください。"
           }
         }
       }
@@ -4109,67 +4126,34 @@
         }
       }
     },
-    "SaveItemButton" : {
+    "RevenueCatDebugSubtitle" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Save"
+            "value" : "Open RevenueCat debug overlay"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保存する"
+            "value" : "RevenueCatのデバッグ表示を開きます"
           }
         }
       }
     },
-    "SavePersonButton" : {
+    "RevenueCatDebugTitle" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Save"
+            "value" : "RevenueCat Debug"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保存する"
-          }
-        }
-      }
-    },
-    "SavePersonChangesButton" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保存"
-          }
-        }
-      }
-    },
-    "SelectPersonPhotoButton" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choose photo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "写真を選ぶ"
+            "value" : "RevenueCatデバッグ"
           }
         }
       }
@@ -4250,6 +4234,71 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "復元しました"
+          }
+        }
+      }
+    },
+    "SaveItemButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存する"
+          }
+        }
+      }
+    },
+    "SavePersonButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存する"
+          }
+        }
+      }
+    },
+    "SavePersonChangesButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存"
+          }
+        }
+      }
+    },
+    "SelectPersonPhotoButton" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose photo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真を選ぶ"
           }
         }
       }

@@ -1,7 +1,7 @@
 import Firebase
 import FirebaseAnalytics
 import GoogleMobileAds
-import SwiftyStoreKit
+import RevenueCat
 import UIKit
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
@@ -11,30 +11,36 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
       FirebaseApp.configure()
       configureAnalyticsCollection()
       MobileAds.shared.start(completionHandler: nil)
-      completePendingPurchases()
+      configureRevenueCat()
       return true
    }
 
-   private func completePendingPurchases() {
-      SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
-         for purchase in purchases {
-            switch purchase.transaction.transactionState {
-            case .purchased, .restored:
-               if purchase.needsFinishTransaction {
-                  SwiftyStoreKit.finishTransaction(purchase.transaction)
-               }
-            case .failed, .purchasing, .deferred:
-               break
-            @unknown default:
-               break
-            }
-         }
-      }
+   private func configureRevenueCat() {
+      #if DEBUG
+      Purchases.logLevel = .debug
+      #endif
+
+      Purchases.configure(
+         with: Configuration.Builder(withAPIKey: LikehateRevenueCatContracts.publicSDKKey)
+            .build()
+      )
+      Purchases.shared.delegate = self
    }
 
    private func configureAnalyticsCollection() {
       #if DEBUG
       Analytics.setAnalyticsCollectionEnabled(false)
       #endif
+   }
+}
+
+extension AppDelegate: @MainActor PurchasesDelegate {
+   func purchases(_ purchases: Purchases, receivedUpdated customerInfo: CustomerInfo) {
+      guard let isPremiumActive = customerInfo.likehatePremiumEntitlementIsActive else { return }
+      NotificationCenter.default.post(
+         name: .didUpdatePremiumEntitlement,
+         object: nil,
+         userInfo: [PremiumEntitlementNotificationUserInfoKey.isPremiumActive: isPremiumActive]
+      )
    }
 }

@@ -1,15 +1,11 @@
 import FirebaseAnalytics
 import Foundation
 import SwiftUI
-import SwiftyStoreKit
 import UIKit
 
 @MainActor
 final class LikeHateStore: ObservableObject {
    private enum Constants {
-      static let noAdsProductID = "NO_ADS_LIKEHATE"
-      static let premiumProductID = "premium_lifetime"
-      static let receiptSharedSecret = "50822b94b56840bb845871be8d3352ab"
       static let launchReviewRequestCountKey = "LaunchReviewRequestCount"
       static let registrationReviewRequestCountKey = "RegistrationReviewRequestCount"
       static let personsKey = "LikehatePersonsV1"
@@ -46,19 +42,22 @@ final class LikeHateStore: ObservableObject {
    @Published var premiumProductPrice: String?
 
    let defaults: UserDefaults
+   private let premiumPurchaseService: PremiumPurchaseServicing
+   private var premiumPackage: PremiumPackage?
+   private var premiumEntitlementObserver: NSObjectProtocol?
 
-   init(defaults: UserDefaults = .standard) {
+   init(defaults: UserDefaults = .standard, premiumPurchaseService: PremiumPurchaseServicing = RevenueCatPremiumPurchaseService()) {
       self.defaults = defaults
+      self.premiumPurchaseService = premiumPurchaseService
       let storedAdsRemoved = defaults.bool(forKey: Constants.adRemovedKey)
       let storedPremium = defaults.bool(forKey: Constants.premiumPurchasedKey)
       let hasStoredPremiumAccess = storedPremium || storedAdsRemoved
-      self.didBuyRemoveAd = hasStoredPremiumAccess
+      self.didBuyRemoveAd = storedAdsRemoved
       self.didBuyPremium = hasStoredPremiumAccess
       self.animationEnabled = defaults.object(forKey: Constants.animationEnabledKey) as? Bool ?? true
       self.textSize = AppTextSize(rawValue: defaults.string(forKey: Constants.textSizeKey) ?? "") ?? .standard
 
-      if hasStoredPremiumAccess {
-         defaults.set(true, forKey: Constants.adRemovedKey)
+      if storedAdsRemoved {
          defaults.set(true, forKey: Constants.premiumPurchasedKey)
       }
 
@@ -76,6 +75,7 @@ final class LikeHateStore: ObservableObject {
       }
 
       persistPeopleAndEntries()
+      observePremiumEntitlementUpdates()
    }
 
    var mePerson: Person? {
@@ -380,12 +380,15 @@ final class LikeHateStore: ObservableObject {
    }
 
    func loadPremiumProductInfo() {
-      guard premiumProductPrice == nil else { return }
+      guard premiumProductPrice == nil, premiumPackage == nil else { return }
 
-      SwiftyStoreKit.retrieveProductsInfo(Set([Constants.premiumProductID])) { [weak self] result in
-         Task { @MainActor in
-            guard let self else { return }
-            self.premiumProductPrice = result.retrievedProducts.first?.localizedPrice
+      Task {
+         do {
+            _ = try await fetchPremiumPackage()
+         } catch {
+            Analytics.logEvent("premium_product_fetch_failed", parameters: [
+               "error_description": error.localizedDescription
+            ])
          }
       }
    }
@@ -399,67 +402,8 @@ final class LikeHateStore: ObservableObject {
          "did_buy_premium": didBuyPremium
       ])
 
-      SwiftyStoreKit.purchaseProduct(Constants.premiumProductID, quantity: 1, atomically: true) { [weak self] result in
-         Task { @MainActor in
-            guard let self else { return }
-            self.isPurchasing = false
-
-            switch result {
-            case .success(let purchase):
-               if purchase.needsFinishTransaction {
-                  SwiftyStoreKit.finishTransaction(purchase.transaction)
-               }
-               self.setPremiumPurchased(true)
-               self.verifyPurchase(productID: Constants.premiumProductID)
-               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseSucceededTitle"), message: String(localized: "PremiumPurchaseSucceededMessage"))
-               Analytics.logEvent("premium_purchase_succeeded", parameters: [
-                  "person_count": self.persons.count
-               ])
-            case .error(let error):
-               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseFailedTitle"), message: error.localizedDescription)
-               Analytics.logEvent("premium_purchase_failed", parameters: [
-                  "error_code": error.code.rawValue
-               ])
-            case .deferred:
-               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseDeferredTitle"), message: String(localized: "PremiumPurchaseDeferredMessage"))
-               Analytics.logEvent("premium_purchase_deferred", parameters: nil)
-            }
-         }
-      }
-   }
-
-   func purchaseNoAds() {
-      guard !isPurchasing else { return }
-      isPurchasing = true
-      Analytics.logEvent("TapNoAdsInClearView", parameters: nil)
-      Analytics.logEvent("purchase_no_ads_started", parameters: [
-         "did_buy_remove_ad": didBuyRemoveAd
-      ])
-
-      SwiftyStoreKit.purchaseProduct(Constants.noAdsProductID, quantity: 1, atomically: true) { [weak self] result in
-         Task { @MainActor in
-            guard let self else { return }
-            self.isPurchasing = false
-
-            switch result {
-            case .success(let purchase):
-               if purchase.needsFinishTransaction {
-                  SwiftyStoreKit.finishTransaction(purchase.transaction)
-               }
-               self.setAdRemoved(true)
-               self.verifyPurchase(productID: Constants.noAdsProductID)
-               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseSucceededTitle"), message: String(localized: "PremiumPurchaseSucceededMessage"))
-               Analytics.logEvent("purchase_no_ads_succeeded", parameters: nil)
-            case .error(let error):
-               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseFailedTitle"), message: error.localizedDescription)
-               Analytics.logEvent("purchase_no_ads_failed", parameters: [
-                  "error_code": error.code.rawValue
-               ])
-            case .deferred:
-               self.purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseDeferredTitle"), message: String(localized: "PremiumPurchaseDeferredMessage"))
-               Analytics.logEvent("purchase_no_ads_deferred", parameters: nil)
-            }
-         }
+      Task {
+         await purchasePremiumPackage()
       }
    }
 
@@ -471,33 +415,65 @@ final class LikeHateStore: ObservableObject {
          "did_buy_premium": didBuyPremium
       ])
 
-      SwiftyStoreKit.restorePurchases(atomically: true) { [weak self] results in
-         Task { @MainActor in
-            guard let self else { return }
-            self.isRestoring = false
+      Task {
+         await restorePremiumPurchases()
+      }
+   }
 
-            if let error = results.restoreFailedPurchases.first?.0 {
-               let nsError = error as NSError
-               self.purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseFailedTitle"), message: error.localizedDescription)
-               Analytics.logEvent("restore_purchases_failed", parameters: [
-                  "failed_count": results.restoreFailedPurchases.count,
-                  "restored_count": results.restoredPurchases.count,
-                  "error_domain": nsError.domain,
-                  "error_code": nsError.code
-               ])
-            } else if results.restoredPurchases.contains(where: { Self.isPremiumEntitlementProductID($0.productId) }) {
-               self.setPremiumPurchased(true)
-               self.purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseSucceededTitle"), message: String(localized: "RestorePurchaseSucceededMessage"))
-               Analytics.logEvent("restore_purchases_succeeded", parameters: [
-                  "restored_count": results.restoredPurchases.count
-               ])
-            } else {
-               self.purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseEmptyTitle"), message: String(localized: "RestorePurchaseEmptyMessage"))
-               Analytics.logEvent("restore_purchases_empty", parameters: [
-                  "restored_count": results.restoredPurchases.count
-               ])
-            }
+   func refreshPremiumStatus() {
+      Task {
+         do {
+            let entitlementState = try await premiumPurchaseService.currentEntitlementState()
+            applyPremiumEntitlement(isActive: entitlementState.isActive)
+            Analytics.logEvent("premium_status_refreshed", parameters: [
+               "is_premium": hasPremiumAccess
+            ])
+         } catch {
+            Analytics.logEvent("premium_status_refresh_failed", parameters: [
+               "error_description": error.localizedDescription
+            ])
          }
+      }
+   }
+
+   private func fetchPremiumPackage() async throws -> PremiumPackage? {
+      let package = try await premiumPurchaseService.currentPremiumPackage()
+      premiumPackage = package
+      premiumProductPrice = package?.localizedPrice
+      return package
+   }
+
+   private func purchasePremiumPackage() async {
+      defer { isPurchasing = false }
+
+      do {
+         let package = try await fetchPremiumPackage()
+         guard let package else {
+            handlePremiumPurchaseResult(.missingPackage, analyticsSource: "purchase")
+            return
+         }
+
+         let result = try await premiumPurchaseService.purchase(package: package)
+         handlePremiumPurchaseResult(result, analyticsSource: "purchase")
+      } catch {
+         purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseFailedTitle"), message: error.localizedDescription)
+         Analytics.logEvent("premium_purchase_failed", parameters: [
+            "error_description": error.localizedDescription
+         ])
+      }
+   }
+
+   private func restorePremiumPurchases() async {
+      defer { isRestoring = false }
+
+      do {
+         let result = try await premiumPurchaseService.restorePurchases()
+         handlePremiumRestoreResult(result)
+      } catch {
+         purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseFailedTitle"), message: error.localizedDescription)
+         Analytics.logEvent("restore_purchases_failed", parameters: [
+            "error_description": error.localizedDescription
+         ])
       }
    }
 
@@ -735,35 +711,82 @@ final class LikeHateStore: ObservableObject {
       didBuyRemoveAd = value
       defaults.set(value, forKey: Constants.adRemovedKey)
       if value {
-         didBuyPremium = true
-         defaults.set(true, forKey: Constants.premiumPurchasedKey)
+         setPremiumPurchased(true)
       }
       NotificationCenter.default.post(name: .didRemoveAds, object: nil)
    }
 
    private func setPremiumPurchased(_ value: Bool) {
-      didBuyPremium = value
-      defaults.set(value, forKey: Constants.premiumPurchasedKey)
+      didBuyPremium = value || didBuyRemoveAd
+      defaults.set(didBuyPremium, forKey: Constants.premiumPurchasedKey)
       if value {
-         didBuyRemoveAd = true
-         defaults.set(true, forKey: Constants.adRemovedKey)
          NotificationCenter.default.post(name: .didRemoveAds, object: nil)
       }
    }
 
-   private static func isPremiumEntitlementProductID(_ productID: String) -> Bool {
-      productID == Constants.premiumProductID || productID == Constants.noAdsProductID
+   private func applyPremiumEntitlement(isActive: Bool) {
+      setPremiumPurchased(isActive)
    }
 
-   private func verifyPurchase(productID: String) {
-      let validator = AppleReceiptValidator(service: .production, sharedSecret: Constants.receiptSharedSecret)
-      SwiftyStoreKit.verifyReceipt(using: validator) { result in
-         switch result {
-         case .success(let receipt):
-            let purchaseResult = SwiftyStoreKit.verifyPurchase(productId: productID, inReceipt: receipt)
-            print("購入の検証: \(purchaseResult)")
-         case .error(let error):
-            print("verifyPurchaseエラー: \(error)")
+   private func handlePremiumPurchaseResult(_ result: PremiumPurchaseResult, analyticsSource: String) {
+      switch result {
+      case .active:
+         setPremiumPurchased(true)
+         purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseSucceededTitle"), message: String(localized: "PremiumPurchaseSucceededMessage"))
+         Analytics.logEvent("premium_purchase_succeeded", parameters: [
+            "source": analyticsSource,
+            "person_count": persons.count
+         ])
+         HapticsClient.success()
+      case .userCancelled:
+         Analytics.logEvent("premium_purchase_cancelled", parameters: [
+            "source": analyticsSource
+         ])
+      case .inactive, .missingCustomerInfo, .missingEntitlement, .missingPackage:
+         setPremiumPurchased(false)
+         purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseFailedTitle"), message: String(localized: "PremiumPurchaseUnavailableMessage"))
+         Analytics.logEvent("premium_purchase_failed", parameters: [
+            "source": analyticsSource,
+            "reason": String(describing: result)
+         ])
+         HapticsClient.error()
+      }
+   }
+
+   private func handlePremiumRestoreResult(_ result: PremiumPurchaseResult) {
+      switch result {
+      case .active:
+         setPremiumPurchased(true)
+         purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseSucceededTitle"), message: String(localized: "RestorePurchaseSucceededMessage"))
+         Analytics.logEvent("restore_purchases_succeeded", parameters: [
+            "is_premium": hasPremiumAccess
+         ])
+         HapticsClient.success()
+      case .userCancelled:
+         Analytics.logEvent("restore_purchases_cancelled", parameters: nil)
+      case .inactive, .missingCustomerInfo, .missingEntitlement, .missingPackage:
+         setPremiumPurchased(false)
+         if hasPremiumAccess {
+            purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseSucceededTitle"), message: String(localized: "RestorePurchaseSucceededMessage"))
+            Analytics.logEvent("restore_purchases_succeeded_by_legacy_access", parameters: nil)
+         } else {
+            purchaseMessage = PurchaseMessage(title: String(localized: "RestorePurchaseEmptyTitle"), message: String(localized: "RestorePurchaseEmptyMessage"))
+            Analytics.logEvent("restore_purchases_empty", parameters: [
+               "reason": String(describing: result)
+            ])
+         }
+      }
+   }
+
+   private func observePremiumEntitlementUpdates() {
+      premiumEntitlementObserver = NotificationCenter.default.addObserver(
+         forName: .didUpdatePremiumEntitlement,
+         object: nil,
+         queue: .main
+      ) { [weak self] notification in
+         guard let isPremiumActive = notification.userInfo?[PremiumEntitlementNotificationUserInfoKey.isPremiumActive] as? Bool else { return }
+         Task { @MainActor in
+            self?.applyPremiumEntitlement(isActive: isPremiumActive)
          }
       }
    }
