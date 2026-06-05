@@ -131,13 +131,13 @@ struct HomeView: View {
             message: Text(prompt.message),
             primaryButton: .default(Text("ThankYou")) {
                FAAnalytics.log(.track(.reviewPromptConfirmed, parameters: [
-                  "screen": FAScreen.home.rawValue
+                  .screen: FAScreen.home.rawValue
                ]))
                AppReviewClient.requestReview()
             },
             secondaryButton: .cancel(Text("Ohthankyou")) {
                FAAnalytics.log(.track(.reviewPromptCancelled, parameters: [
-                  "screen": FAScreen.home.rawValue
+                  .screen: FAScreen.home.rawValue
                ]))
             }
          )
@@ -175,30 +175,30 @@ struct HomeView: View {
          isShowingAddPerson = true
       } else {
          FAAnalytics.log(.track(.homePremiumGateShown, parameters: homeAnalyticsParameters.merging([
-            "reason": "person_limit"
-         ]) { _, new in new }))
+            .reason: "person_limit"
+         ])))
          isShowingPremium = true
       }
    }
 
-   private var homeAnalyticsParameters: [String: Any] {
+   private var homeAnalyticsParameters: FAParameters {
       [
-         "like_count": store.likes.count,
-         "hate_count": store.hates.count,
-         "entry_count": store.totalItemCount,
-         "person_count": store.persons.count,
-         "total_count": store.likes.count + store.hates.count,
-         "did_buy_remove_ad": store.didBuyRemoveAd,
-         "did_buy_premium": store.didBuyPremium,
-         "animation_enabled": store.animationEnabled
+         .likeCount: store.likes.count,
+         .hateCount: store.hates.count,
+         .entryCount: store.totalItemCount,
+         .personCount: store.persons.count,
+         .totalCount: store.likes.count + store.hates.count,
+         .didBuyRemoveAd: store.didBuyRemoveAd,
+         .didBuyPremium: store.didBuyPremium,
+         .animationEnabled: store.animationEnabled
       ]
    }
 
-   private func personAnalyticsParameters(_ person: Person) -> [String: Any] {
+   private func personAnalyticsParameters(_ person: Person) -> FAParameters {
       homeAnalyticsParameters.merging([
-         "person_id": person.id.uuidString,
-         "is_me": person.isMe
-      ]) { _, new in new }
+         .personID: person.id.uuidString,
+         .isMe: person.isMe
+      ])
    }
 
    private var compareBackground: Color {

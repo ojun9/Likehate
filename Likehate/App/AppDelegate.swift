@@ -36,7 +36,7 @@ extension AppDelegate: @MainActor PurchasesDelegate {
    func purchases(_ purchases: Purchases, receivedUpdated customerInfo: CustomerInfo) {
       guard let isPremiumActive = customerInfo.likehatePremiumEntitlementIsActive else { return }
       FAAnalytics.log(.track(.premiumEntitlementUpdated, parameters: [
-         "is_premium": isPremiumActive
+         .isPremium: isPremiumActive
       ]))
       NotificationCenter.default.post(
          name: .didUpdatePremiumEntitlement,

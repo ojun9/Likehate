@@ -58,7 +58,7 @@ struct LikehateAdBannerView: UIViewRepresentable {
       func bannerViewDidReceiveAd(_ bannerView: BannerView) {
          print("AdMob banner loaded: \(adUnitID)")
          FAAnalytics.log(.track(.adBannerLoaded, parameters: [
-            "placement": placement.rawValue
+            .placement: placement.rawValue
          ]))
       }
 
@@ -66,9 +66,9 @@ struct LikehateAdBannerView: UIViewRepresentable {
          let nsError = error as NSError
          print("AdMob banner failed: \(error)")
          FAAnalytics.log(.track(.adBannerFailed, parameters: [
-            "placement": placement.rawValue,
-            "error_domain": nsError.domain,
-            "error_code": nsError.code
+            .placement: placement.rawValue,
+            .errorDomain: nsError.domain,
+            .errorCode: nsError.code
          ]))
       }
    }
@@ -88,8 +88,8 @@ struct LikehateAdaptiveAdBanner: View {
          .clipped()
          .onAppear {
             FAAnalytics.log(.track(.adBannerContainerAppeared, parameters: [
-               "placement": placement.rawValue,
-               "available_width": availableWidth
+               .placement: placement.rawValue,
+               .availableWidth: availableWidth
             ]))
          }
          .background {

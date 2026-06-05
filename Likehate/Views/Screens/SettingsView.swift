@@ -149,32 +149,32 @@ struct SettingsView: View {
       }
       .onChange(of: store.animationEnabled) { _, isEnabled in
          FAAnalytics.log(.track(.settingsAnimationChanged, parameters: settingsAnalyticsParameters.merging([
-            "animation_enabled": isEnabled
-         ]) { _, new in new }))
+            .animationEnabled: isEnabled
+         ])))
       }
       .onChange(of: isHapticsEnabled) { _, isEnabled in
          FAAnalytics.log(.track(.settingsHapticsChanged, parameters: settingsAnalyticsParameters.merging([
-            "is_haptics_enabled": isEnabled
-         ]) { _, new in new }))
+            .isHapticsEnabled: isEnabled
+         ])))
       }
       .onChange(of: store.textSize) { _, textSize in
          FAAnalytics.log(.track(.settingsTextSizeChanged, parameters: settingsAnalyticsParameters.merging([
-            "text_size": textSize.rawValue
-         ]) { _, new in new }))
+            .textSize: textSize.rawValue
+         ])))
       }
       .debugRevenueCatOverlayIfDebug(isPresented: $showsRevenueCatDebug)
    }
 
-   private var settingsAnalyticsParameters: [String: Any] {
+   private var settingsAnalyticsParameters: FAParameters {
       [
-         "like_count": store.likes.count,
-         "hate_count": store.hates.count,
-         "total_count": store.likes.count + store.hates.count,
-         "did_buy_remove_ad": store.didBuyRemoveAd,
-         "did_buy_premium": store.didBuyPremium,
-         "animation_enabled": store.animationEnabled,
-         "is_haptics_enabled": isHapticsEnabled,
-         "text_size": store.textSize.rawValue
+         .likeCount: store.likes.count,
+         .hateCount: store.hates.count,
+         .totalCount: store.likes.count + store.hates.count,
+         .didBuyRemoveAd: store.didBuyRemoveAd,
+         .didBuyPremium: store.didBuyPremium,
+         .animationEnabled: store.animationEnabled,
+         .isHapticsEnabled: isHapticsEnabled,
+         .textSize: store.textSize.rawValue
       ]
    }
 }
@@ -203,8 +203,8 @@ private struct TextSizeSettingsView: View {
             ForEach(AppTextSize.allCases) { textSize in
                Button {
                   FAAnalytics.log(.track(.settingsTextSizeSelected, parameters: [
-                     "text_size": textSize.rawValue,
-                     "previous_text_size": store.textSize.rawValue
+                     .textSize: textSize.rawValue,
+                     .previousTextSize: store.textSize.rawValue
                   ]))
                   store.textSize = textSize
                } label: {
@@ -237,7 +237,7 @@ private struct TextSizeSettingsView: View {
       .navigationBarTitleDisplayMode(.inline)
       .onAppear {
          FAAnalytics.log(.screenView(.textSizeSettings, parameters: [
-            "text_size": store.textSize.rawValue
+            .textSize: store.textSize.rawValue
          ]))
       }
    }
