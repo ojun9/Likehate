@@ -912,20 +912,33 @@ struct ComparisonSelectionView: View {
             }
          }
       } label: {
-         Text(verbatim: selectedPersonName(for: selection.wrappedValue))
-            .font(typography.cardTitle)
-            .foregroundStyle(selectionTextColor)
-            .fontWeight(.bold)
-            .lineLimit(1)
-            .frame(maxWidth: .infinity, alignment: .leading)
+         if let selectedPerson = selectedPerson(for: selection.wrappedValue) {
+            HStack(spacing: 12) {
+               PersonAvatar(person: selectedPerson, size: 44, showsShadow: false)
+
+               Text(verbatim: selectedPerson.displayName)
+                  .font(typography.cardTitle)
+                  .foregroundStyle(selectionTextColor)
+                  .fontWeight(.bold)
+                  .lineLimit(1)
+
+               Spacer(minLength: 8)
+
+               Image(systemName: "chevron.down")
+                  .font(typography.subtext)
+                  .fontWeight(.bold)
+                  .foregroundStyle(.tertiary)
+            }
+            .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
             .contentShape(Rectangle())
+         }
       }
       .buttonStyle(.plain)
    }
 
-   private func selectedPersonName(for personID: UUID?) -> String {
-      guard let personID, let person = store.person(for: personID) else { return "" }
-      return person.displayName
+   private func selectedPerson(for personID: UUID?) -> Person? {
+      guard let personID else { return nil }
+      return store.person(for: personID)
    }
 
    private var selectionTextColor: Color {
@@ -999,7 +1012,7 @@ private struct ComparisonPeopleHeader: View {
             verticalOffset: ComparisonAvatarMetrics.headerDiagonalOffset
          )
 
-         HStack(alignment: .firstTextBaseline, spacing: 8) {
+         HStack(alignment: .firstTextBaseline, spacing: 4) {
             Text(verbatim: firstPerson.displayName)
                .font(typography.cardTitle)
                .foregroundStyle(.primary)
