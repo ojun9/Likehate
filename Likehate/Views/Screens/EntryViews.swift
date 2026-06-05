@@ -405,10 +405,6 @@ struct ItemListView: View {
                               .lineLimit(12)
                               .multilineTextAlignment(.leading)
                               .frame(maxWidth: .infinity, alignment: .leading)
-
-                           Image(systemName: "pencil")
-                              .font(typography.subtext)
-                              .foregroundStyle(.tertiary)
                         }
                         .padding(.vertical, 8)
                         .frame(minHeight: layout.rowMinHeight, alignment: .leading)
@@ -462,12 +458,13 @@ struct ItemListView: View {
             }
             .listStyle(.insetGrouped)
             .scrollContentBackground(.hidden)
-            .background(LikehateTheme.background)
+            .background(LikehateTheme.background.ignoresSafeArea())
          }
       }
       .background(LikehateTheme.background.ignoresSafeArea())
       .navigationTitle(kind.listTitle(for: person))
       .navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(LikehateTheme.background, for: .navigationBar)
       .toolbar {
          ToolbarItem(placement: .topBarTrailing) {
             EditButton()
