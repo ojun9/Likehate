@@ -517,8 +517,7 @@ struct RevenueCatContractsTests {
    func revenueCatContractUsesConfiguredPublicIOSSDKKey() {
       #expect(LikehateRevenueCatContracts.publicSDKKey == "appl_KjaunKCKXyQMEbmdzqjXhbbiEkG")
       #expect(LikehateRevenueCatContracts.premiumProductID == "premium_lifetime")
-      #expect(LikehateRevenueCatContracts.premiumEntitlementIDs.contains("premium"))
-      #expect(LikehateRevenueCatContracts.premiumEntitlementIDs.contains("premium_lifetime"))
+      #expect(LikehateRevenueCatContracts.premiumEntitlementID == "premium")
    }
 }
 

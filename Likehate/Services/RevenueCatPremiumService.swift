@@ -4,7 +4,7 @@ import RevenueCat
 enum LikehateRevenueCatContracts {
    static let publicSDKKey = "appl_KjaunKCKXyQMEbmdzqjXhbbiEkG"
    static let premiumProductID = "premium_lifetime"
-   static let premiumEntitlementIDs = ["premium", "Premium", "premium_lifetime"]
+   static let premiumEntitlementID = "premium"
 }
 
 enum PremiumEntitlementState: Equatable {
@@ -111,7 +111,7 @@ final class RevenueCatPremiumPurchaseService: PremiumPurchaseServicing {
          return .missingCustomerInfo
       }
 
-      guard let entitlement = customerInfo.likehatePremiumEntitlement else {
+      guard let entitlement = customerInfo.entitlements[LikehateRevenueCatContracts.premiumEntitlementID] else {
          return .missingEntitlement
       }
 
@@ -134,15 +134,6 @@ final class RevenueCatPremiumPurchaseService: PremiumPurchaseServicing {
 
 extension CustomerInfo {
    var likehatePremiumEntitlementIsActive: Bool? {
-      likehatePremiumEntitlement?.isActive
-   }
-
-   fileprivate var likehatePremiumEntitlement: EntitlementInfo? {
-      for entitlementID in LikehateRevenueCatContracts.premiumEntitlementIDs {
-         if let entitlement = entitlements[entitlementID] {
-            return entitlement
-         }
-      }
-      return nil
+      entitlements[LikehateRevenueCatContracts.premiumEntitlementID]?.isActive
    }
 }
