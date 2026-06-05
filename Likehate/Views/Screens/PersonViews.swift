@@ -582,6 +582,7 @@ struct PersonDetailView: View {
                   PersonEntryPreviewSection(person: person, kind: .hate)
 
                   comparisonLink(for: person)
+                     .padding(.top, -(layout.sectionSpacing / 3))
                }
                .padding(.horizontal, layout.screenPadding)
                .padding(.vertical, layout.cardSpacing)
@@ -638,8 +639,9 @@ struct PersonDetailView: View {
                   .font(typography.subtext)
                   .foregroundStyle(.tertiary)
             }
-            .padding(.top, 4)
-            .frame(minHeight: max(56, layout.rowMinHeight), alignment: .leading)
+            .padding(.top, 3)
+            .frame(maxWidth: .infinity, minHeight: max(56, layout.rowMinHeight), alignment: .leading)
+            .contentShape(Rectangle())
          }
          .buttonStyle(.plain)
       } else {
@@ -657,8 +659,9 @@ struct PersonDetailView: View {
                   .font(typography.subtext)
                   .foregroundStyle(.tertiary)
             }
-            .padding(.top, 4)
-            .frame(minHeight: max(56, layout.rowMinHeight), alignment: .leading)
+            .padding(.top, 3)
+            .frame(maxWidth: .infinity, minHeight: max(56, layout.rowMinHeight), alignment: .leading)
+            .contentShape(Rectangle())
          }
          .buttonStyle(.plain)
       }
