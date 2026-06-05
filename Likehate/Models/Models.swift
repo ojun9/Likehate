@@ -221,7 +221,7 @@ struct LikeDislikeItem: Identifiable, Codable, Hashable {
 }
 
 enum EntryPreviewItems {
-   static let maxCount = 3
+   static let maxCount = 2
 
    static func items(from items: [LikeDislikeItem], limit: Int = maxCount) -> [LikeDislikeItem] {
       guard limit > 0 else { return [] }
