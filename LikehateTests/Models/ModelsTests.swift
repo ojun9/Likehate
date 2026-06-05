@@ -497,6 +497,21 @@ struct DefaultProfileImageTests {
    }
 }
 
+struct AdDisplayPolicyTests {
+   @Test("List ads show only for free users with list items")
+   func listAdsShowOnlyForFreeUsersWithItems() {
+      #expect(AdDisplayPolicy(adsRemoved: false, isPremium: false).showsListAd(hasItems: true))
+      #expect(AdDisplayPolicy(adsRemoved: false, isPremium: false).showsListAd(hasItems: false) == false)
+   }
+
+   @Test("List ads are hidden for ad-removed and premium users")
+   func listAdsAreHiddenForAdRemovedAndPremiumUsers() {
+      #expect(AdDisplayPolicy(adsRemoved: true, isPremium: false).showsListAd(hasItems: true) == false)
+      #expect(AdDisplayPolicy(adsRemoved: false, isPremium: true).showsListAd(hasItems: true) == false)
+      #expect(AdDisplayPolicy(adsRemoved: true, isPremium: true).showsListAd(hasItems: true) == false)
+   }
+}
+
 struct AppTextSizeTests {
    @Test("Text sizes are ordered from smallest to largest")
    func textSizesAreOrderedFromSmallestToLargest() {

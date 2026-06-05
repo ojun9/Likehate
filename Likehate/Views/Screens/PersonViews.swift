@@ -1217,6 +1217,13 @@ struct ComparisonCategoryDetailView: View {
                      .padding(.top, 44)
                   } else {
                      LikeDislikeListCard(titles: titles, accent: category.kind.color)
+
+                     ConditionalListAdBanner(
+                        placement: .comparisonCategoryDetail,
+                        hasItems: !titles.isEmpty,
+                        topPadding: 0,
+                        bottomPadding: 16
+                     )
                   }
                }
                .padding(.horizontal, layout.screenPadding)

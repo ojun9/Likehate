@@ -11,13 +11,20 @@ enum AdMobUnitID: Sendable {
     #endif
 }
 
+enum ListAdPlacement: String, Sendable {
+   case itemList = "item_list"
+   case comparisonCategoryDetail = "comparison_category_detail"
+}
+
 struct LikehateAdBannerView: UIViewRepresentable {
    let adSize: AdSize
    let adUnitID: String
+   let placement: ListAdPlacement
 
-   init(adUnitID: String, adSize: AdSize) {
+   init(adUnitID: String, adSize: AdSize, placement: ListAdPlacement) {
       self.adUnitID = adUnitID
       self.adSize = adSize
+      self.placement = placement
    }
 
    func makeUIView(context: Context) -> BannerView {
@@ -35,20 +42,22 @@ struct LikehateAdBannerView: UIViewRepresentable {
    }
 
    func makeCoordinator() -> Coordinator {
-      Coordinator(adUnitID: adUnitID)
+      Coordinator(adUnitID: adUnitID, placement: placement)
    }
 
    final class Coordinator: NSObject, BannerViewDelegate {
-      init(adUnitID: String) {
+      init(adUnitID: String, placement: ListAdPlacement) {
          self.adUnitID = adUnitID
+         self.placement = placement
       }
 
       private let adUnitID: String
+      private let placement: ListAdPlacement
 
       func bannerViewDidReceiveAd(_ bannerView: BannerView) {
          print("AdMob banner loaded: \(adUnitID)")
          Analytics.logEvent("ad_banner_loaded", parameters: [
-            "placement": "item_list"
+            "placement": placement.rawValue
          ])
       }
 
@@ -56,7 +65,7 @@ struct LikehateAdBannerView: UIViewRepresentable {
          let nsError = error as NSError
          print("AdMob banner failed: \(error)")
          Analytics.logEvent("ad_banner_failed", parameters: [
-            "placement": "item_list",
+            "placement": placement.rawValue,
             "error_domain": nsError.domain,
             "error_code": nsError.code
          ])
@@ -66,17 +75,18 @@ struct LikehateAdBannerView: UIViewRepresentable {
 
 struct LikehateAdaptiveAdBanner: View {
    let adUnitID: String
+   let placement: ListAdPlacement
    @State private var availableWidth: CGFloat = 320
 
    var body: some View {
       let adSize = largePortraitAnchoredAdaptiveBanner(width: max(availableWidth, 320))
 
-      LikehateAdBannerView(adUnitID: adUnitID, adSize: adSize)
+      LikehateAdBannerView(adUnitID: adUnitID, adSize: adSize, placement: placement)
          .frame(width: adSize.size.width, height: adSize.size.height)
          .frame(maxWidth: .infinity)
          .onAppear {
             Analytics.logEvent("ad_banner_container_appeared", parameters: [
-               "placement": "item_list",
+               "placement": placement.rawValue,
                "available_width": availableWidth
             ])
          }
@@ -92,7 +102,35 @@ struct LikehateAdaptiveAdBanner: View {
             }
          }
          .frame(height: adSize.size.height + 8)
-         .background(Color(.systemBackground))
+         .background(Color.clear)
+   }
+}
+
+struct ConditionalListAdBanner: View {
+   @EnvironmentObject private var store: LikeHateStore
+
+   let placement: ListAdPlacement
+   let hasItems: Bool
+   var topPadding: CGFloat = 24
+   var bottomPadding: CGFloat = 16
+
+   var body: some View {
+      if AdDisplayPolicy(adsRemoved: store.appSettings.adsRemoved).showsListAd(hasItems: hasItems) {
+         ListAdBanner(placement: placement, topPadding: topPadding, bottomPadding: bottomPadding)
+      }
+   }
+}
+
+private struct ListAdBanner: View {
+   let placement: ListAdPlacement
+   let topPadding: CGFloat
+   let bottomPadding: CGFloat
+
+   var body: some View {
+      LikehateAdaptiveAdBanner(adUnitID: AdMobUnitID.itemListBanner, placement: placement)
+         .padding(.top, topPadding)
+         .padding(.bottom, bottomPadding)
+         .frame(maxWidth: .infinity)
    }
 }
 

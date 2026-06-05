@@ -365,7 +365,7 @@ struct ItemListView: View {
    private func itemList(for person: Person) -> some View {
       let items = store.items(for: person.id, kind: kind)
       let itemCount = items.count
-      let showsBanner = !store.didBuyRemoveAd && !items.isEmpty
+      let showsBanner = AdDisplayPolicy(adsRemoved: store.appSettings.adsRemoved).showsListAd(hasItems: !items.isEmpty)
       let typography = store.typography(for: dynamicTypeSize)
       let layout = store.layoutMetrics
 
@@ -448,8 +448,8 @@ struct ItemListView: View {
                }
 
                if showsBanner {
-                  LikehateAdaptiveAdBanner(adUnitID: AdMobUnitID.itemListBanner)
-                     .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+                  ConditionalListAdBanner(placement: .itemList, hasItems: !items.isEmpty)
+                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                      .listRowSeparator(.hidden)
                      .listRowBackground(Color.clear)
                      .onAppear {
