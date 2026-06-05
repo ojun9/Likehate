@@ -540,7 +540,9 @@ final class LikeHateStore: ObservableObject {
                "朝のラジオ",
                "花火",
                "パン屋めぐり",
-               "雨上がりの空"
+               "雨上がりの空",
+               "季節の果物",
+               "静かな朝"
             ],
             now: now
          ) +
@@ -558,7 +560,6 @@ final class LikeHateStore: ObservableObject {
                "冷たい雨",
                "急な予定変更",
                "煙草のにおい",
-               "納豆",
                "ホラー映画",
                "徹夜",
                "狭い席",
@@ -584,7 +585,11 @@ final class LikeHateStore: ObservableObject {
                "抹茶ラテ",
                "ピクニック",
                "古着屋めぐり",
-               "温泉"
+               "温泉",
+               "いちごタルト",
+               "公園ランチ",
+               "手作り雑貨",
+               "星を見る"
             ],
             now: now
          ) +
@@ -604,9 +609,7 @@ final class LikeHateStore: ObservableObject {
                "炭酸飲料",
                "徹夜",
                "急な予定変更",
-               "生たまねぎ",
-               "湿気",
-               "電話の長話"
+               "生たまねぎ"
             ],
             now: now
          ) +
@@ -628,7 +631,8 @@ final class LikeHateStore: ObservableObject {
                "ギター",
                "映画館",
                "コーヒー",
-               "花火"
+               "花火",
+               "ラーメン"
             ],
             now: now
          ) +
@@ -650,7 +654,10 @@ final class LikeHateStore: ObservableObject {
                "冷たい雨",
                "寝不足",
                "急な予定変更",
-               "煙草のにおい"
+               "煙草のにおい",
+               "待ち時間",
+               "熱すぎる飲み物",
+               "細かい作業"
             ],
             now: now
          )
