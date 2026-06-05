@@ -32,21 +32,21 @@ enum PremiumPurchaseResult: Equatable {
 
 struct PremiumPackage {
    let localizedPrice: String
-   fileprivate let revenueCatPackage: Package?
+   fileprivate let revenueCatStoreProduct: StoreProduct?
 
    init(localizedPrice: String) {
       self.localizedPrice = localizedPrice
-      self.revenueCatPackage = nil
+      self.revenueCatStoreProduct = nil
    }
 
-   fileprivate init(localizedPrice: String, revenueCatPackage: Package) {
+   fileprivate init(localizedPrice: String, revenueCatStoreProduct: StoreProduct) {
       self.localizedPrice = localizedPrice
-      self.revenueCatPackage = revenueCatPackage
+      self.revenueCatStoreProduct = revenueCatStoreProduct
    }
 }
 
 enum PremiumPurchaseServiceError: Error {
-   case missingRevenueCatPackage
+   case missingRevenueCatProduct
 }
 
 enum RevenueCatPurchaseErrorClassifier {
@@ -73,22 +73,20 @@ final class RevenueCatPremiumPurchaseService: PremiumPurchaseServicing {
    }
 
    func currentPremiumPackage() async throws -> PremiumPackage? {
-      let offerings = try await Purchases.shared.offerings()
-      guard let offering = offerings.current else { return nil }
-      let availablePackages = offering.availablePackages
-      guard let package = availablePackages.first(where: { $0.storeProduct.productIdentifier == LikehateRevenueCatContracts.premiumProductID }) ?? availablePackages.first else {
+      let products = await Purchases.shared.products([LikehateRevenueCatContracts.premiumProductID])
+      guard let product = products.first(where: { $0.productIdentifier == LikehateRevenueCatContracts.premiumProductID }) else {
          return nil
       }
-      return PremiumPackage(localizedPrice: package.storeProduct.localizedPriceString, revenueCatPackage: package)
+      return PremiumPackage(localizedPrice: product.localizedPriceString, revenueCatStoreProduct: product)
    }
 
    func purchase(package: PremiumPackage) async throws -> PremiumPurchaseResult {
-      guard let revenueCatPackage = package.revenueCatPackage else {
-         throw PremiumPurchaseServiceError.missingRevenueCatPackage
+      guard let revenueCatStoreProduct = package.revenueCatStoreProduct else {
+         throw PremiumPurchaseServiceError.missingRevenueCatProduct
       }
 
       do {
-         let result = try await Purchases.shared.purchase(package: revenueCatPackage)
+         let result = try await Purchases.shared.purchase(product: revenueCatStoreProduct)
          if result.userCancelled {
             return .userCancelled
          }

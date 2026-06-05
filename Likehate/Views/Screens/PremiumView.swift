@@ -32,7 +32,12 @@ struct PremiumView: View {
          .padding(.horizontal, layout.screenPadding)
          .padding(.bottom, layout.sectionSpacing + 154)
       }
-      .background(LikehateTheme.background.ignoresSafeArea())
+      .background {
+         ZStack {
+            LikehateTheme.background.ignoresSafeArea()
+            LikehateFloatingBackgroundView(blurPlacement: .full, isAnimationEnabled: store.animationEnabled)
+         }
+      }
       .navigationTitle("PremiumTitle")
       .navigationBarTitleDisplayMode(.inline)
       .safeAreaInset(edge: .bottom) {

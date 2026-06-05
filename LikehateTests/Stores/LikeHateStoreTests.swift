@@ -125,8 +125,8 @@ struct LikeHateStorePersonTests {
       #expect(store.persons.count == PremiumAccessPolicy.freePersonLimit + 1)
    }
 
-   @Test("プレミアム商品情報はレベニューキャットのパッケージ価格を読み込む")
-   func premiumProductInfoLoadsRevenueCatPackagePrice() async throws {
+   @Test("プレミアム商品情報はレベニューキャットの商品価格を読み込む")
+   func premiumProductInfoLoadsRevenueCatProductPrice() async throws {
       let service = PremiumPurchaseServiceStub()
       service.currentPremiumPackageResult = .success(PremiumPackage(localizedPrice: "¥600"))
       let context = try StoreTestContext(premiumPurchaseService: service)

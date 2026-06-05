@@ -3729,6 +3729,7 @@
       }
     },
     "PremiumHeroMessage" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3761,6 +3762,7 @@
       }
     },
     "PremiumOneTimeNote" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4254,38 +4256,6 @@
         }
       }
     },
-    "RevenueCatDebugSubtitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open RevenueCat debug overlay"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RevenueCatのデバッグ表示を開きます"
-          }
-        }
-      }
-    },
-    "RevenueCatDebugTitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RevenueCat Debug"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RevenueCatデバッグ"
-          }
-        }
-      }
-    },
     "RestorePurchaseEmptyMessage" : {
       "localizations" : {
         "en" : {
@@ -4362,6 +4332,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "復元しました"
+          }
+        }
+      }
+    },
+    "RevenueCatDebugSubtitle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open RevenueCat debug overlay"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RevenueCatのデバッグ表示を開きます"
+          }
+        }
+      }
+    },
+    "RevenueCatDebugTitle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RevenueCat Debug"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RevenueCatデバッグ"
           }
         }
       }
