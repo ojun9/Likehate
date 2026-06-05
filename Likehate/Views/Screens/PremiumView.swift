@@ -90,7 +90,7 @@ struct PremiumView: View {
                if store.isRestoring {
                   HStack(spacing: 8) {
                      ProgressView()
-                     Text("Restore")
+                     Text("PremiumRestoreButton")
                   }
                   .font(typography.subtext)
                   .frame(maxWidth: .infinity)

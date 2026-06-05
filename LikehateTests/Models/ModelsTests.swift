@@ -427,11 +427,19 @@ struct LocalizationTests {
    func japanesePremiumCopyExplainsOneTimePurchaseAndFreeLimit() {
       let locale = Locale(identifier: "ja")
 
+      #expect(String(localized: "PremiumBadge", bundle: .main, locale: locale) == "買い切り")
       #expect(String(localized: "PremiumTitle", bundle: .main, locale: locale) == "買い切りプレミアム")
       #expect(String(localized: "PremiumHeroTitle", bundle: .main, locale: locale) == "もっと大切な人を追加できます")
       #expect(String(localized: "PremiumFreeLimitMessage", bundle: .main, locale: locale) == "無料版では、あなたを含めて3人まで登録できます。")
       #expect(String(localized: "PremiumUpgradeMessage", bundle: .main, locale: locale) == "買い切りプレミアムにすると、4人以上の好き嫌いも残せて、広告も非表示になります。")
       #expect(String(localized: "PremiumOneTimeNote", bundle: .main, locale: locale) == "月額ではありません。一度の購入で使えます。")
+      #expect(String(localized: "PremiumComparisonTitle", bundle: .main, locale: locale) == "できることが広がります")
+      #expect(String(localized: "PremiumFreePlanTitle", bundle: .main, locale: locale) == "無料版")
+      #expect(String(localized: "PremiumFreePlanBadge", bundle: .main, locale: locale) == "現在")
+      #expect(String(localized: "PremiumFreePlanMessage", bundle: .main, locale: locale) == "3人まで登録できます。一覧画面には広告が表示されます。")
+      #expect(String(localized: "PremiumPaidPlanTitle", bundle: .main, locale: locale) == "買い切りプレミアム")
+      #expect(String(localized: "PremiumPaidPlanMessage", bundle: .main, locale: locale) == "4人以上追加できて、一覧画面の広告も非表示になります。")
+      #expect(String(localized: "PremiumPriceLoading", bundle: .main, locale: locale) == "価格を読み込み中")
       #expect(String(localized: "PremiumPurchaseButton", bundle: .main, locale: locale) == "買い切りプレミアムを購入")
       #expect(String(format: String(localized: "PremiumPurchaseButtonWithPriceFormat", bundle: .main, locale: locale), "¥800") == "買い切りプレミアムを購入（¥800）")
       #expect(String(localized: "PremiumRestoreButton", bundle: .main, locale: locale) == "購入を復元")
@@ -443,9 +451,17 @@ struct LocalizationTests {
    @Test("プレミアムと復元のローカライズキーが解決される")
    func premiumAndRestoreLocalizationKeysResolve() {
       let keys = [
+         "PremiumBadge",
          "PremiumBenefitLifetime",
          "PremiumBenefitNoAds",
          "PremiumBenefitPeople",
+         "PremiumComparisonTitle",
+         "PremiumFreePlanBadge",
+         "PremiumFreePlanMessage",
+         "PremiumFreePlanTitle",
+         "PremiumPaidPlanMessage",
+         "PremiumPaidPlanTitle",
+         "PremiumPriceLoading",
          "PremiumPurchaseButtonWithPriceFormat",
          "PremiumPurchaseDeferredMessage",
          "PremiumPurchaseDeferredTitle",
