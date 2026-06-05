@@ -15,6 +15,7 @@
 		BF0000010000000000000007 /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = BF0000010000000000000017 /* SwiftyStoreKit */; };
 		BF083ADB2FCDE83B00C67F9D /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = BF083ADA2FCDE83B00C67F9D /* CropViewController */; };
 		BF083ADD2FCDE83B00C67F9D /* TOCropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = BF083ADC2FCDE83B00C67F9D /* TOCropViewController */; };
+		BF083D7B2FD312C300C67F9D /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = BF083D7A2FD312C300C67F9D /* RevenueCat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 				BF0000010000000000000003 /* FirebaseAnalytics in Frameworks */,
 				BF0000010000000000000004 /* FirebaseRemoteConfig in Frameworks */,
 				BF0000010000000000000001 /* GoogleMobileAds in Frameworks */,
+				BF083D7B2FD312C300C67F9D /* RevenueCat in Frameworks */,
 				BF083ADB2FCDE83B00C67F9D /* CropViewController in Frameworks */,
 				BF0000010000000000000006 /* Lottie in Frameworks */,
 				BF0000010000000000000007 /* SwiftyStoreKit in Frameworks */,
@@ -127,6 +129,7 @@
 				BF0000010000000000000017 /* SwiftyStoreKit */,
 				BF083ADA2FCDE83B00C67F9D /* CropViewController */,
 				BF083ADC2FCDE83B00C67F9D /* TOCropViewController */,
+				BF083D7A2FD312C300C67F9D /* RevenueCat */,
 			);
 			productName = Likehate;
 			productReference = BF22F45E20DE6E4C00B56F99 /* Likehate.app */;
@@ -203,6 +206,7 @@
 				BF0000010000000000000023 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				BF0000010000000000000024 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */,
 				BF083AD92FCDE83B00C67F9D /* XCRemoteSwiftPackageReference "TOCropViewController" */,
+				BF083D792FD312C300C67F9D /* XCRemoteSwiftPackageReference "purchases-ios" */,
 			);
 			productRefGroup = BF22F45F20DE6E4C00B56F99 /* Products */;
 			projectDirPath = "";
@@ -540,6 +544,14 @@
 				minimumVersion = 3.1.2;
 			};
 		};
+		BF083D792FD312C300C67F9D /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.77.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -582,6 +594,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BF083AD92FCDE83B00C67F9D /* XCRemoteSwiftPackageReference "TOCropViewController" */;
 			productName = TOCropViewController;
+		};
+		BF083D7A2FD312C300C67F9D /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF083D792FD312C300C67F9D /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
