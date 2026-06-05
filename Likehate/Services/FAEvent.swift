@@ -124,6 +124,7 @@ enum FAParameter: CaseIterable, Hashable {
    case errorDomain
    case firstIsMe
    case firstPersonID
+   case hasExistingPhoto
    case hasPremiumAccess
    case hasSelectedPhoto
    case hateCount
@@ -200,6 +201,8 @@ enum FAParameter: CaseIterable, Hashable {
          return "first_is_me"
       case .firstPersonID:
          return "first_person_id"
+      case .hasExistingPhoto:
+         return "has_existing_photo"
       case .hasPremiumAccess:
          return "has_premium_access"
       case .hasSelectedPhoto:

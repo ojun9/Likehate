@@ -64,9 +64,9 @@ struct ChooseEntryView: View {
                         .buttonStyle(.plain)
                         .simultaneousGesture(TapGesture().onEnded {
                            FAAnalytics.log(.track(.chooseEntryKindTapped, parameters: [
-                              "kind": kind.rawValue,
-                              "person_id": person.id.uuidString,
-                              "is_me": person.isMe
+                              .kind: kind.rawValue,
+                              .personID: person.id.uuidString,
+                              .isMe: person.isMe
                            ]))
                         })
                      }
@@ -101,16 +101,16 @@ struct ChooseEntryView: View {
       return store.mePerson
    }
 
-   private var chooseAnalyticsParameters: [String: Any] {
-      var parameters: [String: Any] = [
-         "person_count": store.persons.count,
-         "entry_count": store.totalItemCount,
-         "animation_enabled": store.animationEnabled
+   private var chooseAnalyticsParameters: FAParameters {
+      var parameters: FAParameters = [
+         .personCount: store.persons.count,
+         .entryCount: store.totalItemCount,
+         .animationEnabled: store.animationEnabled
       ]
 
       if let selectedPerson {
-         parameters["person_id"] = selectedPerson.id.uuidString
-         parameters["is_me"] = selectedPerson.isMe
+         parameters[.personID] = selectedPerson.id.uuidString
+         parameters[.isMe] = selectedPerson.isMe
       }
 
       return parameters
@@ -214,13 +214,13 @@ struct WriteItemView: View {
             message: Text(prompt.message),
             primaryButton: .default(Text("ThankYou")) {
                FAAnalytics.log(.track(.reviewPromptConfirmed, parameters: [
-                  "screen": FAScreen.writeEntry.rawValue
+                  .screen: FAScreen.writeEntry.rawValue
                ]))
                AppReviewClient.requestReview()
             },
             secondaryButton: .cancel(Text("Ohthankyou")) {
                FAAnalytics.log(.track(.reviewPromptCancelled, parameters: [
-                  "screen": FAScreen.writeEntry.rawValue
+                  .screen: FAScreen.writeEntry.rawValue
                ]))
             }
          )
@@ -279,22 +279,22 @@ struct WriteItemView: View {
       isTextFieldFocused ? kind.color.opacity(0.46) : LikehateTheme.border
    }
 
-   private func writeAnalyticsParameters(source: String) -> [String: Any] {
-      var parameters: [String: Any] = [
-         "kind": kind.rawValue,
-         "source": source,
-         "text_length": text.trimmingCharacters(in: .whitespacesAndNewlines).count,
-         "lottie_name": lottieName,
-         "is_focused": isTextFieldFocused,
-         "like_count": store.likes.count,
-         "hate_count": store.hates.count,
-         "entry_count": store.totalItemCount,
-         "animation_enabled": store.animationEnabled
+   private func writeAnalyticsParameters(source: String) -> FAParameters {
+      var parameters: FAParameters = [
+         .kind: kind.rawValue,
+         .source: source,
+         .textLength: text.trimmingCharacters(in: .whitespacesAndNewlines).count,
+         .lottieName: lottieName,
+         .isFocused: isTextFieldFocused,
+         .likeCount: store.likes.count,
+         .hateCount: store.hates.count,
+         .entryCount: store.totalItemCount,
+         .animationEnabled: store.animationEnabled
       ]
 
       if let selectedPerson {
-         parameters["person_id"] = selectedPerson.id.uuidString
-         parameters["is_me"] = selectedPerson.isMe
+         parameters[.personID] = selectedPerson.id.uuidString
+         parameters[.isMe] = selectedPerson.isMe
       }
 
       return parameters
@@ -514,16 +514,16 @@ struct ItemListView: View {
       }
    }
 
-   private func listAnalyticsParameters(person: Person, itemCount: Int, showsBanner: Bool) -> [String: Any] {
+   private func listAnalyticsParameters(person: Person, itemCount: Int, showsBanner: Bool) -> FAParameters {
       [
-         "kind": kind.rawValue,
-         "item_count": itemCount,
-         "is_empty": itemCount == 0,
-         "shows_banner": showsBanner,
-         "did_buy_remove_ad": store.didBuyRemoveAd,
-         "person_id": person.id.uuidString,
-         "is_me": person.isMe,
-         "person_count": store.persons.count
+         .kind: kind.rawValue,
+         .itemCount: itemCount,
+         .isEmpty: itemCount == 0,
+         .showsBanner: showsBanner,
+         .didBuyRemoveAd: store.didBuyRemoveAd,
+         .personID: person.id.uuidString,
+         .isMe: person.isMe,
+         .personCount: store.persons.count
       ]
    }
 }
@@ -592,10 +592,10 @@ private struct EditItemView: View {
       }
       .onAppear {
          FAAnalytics.log(.screenView(.editItem, parameters: [
-            "kind": kind.rawValue,
-            "person_id": person.id.uuidString,
-            "is_me": person.isMe,
-            "text_length": text.trimmingCharacters(in: .whitespacesAndNewlines).count
+            .kind: kind.rawValue,
+            .personID: person.id.uuidString,
+            .isMe: person.isMe,
+            .textLength: text.trimmingCharacters(in: .whitespacesAndNewlines).count
          ]))
          DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             isTextFieldFocused = true

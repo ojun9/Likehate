@@ -541,7 +541,7 @@ struct RevenueCatContractsTests {
 struct FAEventTests {
    @Test("画面表示イベントはFirebase標準のscreen_viewを使う")
    func screenViewUsesFirebaseScreenEvent() {
-      let event = FAEvent.screenView(.premium, parameters: ["source": "settings"])
+      let event = FAEvent.screenView(.premium, parameters: [.source: "settings"])
 
       #expect(event.name == AnalyticsEventScreenView)
       #expect(event.parameters?[AnalyticsParameterScreenName] as? String == FAScreen.premium.rawValue)
@@ -565,7 +565,7 @@ struct FAEventTests {
       let event = FAEvent.purchase(
          productID: LikehateRevenueCatContracts.premiumProductID,
          price: "¥800",
-         parameters: ["source": "purchase"]
+         parameters: [.source: "purchase"]
       )
 
       #expect(event.name == AnalyticsEventPurchase)
@@ -573,6 +573,18 @@ struct FAEventTests {
       #expect(event.parameters?[AnalyticsParameterItemName] as? String == "premium_lifetime")
       #expect(event.parameters?["price_text"] as? String == "¥800")
       #expect(event.parameters?["source"] as? String == "purchase")
+   }
+
+   @Test("FAParameterは送信キーを重複なく一覧化する")
+   func parameterKeysAreListedAndUnique() {
+      let keys = FAParameter.allCases.map(\.key)
+
+      #expect(keys.count == Set(keys).count)
+      #expect(keys.contains("source"))
+      #expect(keys.contains("person_count"))
+      #expect(keys.contains("product_id"))
+      #expect(keys.contains(AnalyticsParameterScreenName))
+      #expect(keys.contains(AnalyticsParameterItemID))
    }
 
    @Test("主要な課金イベント名がFAEventに定義されている")
