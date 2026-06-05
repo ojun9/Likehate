@@ -41,14 +41,17 @@ struct PersonPairHeaderView: View {
             verticalOffset: avatarSize * 0.24
          )
 
-         Text(verbatim: firstPerson.displayName)
-            .lineLimit(1)
+         HStack(spacing: 4) {
+            Text(verbatim: firstPerson.displayName)
+               .lineLimit(1)
 
-         Text("PersonPairSeparator")
-            .foregroundStyle(.tertiary)
+            Text("PersonPairSeparator")
+               .foregroundStyle(.tertiary)
 
-         Text(verbatim: secondPerson.displayName)
-            .lineLimit(1)
+            Text(verbatim: secondPerson.displayName)
+               .lineLimit(1)
+         }
+         .layoutPriority(1)
       }
       .font(typography.subtext)
       .fontWeight(.bold)
@@ -71,21 +74,22 @@ struct DiagonalOverlappingPersonAvatars: View {
    var body: some View {
       let xOffset = horizontalOffset ?? size * 0.48
       let yOffset = verticalOffset ?? size * 0.2
-      let borderPadding = max(2, size * 0.045)
 
       ZStack(alignment: .topLeading) {
          PersonAvatar(person: firstPerson, size: size)
             .zIndex(0)
 
          PersonAvatar(person: secondPerson, size: size)
-            .padding(borderPadding)
-            .background(overlapBorder, in: Circle())
+            .overlay {
+               Circle()
+                  .stroke(overlapBorder, lineWidth: max(2, size * 0.09))
+            }
             .offset(x: xOffset, y: yOffset)
             .zIndex(1)
       }
       .frame(
-         width: size + xOffset + borderPadding * 2,
-         height: size + yOffset + borderPadding * 2,
+         width: size + xOffset,
+         height: size + yOffset,
          alignment: .topLeading
       )
       .padding(showsBackground ? max(4, size * 0.12) : 0)
