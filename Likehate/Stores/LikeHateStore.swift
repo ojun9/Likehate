@@ -229,7 +229,7 @@ final class LikeHateStore: ObservableObject {
       persistPeopleAndEntries()
 
       var parameters = personAnalyticsParameters(person, source: "delete")
-      parameters["deleted_item_count"] = deletedItemCount
+      parameters[.deletedItemCount] = deletedItemCount
       FAAnalytics.log(.track(.personDeleted, parameters: parameters))
       HapticsClient.success()
    }
