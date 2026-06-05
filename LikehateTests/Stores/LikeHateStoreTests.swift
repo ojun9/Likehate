@@ -5,7 +5,7 @@ import UIKit
 
 @MainActor
 struct LikeHateStorePersonTests {
-   @Test("A fresh store creates one protected me person with a default profile image")
+   @Test("新規ストアは保護されたわたしをデフォルト画像付きで1人作る")
    func freshStoreCreatesMePerson() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -20,7 +20,7 @@ struct LikeHateStorePersonTests {
       #expect(me.photoFileName == nil)
    }
 
-   @Test("Adding a person trims the name, stores the selected profile image, and persists")
+   @Test("人物追加は名前を整形し選択画像を保存して永続化する")
    func addPersonPersistsProfileImage() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -38,7 +38,7 @@ struct LikeHateStorePersonTests {
       #expect(reloadedPerson.profileImageName == DefaultProfileImage.defaultProfileImage7.rawValue)
    }
 
-   @Test("Blank person names are rejected without changing people")
+   @Test("空の人物名は人物を変更せず拒否する")
    func blankPersonNamesAreRejected() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -50,7 +50,7 @@ struct LikeHateStorePersonTests {
       #expect(store.persons.map(\.id) == originalPersonIDs)
    }
 
-   @Test("New person default profile image avoids existing person images")
+   @Test("新規人物のデフォルト画像は既存人物の画像を避ける")
    func newPersonDefaultProfileImageAvoidsExistingPersonImages() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -64,7 +64,7 @@ struct LikeHateStorePersonTests {
       #expect(store.defaultProfileImageForNewPerson() == .defaultProfileImage4)
    }
 
-   @Test("Free users can register up to three people including me")
+   @Test("無料ユーザーはわたしを含めて3人まで登録できる")
    func freeUsersCanRegisterUpToThreePeopleIncludingMe() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -85,7 +85,7 @@ struct LikeHateStorePersonTests {
       #expect(store.items(for: firstFriend.id, kind: .hate).map(\.title) == ["雨"])
    }
 
-   @Test("Premium users can add more than three people")
+   @Test("プレミアムユーザーは3人を超えて追加できる")
    func premiumUsersCanAddMoreThanThreePeople() throws {
       let context = try StoreTestContext(initialValues: { defaults in
          defaults.set(true, forKey: "PremiumLifetimePurchased")
@@ -104,7 +104,7 @@ struct LikeHateStorePersonTests {
       #expect(store.person(for: thirdFriend.id)?.displayName == "はると")
    }
 
-   @Test("Existing ad removal purchase is treated as premium access")
+   @Test("既存の広告非表示購入はプレミアムアクセスとして扱う")
    func existingAdRemovalPurchaseIsTreatedAsPremiumAccess() throws {
       let context = try StoreTestContext(initialValues: { defaults in
          defaults.set(true, forKey: "BuyRemoveAd")
@@ -125,7 +125,79 @@ struct LikeHateStorePersonTests {
       #expect(store.persons.count == PremiumAccessPolicy.freePersonLimit + 1)
    }
 
-   @Test("Adding and updating a person limits names to forty characters")
+   @Test("プレミアム商品情報はレベニューキャットのパッケージ価格を読み込む")
+   func premiumProductInfoLoadsRevenueCatPackagePrice() async throws {
+      let service = PremiumPurchaseServiceStub()
+      service.currentPremiumPackageResult = .success(PremiumPackage(localizedPrice: "¥600"))
+      let context = try StoreTestContext(premiumPurchaseService: service)
+      defer { context.cleanup() }
+
+      context.store.loadPremiumProductInfo()
+
+      try await waitUntil { context.store.premiumProductPrice == "¥600" }
+      #expect(service.didRequestCurrentPremiumPackage)
+   }
+
+   @Test("プレミアム購入はレベニューキャットを使いプレミアムアクセスを解除する")
+   func premiumPurchaseUsesRevenueCatAndUnlocksPremiumAccess() async throws {
+      let service = PremiumPurchaseServiceStub()
+      service.currentPremiumPackageResult = .success(PremiumPackage(localizedPrice: "¥600"))
+      service.purchaseResult = .success(.active)
+      let context = try StoreTestContext(premiumPurchaseService: service)
+      defer { context.cleanup() }
+
+      context.store.purchasePremium()
+
+      try await waitUntil { context.store.isPurchasing == false && context.store.didBuyPremium }
+      #expect(service.didPurchase)
+      #expect(context.store.didBuyRemoveAd == false)
+      #expect(context.store.appSettings.isPremium)
+      #expect(context.store.purchaseMessage?.title == String(localized: "PremiumPurchaseSucceededTitle"))
+   }
+
+   @Test("キャンセルしたプレミアム購入はエラー表示も解除もしない")
+   func cancelledPremiumPurchaseDoesNotShowErrorOrUnlock() async throws {
+      let service = PremiumPurchaseServiceStub()
+      service.currentPremiumPackageResult = .success(PremiumPackage(localizedPrice: "¥600"))
+      service.purchaseResult = .success(.userCancelled)
+      let context = try StoreTestContext(premiumPurchaseService: service)
+      defer { context.cleanup() }
+
+      context.store.purchasePremium()
+
+      try await waitUntil { context.store.isPurchasing == false && service.didPurchase }
+      #expect(context.store.didBuyPremium == false)
+      #expect(context.store.purchaseMessage == nil)
+   }
+
+   @Test("有効なレベニューキャット権限がない復元は無料状態のままにする")
+   func restoreWithoutActiveRevenueCatEntitlementStaysFree() async throws {
+      let service = PremiumPurchaseServiceStub()
+      service.restoreResult = .success(.missingEntitlement)
+      let context = try StoreTestContext(premiumPurchaseService: service)
+      defer { context.cleanup() }
+
+      context.store.restorePurchases()
+
+      try await waitUntil { context.store.isRestoring == false && service.didRestore }
+      #expect(context.store.hasPremiumAccess == false)
+      #expect(context.store.purchaseMessage?.message == String(localized: "RestorePurchaseEmptyMessage"))
+   }
+
+   @Test("プレミアム更新はレベニューキャットの有効権限を反映する")
+   func premiumRefreshAppliesRevenueCatActiveEntitlement() async throws {
+      let service = PremiumPurchaseServiceStub()
+      service.currentEntitlementStateResult = .success(.active)
+      let context = try StoreTestContext(premiumPurchaseService: service)
+      defer { context.cleanup() }
+
+      context.store.refreshPremiumStatus()
+
+      try await waitUntil { context.store.hasPremiumAccess }
+      #expect(service.didRequestCurrentEntitlementState)
+   }
+
+   @Test("人物追加と更新は名前を40文字に制限する")
    func addAndUpdatePersonLimitNamesToFortyCharacters() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -145,7 +217,7 @@ struct LikeHateStorePersonTests {
       #expect(updatedPerson.name == String(repeating: "い", count: 40))
    }
 
-   @Test("Updating me stores and displays a custom name")
+   @Test("わたしの更新は変更した名前を保存して表示する")
    func updateMeStoresAndDisplaysCustomName() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -161,7 +233,7 @@ struct LikeHateStorePersonTests {
       #expect(updatedMe.profileImageName == DefaultProfileImage.defaultProfileImage4.rawValue)
    }
 
-   @Test("Updating another person changes the stored and display name")
+   @Test("他人の更新は保存名と表示名を変更する")
    func updateOtherPersonChangesStoredAndDisplayName() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -177,7 +249,7 @@ struct LikeHateStorePersonTests {
       #expect(updatedFriend.profileImageName == DefaultProfileImage.defaultProfileImage8.rawValue)
    }
 
-   @Test("Blank person updates are rejected without changing profile image")
+   @Test("空の人物更新はプロフィール画像を変えず拒否する")
    func blankPersonUpdatesAreRejected() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -192,7 +264,7 @@ struct LikeHateStorePersonTests {
       #expect(unchangedFriend.profileImageName == DefaultProfileImage.defaultProfileImage3.rawValue)
    }
 
-   @Test("Deleting a person removes their entries but keeps me protected")
+   @Test("人物削除はその人の項目を消しわたしは保護する")
    func deletePersonRemovesTheirEntriesOnly() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -215,7 +287,7 @@ struct LikeHateStorePersonTests {
       #expect(store.items(for: friend.id, kind: .hate).isEmpty)
    }
 
-   @Test("Stored people are normalized, keep one me person, and filter orphan entries")
+   @Test("保存済み人物は正規化されわたし1人を保ち孤立項目を除外する")
    func storedPeopleAreNormalized() throws {
       let meID = UUID()
       let duplicateMeID = UUID()
@@ -249,7 +321,7 @@ struct LikeHateStorePersonTests {
       #expect(store.entries.map(\.title) == ["おすし"])
    }
 
-   @Test("Empty stored people normalize back to one me person and drop orphan entries")
+   @Test("空の保存済み人物はわたし1人に戻り孤立項目を落とす")
    func emptyStoredPeopleNormalizeToMeOnly() throws {
       let orphanID = UUID()
       let storedItems = [
@@ -270,7 +342,7 @@ struct LikeHateStorePersonTests {
       #expect(store.entries.isEmpty)
    }
 
-   @Test("Stored people without me promote the first sorted person to me")
+   @Test("わたしがいない保存済み人物は並び順先頭をわたしに昇格する")
    func storedPeopleWithoutMePromoteFirstSortedPerson() throws {
       let firstID = UUID()
       let secondID = UUID()
@@ -303,7 +375,7 @@ struct LikeHateStorePersonTests {
 
 @MainActor
 struct LikeHateStoreEntryTests {
-   @Test("Entries trim whitespace, reject empty text, update, move, and delete")
+   @Test("項目は空白整形と空文字拒否と更新移動削除を行う")
    func entryLifecycle() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -332,7 +404,7 @@ struct LikeHateStoreEntryTests {
       #expect(store.items(for: me.id, kind: .like).map(\.title) == ["お寿司"])
    }
 
-   @Test("Entry preview follows reordered list order")
+   @Test("項目プレビューは並び替え後の一覧順に従う")
    func entryPreviewFollowsReorderedListOrder() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -353,7 +425,7 @@ struct LikeHateStoreEntryTests {
       #expect(EntryPreviewItems.items(from: store.items(for: me.id, kind: .like)).map(\.title) == ["散歩", "おすし"])
    }
 
-   @Test("Entries reject missing people and missing item updates without mutation")
+   @Test("項目は存在しない人物や項目更新を変更なしで拒否する")
    func invalidEntryTargetsAndUpdatesDoNotMutateEntries() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -369,7 +441,7 @@ struct LikeHateStoreEntryTests {
       #expect(store.items(for: me.id, kind: .like).map(\.title) == ["おすし"])
    }
 
-   @Test("Updated entry titles are trimmed and persist after reload")
+   @Test("更新した項目タイトルは整形され再読み込み後も残る")
    func updatedEntryTitlesPersistTrimmed() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -385,7 +457,7 @@ struct LikeHateStoreEntryTests {
       #expect(reloadedStore.items(for: me.id, kind: .like).map(\.title) == ["焼き魚"])
    }
 
-   @Test("Moved entries persist their new order after reload")
+   @Test("移動した項目は再読み込み後も新しい順序を保つ")
    func movedEntriesPersistOrderAfterReload() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -406,7 +478,7 @@ struct LikeHateStoreEntryTests {
       #expect(reloadedItems.map(\.sortOrder) == [0, 1, 2])
    }
 
-   @Test("Stored entries with matching sort order fall back to creation date")
+   @Test("同じ並び順の保存済み項目は作成日にフォールバックする")
    func storedEntriesWithMatchingSortOrderUseCreatedAtOrder() throws {
       let personID = UUID()
       let now = Date(timeIntervalSince1970: 1_000)
@@ -429,7 +501,7 @@ struct LikeHateStoreEntryTests {
       #expect(store.items(for: personID, kind: .like).map(\.title) == ["まえ", "まんなか", "あと"])
    }
 
-   @Test("Deleting entries ignores out-of-range offsets and renumbers valid deletions")
+   @Test("項目削除は範囲外の位置指定を無視し有効削除後に採番し直す")
    func deletingEntriesIgnoresOutOfRangeOffsetsAndRenumbers() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -455,7 +527,7 @@ struct LikeHateStoreEntryTests {
       #expect(reloadedStore.items(for: me.id, kind: .hate).map(\.title) == ["雨"])
    }
 
-   @Test("Legacy like and hate arrays migrate into the me person")
+   @Test("旧好き嫌い配列はわたしの項目へ移行される")
    func legacyDataMigratesIntoMePerson() throws {
       let context = try StoreTestContext(initialValues: { defaults in
          defaults.set(["おすし", "カレー"], forKey: EntryKind.like.storageKey)
@@ -474,7 +546,7 @@ struct LikeHateStoreEntryTests {
 
 @MainActor
 struct LikeHateStorePhotoTests {
-   @Test("Photo data is converted into a square JPEG thumbnail")
+   @Test("写真データは正方形画像サムネイルへ変換される")
    func photoDataIsConvertedIntoSquareThumbnail() throws {
       let sourceData = try TestImageFactory.jpegData(size: CGSize(width: 80, height: 40), color: .systemPink)
       let thumbnailData = try #require(LikeHateStore.thumbnailPhotoData(from: sourceData))
@@ -484,12 +556,12 @@ struct LikeHateStorePhotoTests {
       #expect(Int(thumbnail.size.height) == 512)
    }
 
-   @Test("Invalid photo data is rejected")
+   @Test("不正な写真データは拒否される")
    func invalidPhotoDataIsRejected() {
       #expect(LikeHateStore.thumbnailPhotoData(from: Data("not image".utf8)) == nil)
    }
 
-   @Test("Person photo can be saved, loaded, removed, and deleted with the person")
+   @Test("人物写真は保存読込削除でき人物削除時にも消える")
    func personPhotoLifecycle() throws {
       let context = try StoreTestContext()
       defer {
@@ -523,7 +595,7 @@ struct LikeHateStorePhotoTests {
       #expect(FileManager.default.fileExists(atPath: replacedPhotoURL.path) == false)
    }
 
-   @Test("Preset profile image update removes an existing photo")
+   @Test("プリセット画像更新は既存写真を削除する")
    func presetProfileImageUpdateRemovesExistingPhoto() throws {
       let context = try StoreTestContext()
       defer {
@@ -545,7 +617,7 @@ struct LikeHateStorePhotoTests {
       #expect(FileManager.default.fileExists(atPath: photoURL.path) == false)
    }
 
-   @Test("Missing photo files are ignored")
+   @Test("存在しない写真ファイルは無視される")
    func missingPhotoFileIsIgnored() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -561,7 +633,7 @@ struct LikeHateStorePhotoTests {
 
 @MainActor
 struct LikeHateStoreComparisonTests {
-   @Test("Comparison sections classify shared and person-only entries")
+   @Test("比較セクションは共通項目と人物別項目を分類する")
    func comparisonSectionsClassifyEntries() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -593,7 +665,7 @@ struct LikeHateStoreComparisonTests {
       #expect(sections[.secondOnlyHate] == ["煙"])
    }
 
-   @Test("Comparison sections deduplicate titles case-insensitively and keep first titles")
+   @Test("比較セクションは大文字小文字を無視して重複排除し先頭タイトルを保つ")
    func comparisonSectionsDeduplicateCaseInsensitively() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -628,7 +700,7 @@ struct LikeHateStoreComparisonTests {
 
 @MainActor
 struct LikeHateStoreSettingsTests {
-   @Test("Default settings are conservative and readable")
+   @Test("デフォルト設定は控えめで読みやすい")
    func defaultSettings() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -642,7 +714,7 @@ struct LikeHateStoreSettingsTests {
       #expect(settings.textSize == .standard)
    }
 
-   @Test("Invalid stored text size falls back to standard")
+   @Test("不正な保存文字サイズは標準に戻る")
    func invalidStoredTextSizeFallsBackToStandard() throws {
       let context = try StoreTestContext(initialValues: { defaults in
          defaults.set("giant", forKey: "AppTextSize")
@@ -652,7 +724,7 @@ struct LikeHateStoreSettingsTests {
       #expect(context.store.textSize == .standard)
    }
 
-   @Test("Text size persists through UserDefaults and app settings")
+   @Test("文字サイズはユーザーデフォルトとアプリ設定に永続化される")
    func textSizePersists() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -665,7 +737,7 @@ struct LikeHateStoreSettingsTests {
       #expect(reloadedStore.appSettings.textSize == .extraLarge)
    }
 
-   @Test("Animation setting persists through UserDefaults")
+   @Test("アニメーション設定はユーザーデフォルトに永続化される")
    func animationSettingPersists() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -679,7 +751,7 @@ struct LikeHateStoreSettingsTests {
       #expect(reloadedStore.appSettings.animationEnabled == false)
    }
 
-   @Test("App settings read persisted haptics and ad flags")
+   @Test("アプリ設定は永続化された触覚と広告フラグを読む")
    func appSettingsReadPersistedHapticsAndAdFlags() throws {
       let context = try StoreTestContext(initialValues: { defaults in
          defaults.set(false, forKey: "HapticsEnabled")
@@ -695,7 +767,7 @@ struct LikeHateStoreSettingsTests {
    }
 
    #if DEBUG
-   @Test("App Store screenshot mode swaps in sample data and restores original data")
+   @Test("アップストアスクショモードはサンプルデータへ差し替え元データを復元する")
    func appStoreScreenshotModeSwapsAndRestoresOriginalData() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -750,7 +822,7 @@ struct LikeHateStoreSettingsTests {
       #expect(store.items(for: me.id, kind: .hate).map(\.title) == ["梅干し"])
    }
 
-   @Test("App Store screenshot mode can restore after store reload")
+   @Test("アップストアスクショモードはストア再読込後も復元できる")
    func appStoreScreenshotModeRestoresAfterReload() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -774,7 +846,7 @@ struct LikeHateStoreSettingsTests {
    }
    #endif
 
-   @Test("Delete all resets entries and recreates only me")
+   @Test("全削除は項目をリセットしわたしだけを作り直す")
    func deleteAllResetsPeopleAndEntries() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -795,7 +867,7 @@ struct LikeHateStoreSettingsTests {
       #expect(DefaultProfileImage(rawValue: resetMe.profileImageName ?? "") != nil)
    }
 
-   @Test("Delete all clears legacy entry arrays")
+   @Test("全削除は旧項目配列も消す")
    func deleteAllClearsLegacyEntryArrays() throws {
       let context = try StoreTestContext(initialValues: { defaults in
          defaults.set(["おすし"], forKey: EntryKind.like.storageKey)
@@ -820,7 +892,7 @@ private struct StoreTestContext {
    let defaults: UserDefaults
    let store: LikeHateStore
 
-   init(initialValues: ((UserDefaults) -> Void)? = nil) throws {
+   init(initialValues: ((UserDefaults) -> Void)? = nil, premiumPurchaseService: PremiumPurchaseServicing? = nil) throws {
       suiteName = "LikehateTests-\(UUID().uuidString)"
       guard let defaults = UserDefaults(suiteName: suiteName) else {
          throw StoreTestError.userDefaultsUnavailable
@@ -829,12 +901,60 @@ private struct StoreTestContext {
       initialValues?(defaults)
 
       self.defaults = defaults
-      store = LikeHateStore(defaults: defaults)
+      if let premiumPurchaseService {
+         store = LikeHateStore(defaults: defaults, premiumPurchaseService: premiumPurchaseService)
+      } else {
+         store = LikeHateStore(defaults: defaults)
+      }
    }
 
    func cleanup() {
       defaults.removePersistentDomain(forName: suiteName)
    }
+}
+
+@MainActor
+private final class PremiumPurchaseServiceStub: PremiumPurchaseServicing {
+   var currentEntitlementStateResult: Result<PremiumEntitlementState, Error> = .success(.inactive)
+   var currentPremiumPackageResult: Result<PremiumPackage?, Error> = .success(nil)
+   var purchaseResult: Result<PremiumPurchaseResult, Error> = .success(.inactive)
+   var restoreResult: Result<PremiumPurchaseResult, Error> = .success(.inactive)
+
+   private(set) var didRequestCurrentEntitlementState = false
+   private(set) var didRequestCurrentPremiumPackage = false
+   private(set) var didPurchase = false
+   private(set) var didRestore = false
+
+   func currentEntitlementState() async throws -> PremiumEntitlementState {
+      didRequestCurrentEntitlementState = true
+      return try currentEntitlementStateResult.get()
+   }
+
+   func currentPremiumPackage() async throws -> PremiumPackage? {
+      didRequestCurrentPremiumPackage = true
+      return try currentPremiumPackageResult.get()
+   }
+
+   func purchase(package: PremiumPackage) async throws -> PremiumPurchaseResult {
+      didPurchase = true
+      return try purchaseResult.get()
+   }
+
+   func restorePurchases() async throws -> PremiumPurchaseResult {
+      didRestore = true
+      return try restoreResult.get()
+   }
+}
+
+@MainActor
+private func waitUntil(_ predicate: @escaping @MainActor () -> Bool) async throws {
+   for _ in 0..<100 {
+      if predicate() {
+         return
+      }
+      try await Task.sleep(nanoseconds: 1_000_000)
+   }
+   Issue.record("Timed out waiting for async store work")
 }
 
 private enum StoreTestError: Error {

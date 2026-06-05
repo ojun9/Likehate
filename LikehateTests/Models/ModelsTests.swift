@@ -3,7 +3,7 @@ import Testing
 @testable import Likehate
 
 struct PersonTests {
-   @Test("Me display name ignores legacy stored names")
+   @Test("わたしの表示名は古い保存名を使わない")
    func meDisplayNameIgnoresLegacyStoredNames() {
       let person = makePerson(name: "自分", isMe: true)
 
@@ -12,14 +12,14 @@ struct PersonTests {
       #expect(person.displayName != person.name)
    }
 
-   @Test("Me display name falls back for blank stored names")
+   @Test("わたしの表示名は空の保存名ならデフォルトに戻る")
    func meDisplayNameFallsBackForBlankStoredNames() {
       let person = makePerson(name: "   ", isMe: true)
 
       #expect(person.displayName == String(localized: "DefaultMeName"))
    }
 
-   @Test("Me display name uses a custom stored name")
+   @Test("わたしの表示名は変更した保存名を使う")
    func meDisplayNameUsesCustomStoredName() {
       let person = makePerson(name: "じゅん", isMe: true)
 
@@ -27,21 +27,21 @@ struct PersonTests {
       #expect(person.displayName == "じゅん")
    }
 
-   @Test("Other person display name uses the stored name")
+   @Test("他人の表示名は保存名を使う")
    func otherPersonDisplayNameUsesStoredName() {
       let person = makePerson(name: "太郎", isMe: false)
 
       #expect(person.displayName == "太郎")
    }
 
-   @Test("Other person display name trims incidental whitespace")
+   @Test("他人の表示名は余分な空白を取り除く")
    func otherPersonDisplayNameTrimsWhitespace() {
       let person = makePerson(name: "  あかり  ", isMe: false)
 
       #expect(person.displayName == "あかり")
    }
 
-   @Test("Profile image falls back to the first bundled image when stored value is invalid")
+   @Test("プロフィール画像は不正な保存値なら最初の同梱画像に戻る")
    func profileImageFallsBackForInvalidStoredValue() {
       var person = makePerson(name: "太郎", profileImageName: "missingAsset", isMe: false)
 
@@ -54,7 +54,7 @@ struct PersonTests {
 }
 
 struct PersonIconSelectionStateTests {
-   @Test("Beginning photo selection keeps the selected preset and existing photo state")
+   @Test("写真選択開始では選択中プリセットと既存写真状態を保つ")
    func beginPhotoSelectionDoesNotResetPreset() {
       var state = PersonIconSelectionState(selectedProfileImage: .defaultProfileImage7, hasExistingPhoto: true)
 
@@ -64,7 +64,7 @@ struct PersonIconSelectionStateTests {
       #expect(state.removesExistingPhoto == false)
    }
 
-   @Test("Selecting a preset profile image marks the existing photo for removal")
+   @Test("プリセット画像を選ぶと既存写真を削除予定にする")
    func selectingPresetRemovesExistingPhoto() {
       var state = PersonIconSelectionState(selectedProfileImage: .defaultProfileImage2, hasExistingPhoto: true)
 
@@ -74,7 +74,7 @@ struct PersonIconSelectionStateTests {
       #expect(state.removesExistingPhoto)
    }
 
-   @Test("Selecting a preset profile image without an existing photo does not mark removal")
+   @Test("既存写真がない状態でプリセット画像を選んでも削除予定にしない")
    func selectingPresetWithoutExistingPhotoDoesNotRemovePhoto() {
       var state = PersonIconSelectionState(selectedProfileImage: .defaultProfileImage2, hasExistingPhoto: false)
 
@@ -84,7 +84,7 @@ struct PersonIconSelectionStateTests {
       #expect(state.removesExistingPhoto == false)
    }
 
-   @Test("Selecting a cropped photo keeps the preset value and cancels pending photo removal")
+   @Test("クロップ済み写真を選ぶとプリセット値を保ち写真削除予定を取り消す")
    func selectingPhotoCancelsPendingPhotoRemoval() {
       var state = PersonIconSelectionState(selectedProfileImage: .defaultProfileImage3, hasExistingPhoto: true)
 
@@ -97,7 +97,7 @@ struct PersonIconSelectionStateTests {
 }
 
 struct PersonFormModeTests {
-   @Test("Person form mode covers add, friend edit, and me edit titles")
+   @Test("人物フォームモードは追加と他人編集とわたし編集のタイトルを網羅する")
    func titlesCoverAddFriendAndMeEdit() {
       let me = makePerson(name: "自分", isMe: true)
       let friend = makePerson(name: "あかり", isMe: false)
@@ -115,19 +115,19 @@ struct PersonFormModeTests {
 }
 
 struct PersonNameSubmitActionTests {
-   @Test("Done submit only dismisses the keyboard")
+   @Test("完了送信はキーボードを閉じるだけにする")
    func doneSubmitOnlyDismissesKeyboard() {
       #expect(PersonNameSubmitAction.done.action() == .dismissKeyboard)
    }
 }
 
 struct PersonNameRulesTests {
-   @Test("Person name limit is forty characters")
+   @Test("人物名の上限は40文字にする")
    func personNameLimitIsFortyCharacters() {
       #expect(PersonNameRules.maxLength == 40)
    }
 
-   @Test("Person names are trimmed and limited")
+   @Test("人物名は空白を取り除いて文字数制限する")
    func personNamesAreTrimmedAndLimited() {
       let rawName = "  " + String(repeating: "あ", count: 41) + "  "
       let sanitizedName = PersonNameRules.sanitized(rawName)
@@ -138,19 +138,19 @@ struct PersonNameRulesTests {
 }
 
 struct EntryKindTests {
-   @Test("EntryKind exposes stable storage keys")
+   @Test("入力種別の保存キーは安定している")
    func storageKeysAreStable() {
       #expect(EntryKind.like.storageKey == "OpenLikeKey")
       #expect(EntryKind.hate.storageKey == "OpenHateKey")
    }
 
-   @Test("EntryKind exposes stable analytics names")
+   @Test("入力種別の分析名は安定している")
    func analyticsNamesAreStable() {
       #expect(EntryKind.like.analyticsName == "RegiLike")
       #expect(EntryKind.hate.analyticsName == "RegiHate")
    }
 
-   @Test("Japanese entry actions use watashi and dislike wording")
+   @Test("日本語の入力文言はわたしと嫌い表記を使う")
    func japaneseEntryActionsUseWatashiAndDislikeWording() {
       let locale = Locale(identifier: "ja")
 
@@ -160,7 +160,7 @@ struct EntryKindTests {
       #expect(String.localizedStringWithFormat(String(localized: "HateInputButtonPersonFormat", bundle: .main, locale: locale), "太郎") == "太郎はこれが嫌い")
    }
 
-   @Test("Japanese list titles use watashi and dislike wording")
+   @Test("日本語の一覧タイトルはわたしと嫌い表記を使う")
    func japaneseListTitlesUseWatashiAndDislikeWording() {
       let locale = Locale(identifier: "ja")
 
@@ -170,7 +170,7 @@ struct EntryKindTests {
       #expect(String.localizedStringWithFormat(String(localized: "PersonHatesTitleFormat", bundle: .main, locale: locale), "太郎") == "太郎の嫌いなもの")
    }
 
-   @Test("Person-aware entry copy uses display names and not legacy me wording")
+   @Test("人物別の入力文言は表示名を使い古い自分表記を使わない")
    func personAwareEntryCopyUsesDisplayNames() {
       let me = makePerson(name: "自分", isMe: true)
       let friend = makePerson(name: "太郎", isMe: false)
@@ -189,7 +189,7 @@ struct EntryKindTests {
 }
 
 struct EntryPreviewItemsTests {
-   @Test("Entry previews use the first items from the current order")
+   @Test("入力プレビューは現在の並び順の先頭項目を使う")
    func previewsUseFirstItemsFromCurrentOrder() {
       let personID = UUID()
       let items = [
@@ -204,7 +204,7 @@ struct EntryPreviewItemsTests {
       #expect(previewTitles == ["おすし", "カレー"])
    }
 
-   @Test("Entry previews can be limited and reject empty limits")
+   @Test("入力プレビューは件数制限でき空の制限を拒否する")
    func previewsRespectLimit() {
       let personID = UUID()
       let items = [
@@ -220,7 +220,7 @@ struct EntryPreviewItemsTests {
 }
 
 struct EntryLottieSelectionTests {
-   @Test("Entry lottie names are grouped by entry kind")
+   @Test("入力アニメーション名は入力種別ごとにまとまっている")
    func lottieNamesAreGroupedByEntryKind() {
       #expect(EntryLottieSelection.names(for: .like) == ["MoreHarts", "heart1", "heart2"])
       #expect(EntryLottieSelection.names(for: .hate) == ["fish", "lightiing", "wave", "Bubbles", "Bubbles2", "Bubbbles3"])
@@ -228,7 +228,7 @@ struct EntryLottieSelectionTests {
       #expect(EntryLottieSelection.fallbackName(for: .hate) == "fish")
    }
 
-   @Test("Entry lottie selection avoids the current animation when possible")
+   @Test("入力アニメーション選択は可能なら現在のアニメーションを避ける")
    func lottieSelectionAvoidsCurrentAnimation() {
       for name in EntryLottieSelection.names(for: .like) {
          #expect(EntryLottieSelection.randomName(for: .like, excluding: name) != name)
@@ -239,7 +239,7 @@ struct EntryLottieSelectionTests {
       }
    }
 
-   @Test("Entry lottie selection stays within each kind's candidates")
+   @Test("入力アニメーション選択は各種別の候補内に収まる")
    func lottieSelectionStaysWithinCandidates() {
       let likeNames = EntryLottieSelection.names(for: .like)
       let hateNames = EntryLottieSelection.names(for: .hate)
@@ -250,7 +250,7 @@ struct EntryLottieSelectionTests {
 }
 
 struct ComparisonCategoryTests {
-   @Test("Comparison categories are partitioned by entry kind")
+   @Test("比較カテゴリは入力種別ごとに分かれる")
    func categoriesArePartitionedByEntryKind() {
       let likeCategories = ComparisonCategory.allCases.filter { $0.kind == .like }
       let hateCategories = ComparisonCategory.allCases.filter { $0.kind == .hate }
@@ -260,7 +260,7 @@ struct ComparisonCategoryTests {
       #expect(Set(likeCategories + hateCategories) == Set(ComparisonCategory.allCases))
    }
 
-   @Test("Person-specific comparison titles use display names")
+   @Test("人物別の比較タイトルは表示名を使う")
    func personSpecificTitlesUseDisplayNames() {
       let me = makePerson(name: "自分", isMe: true)
       let friend = makePerson(name: "太郎", isMe: false)
@@ -272,7 +272,7 @@ struct ComparisonCategoryTests {
 }
 
 struct ComparisonResultSectionGroupTests {
-   @Test("Comparison result groups are the only top-level result sections")
+   @Test("比較結果グループだけが最上位セクションになる")
    func resultGroupsAreTheOnlyTopLevelSections() {
       let groups = ComparisonResultSectionGroup.ordered
 
@@ -285,7 +285,7 @@ struct ComparisonResultSectionGroupTests {
       #expect(groups.contains { $0.titleKey.hasPrefix("ComparisonSummary") } == false)
    }
 
-   @Test("Comparison result groups cover every category once")
+   @Test("比較結果グループは全カテゴリを一度ずつ網羅する")
    func resultGroupsCoverEveryCategoryOnce() {
       let categories = ComparisonResultSectionGroup.ordered.flatMap(\.categories)
 
@@ -293,7 +293,7 @@ struct ComparisonResultSectionGroupTests {
       #expect(Set(categories) == Set(ComparisonCategory.allCases))
    }
 
-   @Test("Comparison result groups filter their own sections")
+   @Test("比較結果グループは自分のセクションだけを絞り込む")
    func resultGroupsFilterTheirOwnSections() throws {
       let sections = ComparisonCategory.allCases.map { category in
          ComparisonSection(category: category, titles: [category.rawValue])
@@ -309,14 +309,14 @@ struct ComparisonResultSectionGroupTests {
 }
 
 struct LocalizationTests {
-   @Test("Japanese first-person localization is watashi")
+   @Test("日本語の一人称ローカライズはわたしになる")
    func japaneseFirstPersonLocalizationIsWatashi() {
       let japaneseMeName = String(localized: "DefaultMeName", bundle: .main, locale: Locale(identifier: "ja"))
 
       #expect(japaneseMeName == "わたし")
    }
 
-   @Test("Japanese person form copy matches the memo tone")
+   @Test("日本語の人物フォーム文言はメモ帳らしいトーンにする")
    func japanesePersonFormCopyMatchesMemoTone() {
       let locale = Locale(identifier: "ja")
 
@@ -334,7 +334,7 @@ struct LocalizationTests {
       #expect(String(localized: "DeletePersonConfirmButton", bundle: .main, locale: locale) == "削除する")
    }
 
-   @Test("English person form copy resolves to user-facing strings")
+   @Test("英語の人物フォーム文言はユーザー向け文字列に解決される")
    func englishPersonFormCopyResolves() {
       let locale = Locale(identifier: "en")
       let keys = [
@@ -362,7 +362,7 @@ struct LocalizationTests {
       #expect(title != "EditPersonTitleFormat")
    }
 
-   @Test("Deprecated person edit copy no longer resolves to the old mechanical wording")
+   @Test("廃止済みの人物編集文言は古い無機質な表記に解決されない")
    func deprecatedPersonEditCopyAvoidsMechanicalWording() {
       let locale = Locale(identifier: "ja")
 
@@ -370,7 +370,7 @@ struct LocalizationTests {
       #expect(String(localized: "EditPersonTitle", bundle: .main, locale: locale) != "人を編集")
    }
 
-   @Test("Japanese comparison copy uses dislike instead of weak-point wording")
+   @Test("日本語の比較文言は苦手ではなく嫌い表記を使う")
    func japaneseComparisonCopyUsesDislike() {
       let firstOnlyHate = String(localized: "ComparisonFirstOnlyHateFormat", bundle: .main, locale: Locale(identifier: "ja"))
       let secondOnlyHate = String(localized: "ComparisonSecondOnlyHateFormat", bundle: .main, locale: Locale(identifier: "ja"))
@@ -384,7 +384,7 @@ struct LocalizationTests {
       #expect(commonHate.contains("苦手") == false)
    }
 
-   @Test("Japanese common comparison copy uses both wording")
+   @Test("日本語の共通比較文言はどっちも表記を使う")
    func japaneseCommonComparisonCopyUsesBothWording() {
       let locale = Locale(identifier: "ja")
 
@@ -394,7 +394,7 @@ struct LocalizationTests {
       #expect(String(localized: "ComparisonEmptyCommonHate", bundle: .main, locale: locale) == "どっちも嫌いなものはまだありません")
    }
 
-   @Test("Japanese comparison difference section uses relationship wording")
+   @Test("日本語の比較差分セクションはふたりの違い表記を使う")
    func japaneseComparisonDifferenceSectionUsesRelationshipWording() {
       let title = String(localized: "ComparisonDifferencesTitle", bundle: .main, locale: Locale(identifier: "ja"))
 
@@ -402,12 +402,14 @@ struct LocalizationTests {
       #expect(title != "違いを見る")
    }
 
-   @Test("Debug menu localization keys resolve")
+   @Test("デバッグメニューのローカライズキーが解決される")
    func debugMenuLocalizationKeysResolve() {
       let keys = [
          "DebugSectionTitle",
          "AppStoreScreenshotModeTitle",
-         "AppStoreScreenshotModeSubtitle"
+         "AppStoreScreenshotModeSubtitle",
+         "RevenueCatDebugTitle",
+         "RevenueCatDebugSubtitle"
       ]
 
       for key in keys {
@@ -421,7 +423,7 @@ struct LocalizationTests {
       }
    }
 
-   @Test("Japanese premium copy explains one-time purchase and free limit")
+   @Test("日本語のプレミアム文言は買い切りと無料上限を説明する")
    func japanesePremiumCopyExplainsOneTimePurchaseAndFreeLimit() {
       let locale = Locale(identifier: "ja")
 
@@ -437,7 +439,7 @@ struct LocalizationTests {
       #expect(String(localized: "PremiumPurchasedStatus", bundle: .main, locale: locale) == "購入済み")
    }
 
-   @Test("Premium and restore localization keys resolve")
+   @Test("プレミアムと復元のローカライズキーが解決される")
    func premiumAndRestoreLocalizationKeysResolve() {
       let keys = [
          "PremiumBenefitLifetime",
@@ -450,6 +452,7 @@ struct LocalizationTests {
          "PremiumPurchaseFailedTitle",
          "PremiumPurchaseSucceededMessage",
          "PremiumPurchaseSucceededTitle",
+         "PremiumPurchaseUnavailableMessage",
          "RestorePurchaseEmptyMessage",
          "RestorePurchaseEmptyTitle",
          "RestorePurchaseFailedTitle",
@@ -468,7 +471,7 @@ struct LocalizationTests {
       }
    }
 
-   @Test("Comparison empty state localization keys resolve")
+   @Test("比較空状態のローカライズキーが解決される")
    func comparisonEmptyStateLocalizationKeysResolve() {
       let keys = [
          "ComparisonEmptyCommonHate",
@@ -488,7 +491,7 @@ struct LocalizationTests {
       }
    }
 
-   @Test("Entry empty list localization keys resolve")
+   @Test("入力一覧空状態のローカライズキーが解決される")
    func entryEmptyListLocalizationKeysResolve() {
       let keys = [
          "EmptyLikesTitle",
@@ -509,8 +512,18 @@ struct LocalizationTests {
    }
 }
 
+struct RevenueCatContractsTests {
+   @Test("レベニューキャット契約は設定済みの公開アイオーエス開発キットキーを使う")
+   func revenueCatContractUsesConfiguredPublicIOSSDKKey() {
+      #expect(LikehateRevenueCatContracts.publicSDKKey == "appl_KjaunKCKXyQMEbmdzqjXhbbiEkG")
+      #expect(LikehateRevenueCatContracts.premiumProductID == "premium_lifetime")
+      #expect(LikehateRevenueCatContracts.premiumEntitlementIDs.contains("premium"))
+      #expect(LikehateRevenueCatContracts.premiumEntitlementIDs.contains("premium_lifetime"))
+   }
+}
+
 struct DefaultProfileImageTests {
-   @Test("Default profile images match bundled asset names")
+   @Test("デフォルトプロフィール画像は同梱アセット名と一致する")
    func profileImageAssetNamesAreStable() {
       let names = DefaultProfileImage.allCases.map(\.assetName)
 
@@ -520,14 +533,14 @@ struct DefaultProfileImageTests {
       #expect(Set(names).count == names.count)
    }
 
-   @Test("Default profile image option numbers are one-based and sequential")
+   @Test("デフォルトプロフィール画像の番号は1始まりで連番になる")
    func profileImageOptionNumbersAreSequential() {
       let optionNumbers = DefaultProfileImage.allCases.map(\.optionNumber)
 
       #expect(optionNumbers == Array(1...DefaultProfileImage.allCases.count))
    }
 
-   @Test("Default profile image picks the first unused image")
+   @Test("デフォルトプロフィール画像は未使用の最初の画像を選ぶ")
    func profileImagePicksFirstUnusedImage() {
       let usedImages: Set<DefaultProfileImage> = [
          .defaultProfileImage,
@@ -538,20 +551,20 @@ struct DefaultProfileImageTests {
       #expect(DefaultProfileImage.firstAvailable(excluding: usedImages) == .defaultProfileImage4)
    }
 
-   @Test("Default profile image falls back when every image is already used")
+   @Test("すべて使用済みならデフォルトプロフィール画像に戻る")
    func profileImageFallsBackWhenEveryImageIsUsed() {
       #expect(DefaultProfileImage.firstAvailable(excluding: Set(DefaultProfileImage.allCases)) == .defaultProfileImage)
    }
 }
 
 struct AdDisplayPolicyTests {
-   @Test("List ads show only for free users with list items")
+   @Test("一覧広告は項目がある無料ユーザーだけに表示される")
    func listAdsShowOnlyForFreeUsersWithItems() {
       #expect(AdDisplayPolicy(adsRemoved: false, isPremium: false).showsListAd(hasItems: true))
       #expect(AdDisplayPolicy(adsRemoved: false, isPremium: false).showsListAd(hasItems: false) == false)
    }
 
-   @Test("List ads are hidden for ad-removed and premium users")
+   @Test("一覧広告は広告非表示購入済みとプレミアムユーザーには表示されない")
    func listAdsAreHiddenForAdRemovedAndPremiumUsers() {
       #expect(AdDisplayPolicy(adsRemoved: true, isPremium: false).showsListAd(hasItems: true) == false)
       #expect(AdDisplayPolicy(adsRemoved: false, isPremium: true).showsListAd(hasItems: true) == false)
@@ -560,7 +573,7 @@ struct AdDisplayPolicyTests {
 }
 
 struct PremiumAccessPolicyTests {
-   @Test("Free person limit includes me and stops at three people")
+   @Test("無料人物上限はわたしを含めて3人で止まる")
    func freePersonLimitIncludesMeAndStopsAtThreePeople() {
       #expect(PremiumAccessPolicy.freePersonLimit == 3)
       #expect(PremiumAccessPolicy(isPremium: false, adsRemoved: false, personCount: 1).canAddPerson)
@@ -569,7 +582,7 @@ struct PremiumAccessPolicyTests {
       #expect(PremiumAccessPolicy(isPremium: false, adsRemoved: false, personCount: 4).canAddPerson == false)
    }
 
-   @Test("Premium and legacy ad removal both unlock person limit")
+   @Test("プレミアムと旧広告非表示購入はいずれも人物上限を解除する")
    func premiumAndLegacyAdRemovalBothUnlockPersonLimit() {
       #expect(PremiumAccessPolicy(isPremium: true, adsRemoved: false, personCount: 3).canAddPerson)
       #expect(PremiumAccessPolicy(isPremium: false, adsRemoved: true, personCount: 3).canAddPerson)
@@ -579,12 +592,12 @@ struct PremiumAccessPolicyTests {
 }
 
 struct AppTextSizeTests {
-   @Test("Text sizes are ordered from smallest to largest")
+   @Test("文字サイズは小さい順から大きい順に並ぶ")
    func textSizesAreOrderedFromSmallestToLargest() {
       #expect(AppTextSize.allCases == [.extraSmall, .small, .standard, .large, .extraLarge])
    }
 
-   @Test("Text size titles cover every selectable case")
+   @Test("文字サイズタイトルは全選択肢を網羅する")
    func textSizeTitlesExistForEveryCase() {
       #expect(AppTextSize.allCases.count == 5)
 
@@ -593,7 +606,7 @@ struct AppTextSizeTests {
       }
    }
 
-   @Test("Home avatar size follows app text size")
+   @Test("ホームのアバターサイズはアプリ文字サイズに追従する")
    func homeAvatarSizeScalesWithTextSize() {
       let extraSmall = AppLayoutMetrics(textSize: .extraSmall).homePersonAvatarSize
       let standard = AppLayoutMetrics(textSize: .standard).homePersonAvatarSize
@@ -603,7 +616,7 @@ struct AppTextSizeTests {
       #expect(standard < extraLarge)
    }
 
-   @Test("Text size advancement clamps at the available bounds")
+   @Test("文字サイズの段階移動は選択可能範囲で止まる")
    func textSizeAdvancementClampsAtBounds() {
       #expect(AppTextSize.extraSmall.advanced(by: 2) == .standard)
       #expect(AppTextSize.small.advanced(by: 2) == .large)
@@ -612,7 +625,7 @@ struct AppTextSizeTests {
       #expect(AppTextSize.extraSmall.advanced(by: -2) == .extraSmall)
    }
 
-   @Test("Layout metrics expand with selected text size")
+   @Test("レイアウト寸法は選択した文字サイズに合わせて広がる")
    func layoutMetricsExpandWithSelectedTextSize() {
       let metrics = AppTextSize.allCases.map(AppLayoutMetrics.init(textSize:))
 
