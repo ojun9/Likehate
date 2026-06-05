@@ -662,8 +662,10 @@ struct LikeHateStoreSettingsTests {
          store.items(for: sampleHaruto.id, kind: .like).count,
          store.items(for: sampleHaruto.id, kind: .hate).count
       ]
-      #expect(sampleCounts == [17, 14, 19, 13, 16, 18])
-      #expect(sampleCounts.allSatisfy { (13...19).contains($0) })
+      #expect(sampleCounts == [23, 16, 29, 14, 21, 27])
+      #expect(sampleCounts.allSatisfy { (14...30).contains($0) })
+      #expect(sampleCounts.min() == 14)
+      #expect(sampleCounts.max() == 29)
       #expect(Set(sampleCounts).count == sampleCounts.count)
       #expect(store.entries.count == sampleCounts.reduce(0, +))
       #expect(store.person(for: friend.id) == nil)
