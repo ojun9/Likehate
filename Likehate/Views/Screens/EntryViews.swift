@@ -464,7 +464,6 @@ struct ItemListView: View {
       .background(LikehateTheme.background.ignoresSafeArea())
       .navigationTitle(kind.listTitle(for: person))
       .navigationBarTitleDisplayMode(.inline)
-      .toolbarBackground(LikehateTheme.background, for: .navigationBar)
       .toolbar {
          ToolbarItem(placement: .topBarTrailing) {
             EditButton()
