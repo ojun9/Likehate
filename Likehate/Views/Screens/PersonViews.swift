@@ -1216,14 +1216,17 @@ struct ComparisonCategoryDetailView: View {
                      )
                      .padding(.top, 44)
                   } else {
-                     LikeDislikeListCard(titles: titles, accent: category.kind.color)
+                     VStack(spacing: 0) {
+                        LikeDislikeListCard(titles: titles, accent: category.kind.color)
 
-                     ConditionalListAdBanner(
-                        placement: .comparisonCategoryDetail,
-                        hasItems: !titles.isEmpty,
-                        topPadding: 0,
-                        bottomPadding: 16
-                     )
+                        ConditionalListAdBanner(
+                           placement: .comparisonCategoryDetail,
+                           hasItems: !titles.isEmpty,
+                           topPadding: max(24, layout.cardSpacing),
+                           bottomPadding: 20
+                        )
+                        .frame(maxWidth: .infinity, alignment: .center)
+                     }
                   }
                }
                .padding(.horizontal, layout.screenPadding)
