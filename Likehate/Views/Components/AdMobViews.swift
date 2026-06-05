@@ -32,6 +32,7 @@ struct LikehateAdBannerView: UIViewRepresentable {
       banner.adUnitID = adUnitID
       banner.delegate = context.coordinator
       banner.rootViewController = UIApplication.shared.likehateRootViewController
+      banner.clipsToBounds = true
       banner.load(Request())
       return banner
    }
@@ -39,6 +40,7 @@ struct LikehateAdBannerView: UIViewRepresentable {
    func updateUIView(_ uiView: BannerView, context: Context) {
       uiView.adSize = adSize
       uiView.rootViewController = UIApplication.shared.likehateRootViewController
+      uiView.clipsToBounds = true
    }
 
    func makeCoordinator() -> Coordinator {
@@ -79,11 +81,12 @@ struct LikehateAdaptiveAdBanner: View {
    @State private var availableWidth: CGFloat = 320
 
    var body: some View {
-      let adSize = largePortraitAnchoredAdaptiveBanner(width: max(availableWidth, 320))
+      let adSize = inlineAdaptiveBanner(width: max(availableWidth, 320), maxHeight: 72)
 
       LikehateAdBannerView(adUnitID: adUnitID, adSize: adSize, placement: placement)
          .frame(width: adSize.size.width, height: adSize.size.height)
          .frame(maxWidth: .infinity)
+         .clipped()
          .onAppear {
             Analytics.logEvent("ad_banner_container_appeared", parameters: [
                "placement": placement.rawValue,
