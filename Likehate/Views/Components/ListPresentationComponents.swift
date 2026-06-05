@@ -76,13 +76,13 @@ struct DiagonalOverlappingPersonAvatars: View {
       let yOffset = verticalOffset ?? size * 0.2
 
       ZStack(alignment: .topLeading) {
-         PersonAvatar(person: firstPerson, size: size)
+         PersonAvatar(person: firstPerson, size: size, showsShadow: false)
             .zIndex(0)
 
-         PersonAvatar(person: secondPerson, size: size)
+         PersonAvatar(person: secondPerson, size: size, showsShadow: false)
             .overlay {
                Circle()
-                  .stroke(overlapBorder, lineWidth: max(2, size * 0.09))
+                  .stroke(overlapBorder, lineWidth: max(1, size * 0.035))
             }
             .offset(x: xOffset, y: yOffset)
             .zIndex(1)
