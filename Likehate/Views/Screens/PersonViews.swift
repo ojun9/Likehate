@@ -981,7 +981,6 @@ struct ComparisonResultView: View {
 
 private struct ComparisonPeopleHeader: View {
    @EnvironmentObject private var store: LikeHateStore
-   @Environment(\.colorScheme) private var colorScheme
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
    let firstPerson: Person
@@ -991,11 +990,28 @@ private struct ComparisonPeopleHeader: View {
       let typography = store.typography(for: dynamicTypeSize)
       let layout = store.layoutMetrics
 
-      HStack(alignment: .center, spacing: 14) {
-         HStack(spacing: 10) {
-            PersonAvatar(person: firstPerson, size: ComparisonAvatarMetrics.headerSize)
+      HStack(alignment: .center, spacing: 16) {
+         DiagonalOverlappingPersonAvatars(
+            firstPerson: firstPerson,
+            secondPerson: secondPerson,
+            size: ComparisonAvatarMetrics.headerSize,
+            horizontalOffset: ComparisonAvatarMetrics.headerOverlapOffset,
+            verticalOffset: ComparisonAvatarMetrics.headerDiagonalOffset
+         )
 
+         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Text(verbatim: firstPerson.displayName)
+               .font(typography.cardTitle)
+               .foregroundStyle(.primary)
+               .lineLimit(2)
+               .multilineTextAlignment(.leading)
+
+            Text("ComparisonSeparatorAnd")
+               .font(typography.body)
+               .foregroundStyle(.secondary)
+               .fixedSize(horizontal: true, vertical: false)
+
+            Text(verbatim: secondPerson.displayName)
                .font(typography.cardTitle)
                .foregroundStyle(.primary)
                .lineLimit(2)
@@ -1003,39 +1019,12 @@ private struct ComparisonPeopleHeader: View {
          }
          .frame(maxWidth: .infinity, alignment: .leading)
          .layoutPriority(1)
-
-         Text("ComparisonSeparatorAnd")
-            .font(typography.body)
-            .foregroundStyle(.secondary)
-            .padding(.horizontal, 6)
-            .fixedSize(horizontal: true, vertical: false)
-
-         HStack(spacing: 10) {
-            PersonAvatar(person: secondPerson, size: ComparisonAvatarMetrics.headerSize)
-
-            Text(verbatim: secondPerson.displayName)
-               .font(typography.cardTitle)
-               .foregroundStyle(.primary)
-               .lineLimit(2)
-               .multilineTextAlignment(.trailing)
-         }
-         .frame(maxWidth: .infinity, alignment: .trailing)
-         .layoutPriority(1)
       }
-      .padding(.horizontal, layout.cardPadding)
-      .padding(.vertical, 16)
-      .frame(maxWidth: .infinity, minHeight: max(84, layout.rowMinHeight + 20))
-      .background(headerBackground, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-      .overlay(
-         RoundedRectangle(cornerRadius: 18, style: .continuous)
-            .stroke(LikehateTheme.border, lineWidth: 1)
-      )
+      .padding(.horizontal, 2)
+      .padding(.vertical, 6)
+      .frame(maxWidth: .infinity, minHeight: max(68, layout.rowMinHeight + 8), alignment: .leading)
       .accessibilityElement(children: .ignore)
       .accessibilityLabel(Text(verbatim: comparisonAccessibilityLabel))
-   }
-
-   private var headerBackground: Color {
-      colorScheme == .dark ? Color.white.opacity(0.055) : LikehateTheme.surface.opacity(0.82)
    }
 
    private var comparisonAccessibilityLabel: String {
@@ -1049,10 +1038,11 @@ private struct ComparisonPeopleHeader: View {
 
 private enum ComparisonAvatarMetrics {
    static let headerSize: CGFloat = 53
+   static let headerOverlapOffset: CGFloat = 26
+   static let headerDiagonalOffset: CGFloat = 10
    static let categorySize: CGFloat = 42
    static let categoryOverlapOffset: CGFloat = 25
-   static let categoryOverlapWidth: CGFloat = 68
-   static let categoryOverlapHeight: CGFloat = 48
+   static let categoryDiagonalOffset: CGFloat = 8
 }
 
 private struct ComparisonResultGroup: View {
@@ -1138,10 +1128,6 @@ private struct ComparisonCard: View {
             .font(typography.subtext)
             .foregroundStyle(.secondary)
             .frame(minWidth: 48, alignment: .trailing)
-
-         Image(systemName: "chevron.right")
-            .font(typography.subtext)
-            .foregroundStyle(.tertiary)
       }
       .padding(.horizontal, layout.cardPadding)
       .padding(.vertical, 16)
@@ -1167,7 +1153,14 @@ private struct ComparisonCategoryAvatar: View {
    var body: some View {
       switch category {
       case .commonLike, .commonHate:
-         OverlappingComparisonAvatars(firstPerson: firstPerson, secondPerson: secondPerson)
+         DiagonalOverlappingPersonAvatars(
+            firstPerson: firstPerson,
+            secondPerson: secondPerson,
+            size: ComparisonAvatarMetrics.categorySize,
+            horizontalOffset: ComparisonAvatarMetrics.categoryOverlapOffset,
+            verticalOffset: ComparisonAvatarMetrics.categoryDiagonalOffset,
+            showsBackground: true
+         )
       case .firstOnlyLike, .firstOnlyHate:
          PersonAvatar(person: firstPerson, size: ComparisonAvatarMetrics.categorySize)
             .frame(width: ComparisonAvatarMetrics.categorySize, alignment: .leading)
@@ -1177,40 +1170,6 @@ private struct ComparisonCategoryAvatar: View {
             .frame(width: ComparisonAvatarMetrics.categorySize, alignment: .leading)
             .accessibilityHidden(true)
       }
-   }
-}
-
-private struct OverlappingComparisonAvatars: View {
-   @Environment(\.colorScheme) private var colorScheme
-
-   let firstPerson: Person
-   let secondPerson: Person
-
-   var body: some View {
-      ZStack(alignment: .leading) {
-         PersonAvatar(person: firstPerson, size: ComparisonAvatarMetrics.categorySize)
-
-         PersonAvatar(person: secondPerson, size: ComparisonAvatarMetrics.categorySize)
-            .padding(2)
-            .background(overlapBorder, in: Circle())
-            .offset(x: ComparisonAvatarMetrics.categoryOverlapOffset)
-      }
-      .frame(
-         width: ComparisonAvatarMetrics.categoryOverlapWidth,
-         height: ComparisonAvatarMetrics.categoryOverlapHeight,
-         alignment: .leading
-      )
-      .padding(5)
-      .background(avatarBackground, in: Capsule())
-      .accessibilityHidden(true)
-   }
-
-   private var avatarBackground: Color {
-      colorScheme == .dark ? Color.white.opacity(0.055) : Color.white.opacity(0.7)
-   }
-
-   private var overlapBorder: Color {
-      colorScheme == .dark ? LikehateTheme.surface : .white
    }
 }
 

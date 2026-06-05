@@ -32,18 +32,20 @@ struct PersonPairHeaderView: View {
    var body: some View {
       let typography = store.typography(for: dynamicTypeSize)
 
-      HStack(spacing: avatarSize >= 40 ? 10 : 8) {
-         PersonAvatar(person: firstPerson, size: avatarSize)
-            .accessibilityHidden(true)
+      HStack(spacing: avatarSize >= 40 ? 14 : 10) {
+         DiagonalOverlappingPersonAvatars(
+            firstPerson: firstPerson,
+            secondPerson: secondPerson,
+            size: avatarSize,
+            horizontalOffset: avatarSize * 0.38,
+            verticalOffset: avatarSize * 0.24
+         )
 
          Text(verbatim: firstPerson.displayName)
             .lineLimit(1)
 
          Text("PersonPairSeparator")
             .foregroundStyle(.tertiary)
-
-         PersonAvatar(person: secondPerson, size: avatarSize)
-            .accessibilityHidden(true)
 
          Text(verbatim: secondPerson.displayName)
             .lineLimit(1)
@@ -53,6 +55,55 @@ struct PersonPairHeaderView: View {
       .foregroundStyle(.secondary)
       .minimumScaleFactor(0.82)
       .accessibilityElement(children: .combine)
+   }
+}
+
+struct DiagonalOverlappingPersonAvatars: View {
+   @Environment(\.colorScheme) private var colorScheme
+
+   let firstPerson: Person
+   let secondPerson: Person
+   var size: CGFloat
+   var horizontalOffset: CGFloat? = nil
+   var verticalOffset: CGFloat? = nil
+   var showsBackground = false
+
+   var body: some View {
+      let xOffset = horizontalOffset ?? size * 0.48
+      let yOffset = verticalOffset ?? size * 0.2
+      let borderPadding = max(2, size * 0.045)
+
+      ZStack(alignment: .topLeading) {
+         PersonAvatar(person: firstPerson, size: size)
+            .zIndex(0)
+
+         PersonAvatar(person: secondPerson, size: size)
+            .padding(borderPadding)
+            .background(overlapBorder, in: Circle())
+            .offset(x: xOffset, y: yOffset)
+            .zIndex(1)
+      }
+      .frame(
+         width: size + xOffset + borderPadding * 2,
+         height: size + yOffset + borderPadding * 2,
+         alignment: .topLeading
+      )
+      .padding(showsBackground ? max(4, size * 0.12) : 0)
+      .background {
+         if showsBackground {
+            Capsule()
+               .fill(avatarBackground)
+         }
+      }
+      .accessibilityHidden(true)
+   }
+
+   private var avatarBackground: Color {
+      colorScheme == .dark ? Color.white.opacity(0.055) : Color.white.opacity(0.7)
+   }
+
+   private var overlapBorder: Color {
+      colorScheme == .dark ? LikehateTheme.surface : .white
    }
 }
 
