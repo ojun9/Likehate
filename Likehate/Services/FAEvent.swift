@@ -150,11 +150,10 @@ enum FAEvent {
 enum FAAnalytics {
    static func log(_ event: FAEvent) {
       #if DEBUG
-          Logger.analytics.debug(
-            "log: \(event.name, privacy: .public) \(String(describing: event.parameters), privacy: .private)"
-          )
-      #else
-          Analytics.logEvent(event.name, parameters: event.parameters)
+      Logger.analytics.debug(
+         "log: \(event.name, privacy: .public) \(String(describing: event.parameters), privacy: .private)"
+      )
       #endif
+      Analytics.logEvent(event.name, parameters: event.parameters)
    }
 }
