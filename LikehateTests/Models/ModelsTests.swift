@@ -12,6 +12,13 @@ struct PersonTests {
       #expect(person.displayName != person.name)
    }
 
+   @Test("Me display name falls back for blank stored names")
+   func meDisplayNameFallsBackForBlankStoredNames() {
+      let person = makePerson(name: "   ", isMe: true)
+
+      #expect(person.displayName == String(localized: "DefaultMeName"))
+   }
+
    @Test("Me display name uses a custom stored name")
    func meDisplayNameUsesCustomStoredName() {
       let person = makePerson(name: "じゅん", isMe: true)
@@ -142,6 +149,26 @@ struct EntryKindTests {
       #expect(EntryKind.like.analyticsName == "RegiLike")
       #expect(EntryKind.hate.analyticsName == "RegiHate")
    }
+
+   @Test("Japanese entry actions use watashi and dislike wording")
+   func japaneseEntryActionsUseWatashiAndDislikeWording() {
+      let locale = Locale(identifier: "ja")
+
+      #expect(String(localized: "LikeInputButtonMe", bundle: .main, locale: locale) == "わたしはこれが好き")
+      #expect(String(localized: "HateInputButtonMe", bundle: .main, locale: locale) == "これは嫌い")
+      #expect(String.localizedStringWithFormat(String(localized: "LikeInputButtonPersonFormat", bundle: .main, locale: locale), "太郎") == "太郎はこれが好き")
+      #expect(String.localizedStringWithFormat(String(localized: "HateInputButtonPersonFormat", bundle: .main, locale: locale), "太郎") == "太郎はこれが嫌い")
+   }
+
+   @Test("Japanese list titles use watashi and dislike wording")
+   func japaneseListTitlesUseWatashiAndDislikeWording() {
+      let locale = Locale(identifier: "ja")
+
+      #expect(String(localized: "MyLikesTitle", bundle: .main, locale: locale) == "わたしの好きなもの")
+      #expect(String(localized: "MyHatesTitle", bundle: .main, locale: locale) == "わたしの嫌いなもの")
+      #expect(String.localizedStringWithFormat(String(localized: "PersonLikesTitleFormat", bundle: .main, locale: locale), "太郎") == "太郎の好きなもの")
+      #expect(String.localizedStringWithFormat(String(localized: "PersonHatesTitleFormat", bundle: .main, locale: locale), "太郎") == "太郎の嫌いなもの")
+   }
 }
 
 struct EntryPreviewItemsTests {
@@ -157,7 +184,7 @@ struct EntryPreviewItemsTests {
 
       let previewTitles = EntryPreviewItems.items(from: items).map(\.title)
 
-      #expect(previewTitles == ["おすし", "カレー", "映画"])
+      #expect(previewTitles == ["おすし", "カレー"])
    }
 
    @Test("Entry previews can be limited and reject empty limits")
@@ -165,9 +192,11 @@ struct EntryPreviewItemsTests {
       let personID = UUID()
       let items = [
          makeItem(title: "おすし", personID: personID, sortOrder: 0),
-         makeItem(title: "カレー", personID: personID, sortOrder: 1)
+         makeItem(title: "カレー", personID: personID, sortOrder: 1),
+         makeItem(title: "映画", personID: personID, sortOrder: 2)
       ]
 
+      #expect(EntryPreviewItems.maxCount == 2)
       #expect(EntryPreviewItems.items(from: items, limit: 1).map(\.title) == ["おすし"])
       #expect(EntryPreviewItems.items(from: items, limit: 0).isEmpty)
    }
@@ -402,6 +431,11 @@ struct DefaultProfileImageTests {
 }
 
 struct AppTextSizeTests {
+   @Test("Text sizes are ordered from smallest to largest")
+   func textSizesAreOrderedFromSmallestToLargest() {
+      #expect(AppTextSize.allCases == [.extraSmall, .small, .standard, .large, .extraLarge])
+   }
+
    @Test("Text size titles cover every selectable case")
    func textSizeTitlesExistForEveryCase() {
       #expect(AppTextSize.allCases.count == 5)
@@ -428,6 +462,19 @@ struct AppTextSizeTests {
       #expect(AppTextSize.standard.advanced(by: 2) == .extraLarge)
       #expect(AppTextSize.large.advanced(by: 2) == .extraLarge)
       #expect(AppTextSize.extraSmall.advanced(by: -2) == .extraSmall)
+   }
+
+   @Test("Layout metrics expand with selected text size")
+   func layoutMetricsExpandWithSelectedTextSize() {
+      let metrics = AppTextSize.allCases.map(AppLayoutMetrics.init(textSize:))
+
+      #expect(metrics.map(\.screenPadding) == [16, 18, 20, 22, 22])
+      #expect(metrics.map(\.cardPadding) == [14, 16, 18, 20, 22])
+      #expect(metrics.map(\.cardSpacing) == [10, 12, 14, 16, 18])
+      #expect(metrics.map(\.sectionSpacing) == [20, 22, 26, 30, 34])
+      #expect(metrics.map(\.rowMinHeight) == [48, 52, 58, 64, 70])
+      #expect(metrics.map(\.personCardMinHeight) == [104, 112, 124, 136, 148])
+      #expect(metrics.map(\.homePersonAvatarSize) == [78, 84, 93, 102, 111])
    }
 }
 

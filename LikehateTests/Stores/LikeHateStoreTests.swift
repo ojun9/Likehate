@@ -38,6 +38,18 @@ struct LikeHateStorePersonTests {
       #expect(reloadedPerson.profileImageName == DefaultProfileImage.defaultProfileImage7.rawValue)
    }
 
+   @Test("Blank person names are rejected without changing people")
+   func blankPersonNamesAreRejected() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let originalPersonIDs = store.persons.map(\.id)
+
+      #expect(store.addPerson(named: "   ", profileImage: .defaultProfileImage7) == nil)
+      #expect(store.persons.map(\.id) == originalPersonIDs)
+   }
+
    @Test("New person default profile image avoids existing person images")
    func newPersonDefaultProfileImageAvoidsExistingPersonImages() throws {
       let context = try StoreTestContext()
@@ -175,6 +187,57 @@ struct LikeHateStorePersonTests {
       #expect(duplicateMe.isMe == false)
       #expect(store.entries.map(\.title) == ["おすし"])
    }
+
+   @Test("Empty stored people normalize back to one me person and drop orphan entries")
+   func emptyStoredPeopleNormalizeToMeOnly() throws {
+      let orphanID = UUID()
+      let storedItems = [
+         makeStoredItem(personID: orphanID, kind: .like, title: "消える", sortOrder: 0)
+      ]
+      let context = try StoreTestContext(initialValues: { defaults in
+         try? storeEncoded([Person](), forKey: "LikehatePersonsV1", defaults: defaults)
+         try? storeEncoded(storedItems, forKey: "LikehateItemsV1", defaults: defaults)
+      })
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+
+      #expect(store.persons.count == 1)
+      #expect(me.isMe)
+      #expect(me.displayName == String(localized: "DefaultMeName"))
+      #expect(store.entries.isEmpty)
+   }
+
+   @Test("Stored people without me promote the first sorted person to me")
+   func storedPeopleWithoutMePromoteFirstSortedPerson() throws {
+      let firstID = UUID()
+      let secondID = UUID()
+      let now = Date()
+      let storedPersons = [
+         makeStoredPerson(id: secondID, name: "太郎", profileImageName: DefaultProfileImage.defaultProfileImage4.rawValue, isMe: false, createdAt: now.addingTimeInterval(10), sortOrder: 1),
+         makeStoredPerson(id: firstID, name: "あかり", profileImageName: DefaultProfileImage.defaultProfileImage5.rawValue, isMe: false, createdAt: now, sortOrder: 0)
+      ]
+      let storedItems = [
+         makeStoredItem(personID: firstID, kind: .like, title: "おすし", sortOrder: 0),
+         makeStoredItem(personID: secondID, kind: .hate, title: "雨", sortOrder: 0)
+      ]
+      let context = try StoreTestContext(initialValues: { defaults in
+         try? storeEncoded(storedPersons, forKey: "LikehatePersonsV1", defaults: defaults)
+         try? storeEncoded(storedItems, forKey: "LikehateItemsV1", defaults: defaults)
+      })
+      defer { context.cleanup() }
+
+      let store = context.store
+      let promotedPerson = try #require(store.person(for: firstID))
+      let otherPerson = try #require(store.person(for: secondID))
+
+      #expect(store.persons.map(\.id) == [firstID, secondID])
+      #expect(promotedPerson.isMe)
+      #expect(promotedPerson.name == String(localized: "DefaultMeName"))
+      #expect(otherPerson.isMe == false)
+      #expect(store.entries.count == 2)
+   }
 }
 
 @MainActor
@@ -221,12 +284,59 @@ struct LikeHateStoreEntryTests {
       store.add("映画", to: .like, personID: me.id)
       store.add("散歩", to: .like, personID: me.id)
 
-      #expect(EntryPreviewItems.items(from: store.items(for: me.id, kind: .like)).map(\.title) == ["おすし", "カレー", "映画"])
+      #expect(EntryPreviewItems.items(from: store.items(for: me.id, kind: .like)).map(\.title) == ["おすし", "カレー"])
 
       store.move(from: IndexSet(integer: 3), to: 0, in: .like, personID: me.id)
 
       #expect(store.items(for: me.id, kind: .like).map(\.title) == ["散歩", "おすし", "カレー", "映画"])
-      #expect(EntryPreviewItems.items(from: store.items(for: me.id, kind: .like)).map(\.title) == ["散歩", "おすし", "カレー"])
+      #expect(EntryPreviewItems.items(from: store.items(for: me.id, kind: .like)).map(\.title) == ["散歩", "おすし"])
+   }
+
+   @Test("Moved entries persist their new order after reload")
+   func movedEntriesPersistOrderAfterReload() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+
+      store.add("おすし", to: .like, personID: me.id)
+      store.add("カレー", to: .like, personID: me.id)
+      store.add("映画", to: .like, personID: me.id)
+
+      store.move(from: IndexSet(integer: 2), to: 0, in: .like, personID: me.id)
+
+      let reloadedStore = LikeHateStore(defaults: context.defaults)
+      let reloadedItems = reloadedStore.items(for: me.id, kind: .like)
+
+      #expect(reloadedItems.map(\.title) == ["映画", "おすし", "カレー"])
+      #expect(reloadedItems.map(\.sortOrder) == [0, 1, 2])
+   }
+
+   @Test("Deleting entries ignores out-of-range offsets and renumbers valid deletions")
+   func deletingEntriesIgnoresOutOfRangeOffsetsAndRenumbers() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+
+      store.add("おすし", to: .like, personID: me.id)
+      store.add("カレー", to: .like, personID: me.id)
+      store.add("映画", to: .like, personID: me.id)
+      store.add("雨", to: .hate, personID: me.id)
+
+      store.delete(at: IndexSet(integer: 99), from: .like, personID: me.id)
+      #expect(store.items(for: me.id, kind: .like).map(\.title) == ["おすし", "カレー", "映画"])
+      #expect(store.items(for: me.id, kind: .hate).map(\.title) == ["雨"])
+
+      store.delete(at: IndexSet(integer: 1), from: .like, personID: me.id)
+      let reloadedStore = LikeHateStore(defaults: context.defaults)
+      let reloadedLikes = reloadedStore.items(for: me.id, kind: .like)
+
+      #expect(reloadedLikes.map(\.title) == ["おすし", "映画"])
+      #expect(reloadedLikes.map(\.sortOrder) == [0, 1])
+      #expect(reloadedStore.items(for: me.id, kind: .hate).map(\.title) == ["雨"])
    }
 
    @Test("Legacy like and hate arrays migrate into the me person")
@@ -353,6 +463,38 @@ struct LikeHateStoreComparisonTests {
       #expect(sections[.firstOnlyHate] == ["虫"])
       #expect(sections[.secondOnlyHate] == ["煙"])
    }
+
+   @Test("Comparison sections deduplicate titles case-insensitively and keep first titles")
+   func comparisonSectionsDeduplicateCaseInsensitively() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+      let friend = try #require(store.addPerson(named: "太郎", profileImage: .defaultProfileImage5))
+
+      store.add("Tea", to: .like, personID: me.id)
+      store.add("tea", to: .like, personID: me.id)
+      store.add("Coffee", to: .like, personID: me.id)
+      store.add("TEA", to: .like, personID: friend.id)
+      store.add("Cake", to: .like, personID: friend.id)
+
+      store.add("Rain", to: .hate, personID: me.id)
+      store.add("rain", to: .hate, personID: me.id)
+      store.add("RAIN", to: .hate, personID: friend.id)
+      store.add("Smoke", to: .hate, personID: friend.id)
+
+      let sections = Dictionary(uniqueKeysWithValues: store
+         .comparisonSections(firstPersonID: me.id, secondPersonID: friend.id)
+         .map { ($0.category, $0.titles) })
+
+      #expect(sections[.commonLike] == ["Tea"])
+      #expect(sections[.firstOnlyLike] == ["Coffee"])
+      #expect(sections[.secondOnlyLike] == ["Cake"])
+      #expect(sections[.commonHate] == ["Rain"])
+      #expect(sections[.firstOnlyHate] == [])
+      #expect(sections[.secondOnlyHate] == ["Smoke"])
+   }
 }
 
 @MainActor
@@ -393,6 +535,34 @@ struct LikeHateStoreSettingsTests {
       #expect(reloadedStore.appSettings.textSize == .extraLarge)
    }
 
+   @Test("Animation setting persists through UserDefaults")
+   func animationSettingPersists() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      store.animationEnabled = false
+
+      let reloadedStore = LikeHateStore(defaults: context.defaults)
+
+      #expect(reloadedStore.animationEnabled == false)
+      #expect(reloadedStore.appSettings.animationEnabled == false)
+   }
+
+   @Test("App settings read persisted haptics and ad flags")
+   func appSettingsReadPersistedHapticsAndAdFlags() throws {
+      let context = try StoreTestContext(initialValues: { defaults in
+         defaults.set(false, forKey: "HapticsEnabled")
+         defaults.set(true, forKey: "BuyRemoveAd")
+      })
+      defer { context.cleanup() }
+
+      let settings = context.store.appSettings
+
+      #expect(settings.vibrationEnabled == false)
+      #expect(settings.adsRemoved)
+   }
+
    #if DEBUG
    @Test("App Store screenshot mode swaps in sample data and restores original data")
    func appStoreScreenshotModeSwapsAndRestoresOriginalData() throws {
@@ -416,13 +586,18 @@ struct LikeHateStoreSettingsTests {
       #expect(store.isAppStoreScreenshotModeEnabled)
       #expect(store.persons.map(\.displayName) == [String(localized: "DefaultMeName"), "あかり", "はると"])
       #expect(sampleHaruto.profileImageName == DefaultProfileImage.defaultProfileImage16.rawValue)
-      #expect(store.items(for: sampleMe.id, kind: .like).count == 15)
-      #expect(store.items(for: sampleMe.id, kind: .hate).count == 15)
-      #expect(store.items(for: sampleAkari.id, kind: .like).count == 15)
-      #expect(store.items(for: sampleAkari.id, kind: .hate).count == 15)
-      #expect(store.items(for: sampleHaruto.id, kind: .like).count == 15)
-      #expect(store.items(for: sampleHaruto.id, kind: .hate).count == 15)
-      #expect(store.entries.count == 90)
+      let sampleCounts = [
+         store.items(for: sampleMe.id, kind: .like).count,
+         store.items(for: sampleMe.id, kind: .hate).count,
+         store.items(for: sampleAkari.id, kind: .like).count,
+         store.items(for: sampleAkari.id, kind: .hate).count,
+         store.items(for: sampleHaruto.id, kind: .like).count,
+         store.items(for: sampleHaruto.id, kind: .hate).count
+      ]
+      #expect(sampleCounts == [17, 14, 19, 13, 16, 18])
+      #expect(sampleCounts.allSatisfy { (13...19).contains($0) })
+      #expect(Set(sampleCounts).count == sampleCounts.count)
+      #expect(store.entries.count == sampleCounts.reduce(0, +))
       #expect(store.person(for: friend.id) == nil)
 
       let meAndAkariSections = Dictionary(uniqueKeysWithValues: store
