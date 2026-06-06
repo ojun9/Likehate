@@ -5,6 +5,7 @@ DerivedData/
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
 *.xcuserstate
+**/UserInterfaceState.xcuserstate
 *.xcscmblueprint
 
 # Swift Package Manager
