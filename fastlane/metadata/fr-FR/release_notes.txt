@@ -1,0 +1,2 @@
+■ Migration des anciens utilisateurs améliorée.
+■ Plus de langues et petites améliorations UI.

@@ -1,2 +1,2 @@
-■ Improved how changes are saved after deleting all data.
-■ Improved stability and made minor refinements.
+■ Improved migration for existing users.
+■ Added broader localization and small UI refinements.

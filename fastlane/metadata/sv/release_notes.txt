@@ -1,0 +1,2 @@
+■ Förbättrad migrering för befintliga användare.
+■ Fler språk och små UI-förbättringar.

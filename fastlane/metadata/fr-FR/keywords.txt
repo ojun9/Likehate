@@ -1,0 +1,1 @@
+gout,preference,liste,memo,journal,repas,emotion,famille,ami,couple,simple,note

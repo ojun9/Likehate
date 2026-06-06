@@ -1,15 +1,9 @@
-A simple memo app for keeping track of the things you like and dislike.
+A quiet memo app for the things you like and dislike.
 
-Food, places, hobbies, things you are not good with.
-You can save your own preferences, or remember the likes and dislikes of someone important to you.
+Food, places, hobbies, feelings, and things you want to avoid. Save your own preferences, or remember the likes and dislikes of someone important to you.
 
-Using it is simple.
-Choose “Like” or “Dislike,” then write a short note.
+Add people, choose a preset image or photo, and keep notes in simple Like and Dislike lists.
 
-Things you like are “likes.”
-Things you dislike are “dislikes.”
+Compare two people to find what both enjoy, what both avoid, and what makes each person different.
 
-Because that is what makes you, you.
-
-Look back at the likes and dislikes you have collected,
-and use them as a small reminder of yourself or someone you care about.
+No limits on likes or dislikes. Free users can add up to three people. Lifetime Premium unlocks more people and hides ads.

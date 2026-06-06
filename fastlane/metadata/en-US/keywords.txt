@@ -1,1 +1,1 @@
-preference,taste,list,journal,picky,eater,allergy,friend,partner,simple,mood,emotion,share
+preference,taste,list,journal,picky,eater,allergy,friend,partner,simple,mood,share

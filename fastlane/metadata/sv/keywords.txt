@@ -1,0 +1,1 @@
+smak,preferens,lista,anteckning,dagbok,mat,kansla,familj,van,partner,enkel
