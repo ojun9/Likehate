@@ -3633,6 +3633,7 @@
       }
     },
     "PremiumCloseButton" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
