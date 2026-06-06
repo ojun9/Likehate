@@ -6,20 +6,20 @@
       "localizations" : {
         "ar" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "مذكرة الأذواق"
+            "state" : "translated",
+            "value" : "Like&Hate"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Vorlieben-Notiz"
+            "state" : "translated",
+            "value" : "Like&Hate"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Σημειώσεις γούστων"
+            "state" : "translated",
+            "value" : "Like&Hate"
           }
         },
         "en" : {
@@ -30,45 +30,44 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Mémo des goûts"
+            "state" : "translated",
+            "value" : "Like&Hate"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "好き嫌いメモ帳"
+            "state" : "translated",
+            "value" : "好き嫌い"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "취향 메모장"
+            "state" : "translated",
+            "value" : "Like&Hate"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Smakmemo"
+            "state" : "translated",
+            "value" : "Like&Hate"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "喜好记事本"
+            "state" : "translated",
+            "value" : "Like&Hate"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "喜好記事本"
+            "state" : "translated",
+            "value" : "Like&Hate"
           }
         }
       }
     },
     "CFBundleName" : {
       "comment" : "Bundle name",
-      "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
