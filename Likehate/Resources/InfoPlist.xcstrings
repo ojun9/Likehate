@@ -7,19 +7,19 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "دفتر الإعجابات والكراهية"
+            "value" : "مذكرة الأذواق"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gefällt-mir-und-nicht-Notizbuch"
+            "value" : "Vorlieben-Notiz"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Σημειωματάριο προτιμήσεων"
+            "value" : "Σημειώσεις γούστων"
           }
         },
         "en" : {
@@ -31,7 +31,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Carnet des goûts"
+            "value" : "Mémo des goûts"
           }
         },
         "ja" : {
@@ -43,25 +43,25 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "좋고 싫은 메모장"
+            "value" : "취향 메모장"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gilla/ogilla-anteckningar"
+            "value" : "Smakmemo"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "喜欢讨厌记事本"
+            "value" : "喜好记事本"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "喜歡討厭記事本"
+            "value" : "喜好記事本"
           }
         }
       }
@@ -72,7 +72,61 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
+            "value" : "Likehate"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likehate"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likehate"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likehate"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likehate"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likehate"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likehate"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likehate"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likehate"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Likehate"
           }
         }
