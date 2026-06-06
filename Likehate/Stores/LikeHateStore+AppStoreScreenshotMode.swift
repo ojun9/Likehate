@@ -89,7 +89,19 @@ extension LikeHateStore {
    }
 
    private static func localizedAppStoreScreenshotString(_ key: String, locale: Locale) -> String {
-      String(localized: String.LocalizationValue(key), bundle: .main, locale: locale)
+      let identifier = locale.identifier
+      let languageCode = identifier.split(separator: "_").first.map(String.init)
+      let preferences = [identifier, languageCode].compactMap(\.self)
+      let localization = Bundle.preferredLocalizations(
+         from: Bundle.main.localizations,
+         forPreferences: preferences
+      ).first
+      let localizedBundle = localization
+         .flatMap { Bundle.main.path(forResource: $0, ofType: "lproj") }
+         .flatMap(Bundle.init(path:)) ?? .main
+      let value = localizedBundle.localizedString(forKey: key, value: key, table: "Localizable")
+
+      return value == key ? Bundle.main.localizedString(forKey: key, value: key, table: "Localizable") : value
    }
 
    private static func localizedAppStoreScreenshotTitles(_ key: String, locale: Locale) -> [String] {

@@ -37,13 +37,13 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "好き嫌い"
+            "value" : "好き嫌いメモ帳"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Like&Hate"
+            "value" : "호불호 메모"
           }
         },
         "sv" : {
@@ -55,13 +55,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Like&Hate"
+            "value" : "喜好笔记"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Like&Hate"
+            "value" : "喜好筆記"
           }
         }
       }
