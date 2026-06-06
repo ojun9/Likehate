@@ -18,7 +18,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "+ كره"
+            "value" : "+ لا يعجبني"
           }
         },
         "de" : {
@@ -54,13 +54,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "+ 讨厌"
+            "value" : "+ 不喜欢"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "+ 討厭"
+            "value" : "+ 不喜歡"
           }
         }
       }
@@ -82,7 +82,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "+ حب"
+            "value" : "+ يعجبني"
           }
         },
         "de" : {
@@ -134,7 +134,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add person"
+            "value" : "Add someone"
           }
         },
         "ja" : {
@@ -158,13 +158,13 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Προσθήκη"
+            "value" : "Προσθήκη ατόμου"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajouter"
+            "value" : "Ajouter quelqu’un"
           }
         },
         "ko" : {
@@ -176,19 +176,19 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lägg till"
+            "value" : "Lägg till person"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加人"
+            "value" : "添加人物"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "新增人"
+            "value" : "新增人物"
           }
         }
       }
@@ -198,7 +198,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can keep likes and dislikes so you can remember them later."
+            "value" : "Save their likes and dislikes for later."
           }
         },
         "ja" : {
@@ -210,49 +210,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "احفظ ما يحبونه ويكرهونه."
+            "value" : "احفظ ما يحبونه وما لا يحبونه."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Merke, was jemand mag."
+            "value" : "Speichere, was sie mögen und nicht mögen."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Κράτα τι αρέσει ή όχι."
+            "value" : "Κράτα τι τους αρέσει και τι όχι."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Garde ses goûts en mémoire."
+            "value" : "Gardez ce qu’ils aiment ou non."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "좋고 싫은 것을 남겨요."
+            "value" : "좋아하는 것과 싫어하는 것을 남겨요."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spara vad någon gillar."
+            "value" : "Spara vad de gillar och ogillar."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "记下喜欢和讨厌。"
+            "value" : "记下喜欢和不喜欢。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "記下喜歡和討厭。"
+            "value" : "記下喜歡和不喜歡。"
           }
         }
       }
@@ -326,7 +326,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add Person"
+            "value" : "Add someone"
           }
         },
         "ja" : {
@@ -350,13 +350,13 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Προσθήκη"
+            "value" : "Προσθήκη ατόμου"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajouter"
+            "value" : "Ajouter quelqu’un"
           }
         },
         "ko" : {
@@ -368,19 +368,19 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lägg till"
+            "value" : "Lägg till person"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加人"
+            "value" : "添加人物"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "新增人"
+            "value" : "新增人物"
           }
         }
       }
@@ -409,7 +409,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All data erasing in this app"
+            "value" : "Delete all data?"
           }
         },
         "fr" : {
@@ -589,19 +589,19 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hilft der Entwicklung"
+            "value" : "Deine Bewertung hilft"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Βοηθά την ανάπτυξη"
+            "value" : "Η αξιολόγησή σου βοηθά"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your review helps motivate development"
+            "value" : "Your review helps"
           }
         },
         "fr" : {
@@ -775,31 +775,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مذكرة الأذواق"
+            "value" : "إعجاب وكره"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vorlieben-Notiz"
+            "value" : "Like&Hate"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Σημειώσεις γούστων"
+            "value" : "Like&Hate"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Like/Dislike Notebook"
+            "value" : "Like&Hate"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mémo des goûts"
+            "value" : "Like&Hate"
           }
         },
         "ja" : {
@@ -811,25 +811,25 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "취향 메모장"
+            "value" : "Like&Hate"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Smakmemo"
+            "value" : "Like&Hate"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "喜好记事本"
+            "value" : "喜欢与不喜欢"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "喜好記事本"
+            "value" : "喜歡與不喜歡"
           }
         }
       }
@@ -967,7 +967,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Who is this about?"
+            "value" : "Who?"
           }
         },
         "ja" : {
@@ -979,7 +979,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "عن من؟"
+            "value" : "من؟"
           }
         },
         "de" : {
@@ -1031,7 +1031,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Whose likes/dislikes?"
+            "value" : "Whose list?"
           }
         },
         "ja" : {
@@ -1043,7 +1043,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أذواق من؟"
+            "value" : "قائمة من؟"
           }
         },
         "de" : {
@@ -1055,37 +1055,37 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ποιανού γούστα;"
+            "value" : "Ποιανού λίστα;"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les goûts de qui ?"
+            "value" : "Liste de qui ?"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "누구의 취향?"
+            "value" : "누구의 목록?"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vems smak?"
+            "value" : "Vems lista?"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "谁的喜好？"
+            "value" : "谁的列表？"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "誰的喜好？"
+            "value" : "誰的列表？"
           }
         }
       }
@@ -1287,7 +1287,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This person"
+            "value" : "First"
           }
         },
         "ja" : {
@@ -1299,49 +1299,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "هذا الشخص"
+            "value" : "الأول"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese Person"
+            "value" : "Erste Person"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Αυτό το άτομο"
+            "value" : "Πρώτο άτομο"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cette personne"
+            "value" : "Première personne"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이 사람과"
+            "value" : "첫 번째"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Den här"
+            "value" : "Första"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "这个人"
+            "value" : "第一个人"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "這個人"
+            "value" : "第一個人"
           }
         }
       }
@@ -1415,7 +1415,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compare to"
+            "value" : "Other"
           }
         },
         "ja" : {
@@ -1427,49 +1427,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مع هذا"
+            "value" : "الآخر"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mit dieser"
+            "value" : "Andere Person"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Με αυτόν"
+            "value" : "Άλλο άτομο"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avec celle-ci"
+            "value" : "Autre personne"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이 사람을"
+            "value" : "다른 사람"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Med den här"
+            "value" : "Andra"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "和这个人"
+            "value" : "另一个人"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "和這個人"
+            "value" : "另一個人"
           }
         }
       }
@@ -1543,7 +1543,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compare me and %@"
+            "value" : "Compare with %@"
           }
         },
         "ja" : {
@@ -1555,13 +1555,13 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "قارنني مع %@"
+            "value" : "قارن مع %@"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mich mit %@ vergleichen"
+            "value" : "Mit %@ vergleichen"
           }
         },
         "el" : {
@@ -1573,7 +1573,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Me comparer à %@"
+            "value" : "Comparer avec %@"
           }
         },
         "ko" : {
@@ -1585,19 +1585,19 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jämför mig med %@"
+            "value" : "Jämför med %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我和%@比较"
+            "value" : "和%@比较"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我和%@比較"
+            "value" : "和%@比較"
           }
         }
       }
@@ -1683,25 +1683,25 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "كلاهما يكره"
+            "value" : "كلاهما لا يعجبه"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beide nicht"
+            "value" : "Beide mögen es nicht"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Και οι δύο όχι"
+            "value" : "Δεν αρέσει και στους δύο"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tous deux non"
+            "value" : "Aucun des deux n’aime"
           }
         },
         "ko" : {
@@ -1719,13 +1719,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "都讨厌"
+            "value" : "都不喜欢"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "都討厭"
+            "value" : "都不喜歡"
           }
         }
       }
@@ -1799,7 +1799,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The two of you differ"
+            "value" : "Differences"
           }
         },
         "ja" : {
@@ -1863,7 +1863,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No shared dislikes yet."
+            "value" : "No shared dislikes yet"
           }
         },
         "ja" : {
@@ -1875,7 +1875,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا كره مشترك بعد"
+            "value" : "لا يوجد ما لا يعجبكما بعد"
           }
         },
         "de" : {
@@ -1887,7 +1887,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Καμία κοινή άρνηση"
+            "value" : "Καμία κοινή άρνηση ακόμα"
           }
         },
         "fr" : {
@@ -1911,13 +1911,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "还没有都讨厌的东西"
+            "value" : "还没有都不喜欢的东西"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "還沒有都討厭的東西"
+            "value" : "還沒有都不喜歡的東西"
           }
         }
       }
@@ -1975,13 +1975,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加讨厌项后可查看。"
+            "value" : "添加不喜欢的东西后可查看。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "新增討厭項後可查看。"
+            "value" : "新增不喜歡的東西後可查看。"
           }
         }
       }
@@ -1991,7 +1991,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No shared likes yet."
+            "value" : "No shared likes yet"
           }
         },
         "ja" : {
@@ -2003,7 +2003,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا حب مشترك بعد"
+            "value" : "لا يوجد ما يعجبكما بعد"
           }
         },
         "de" : {
@@ -2015,7 +2015,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Κανένα κοινό αγαπημένο"
+            "value" : "Κανένα κοινό αγαπημένο ακόμα"
           }
         },
         "fr" : {
@@ -2119,7 +2119,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nothing only %@ dislikes yet."
+            "value" : "Nothing only %@ dislikes yet"
           }
         },
         "ja" : {
@@ -2131,7 +2131,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا شيء يكرهه %@ فقط"
+            "value" : "لا شيء لا يعجب %@ فقط"
           }
         },
         "de" : {
@@ -2143,13 +2143,13 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Τίποτα μόνο για %@"
+            "value" : "Τίποτα που να μην αρέσει μόνο σε %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rien que %@ n’aime"
+            "value" : "Rien que %@ n’aime pas"
           }
         },
         "ko" : {
@@ -2167,13 +2167,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "还没有只有%@讨厌的东西"
+            "value" : "还没有只有%@不喜欢的东西"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "還沒有只有%@討厭的東西"
+            "value" : "還沒有只有%@不喜歡的東西"
           }
         }
       }
@@ -2231,13 +2231,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加讨厌项后可发现差异。"
+            "value" : "添加不喜欢的东西后可发现不同。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "新增討厭項後可發現差異。"
+            "value" : "新增不喜歡的東西後可發現不同。"
           }
         }
       }
@@ -2375,7 +2375,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nothing only %@ dislikes yet."
+            "value" : "Nothing only %@ dislikes yet"
           }
         },
         "ja" : {
@@ -2387,7 +2387,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا شيء يكرهه %@ فقط"
+            "value" : "لا شيء لا يعجب %@ فقط"
           }
         },
         "de" : {
@@ -2399,13 +2399,13 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Τίποτα μόνο για %@"
+            "value" : "Τίποτα που να μην αρέσει μόνο σε %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rien que %@ n’aime"
+            "value" : "Rien que %@ n’aime pas"
           }
         },
         "ko" : {
@@ -2423,13 +2423,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "还没有只有%@讨厌的东西"
+            "value" : "还没有只有%@不喜欢的东西"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "還沒有只有%@討厭的東西"
+            "value" : "還沒有只有%@不喜歡的東西"
           }
         }
       }
@@ -2487,13 +2487,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加%@讨厌的东西。"
+            "value" : "添加%@不喜欢的东西。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "新增%@討厭的東西。"
+            "value" : "新增%@不喜歡的東西。"
           }
         }
       }
@@ -2643,25 +2643,25 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ فقط يكره"
+            "value" : "فقط %@ لا يعجبه"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nur %@ nicht"
+            "value" : "Nur %@ mag es nicht"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Μόνο %@ όχι"
+            "value" : "Μόνο %@ δεν το θέλει"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ seul n’aime pas"
+            "value" : "Seul %@ n’aime pas"
           }
         },
         "ko" : {
@@ -2679,13 +2679,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "只有%@讨厌"
+            "value" : "只有%@不喜欢"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "只有%@討厭"
+            "value" : "只有%@不喜歡"
           }
         }
       }
@@ -2771,25 +2771,25 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ فقط يكره"
+            "value" : "فقط %@ لا يعجبه"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nur %@ nicht"
+            "value" : "Nur %@ mag es nicht"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Μόνο %@ όχι"
+            "value" : "Μόνο %@ δεν το θέλει"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ seul n’aime pas"
+            "value" : "Seul %@ n’aime pas"
           }
         },
         "ko" : {
@@ -2807,13 +2807,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "只有%@讨厌"
+            "value" : "只有%@不喜欢"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "只有%@討厭"
+            "value" : "只有%@不喜歡"
           }
         }
       }
@@ -3418,7 +3418,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Data Erasing"
+            "value" : "Delete all data"
           }
         },
         "fr" : {
@@ -3848,7 +3848,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edit this person's details"
+            "value" : "Edit"
           }
         },
         "ja" : {
@@ -3860,13 +3860,13 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تعديل الشخص"
+            "value" : "تعديل"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Person bearbeiten"
+            "value" : "Bearbeiten"
           }
         },
         "el" : {
@@ -3884,7 +3884,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "정보 편집"
+            "value" : "편집"
           }
         },
         "sv" : {
@@ -3896,13 +3896,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "编辑此人"
+            "value" : "编辑"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "編輯此人"
+            "value" : "編輯"
           }
         }
       }
@@ -3912,7 +3912,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can change what you call them and their icon."
+            "value" : "Change name or icon."
           }
         },
         "ja" : {
@@ -3930,13 +3930,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Name oder Bild ändern."
+            "value" : "Name oder Icon ändern."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Άλλαξε όνομα ή εικόνα."
+            "value" : "Άλλαξε όνομα ή εικονίδιο."
           }
         },
         "fr" : {
@@ -4116,19 +4116,19 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا كره بعد"
+            "value" : "لا شيء لا يعجبك بعد"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Noch nichts Unliebsames"
+            "value" : "Noch keine Abneigungen"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Τίποτα αρνητικό"
+            "value" : "Καμία άρνηση ακόμα"
           }
         },
         "fr" : {
@@ -4152,13 +4152,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "还没有讨厌项"
+            "value" : "还没有不喜欢的东西"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "還沒有討厭項"
+            "value" : "還沒有不喜歡的東西"
           }
         }
       }
@@ -4308,7 +4308,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا حب بعد"
+            "value" : "لا إعجابات بعد"
           }
         },
         "de" : {
@@ -4320,7 +4320,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Κανένα αγαπημένο"
+            "value" : "Κανένα αγαπημένο ακόμα"
           }
         },
         "fr" : {
@@ -4344,13 +4344,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "还没有喜欢项"
+            "value" : "还没有喜欢的东西"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "還沒有喜歡項"
+            "value" : "還沒有喜歡的東西"
           }
         }
       }
@@ -4466,13 +4466,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "讨厌"
+            "value" : "不喜欢"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "討厭"
+            "value" : "不喜歡"
           }
         },
         "en" : {
@@ -4488,7 +4488,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dislikes %d"
+            "value" : "%d dislikes"
           }
         },
         "ja" : {
@@ -4500,7 +4500,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "كره %d"
+            "value" : "%d عدم إعجاب"
           }
         },
         "de" : {
@@ -4512,7 +4512,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d όχι"
+            "value" : "%d αρνήσεις"
           }
         },
         "fr" : {
@@ -4536,13 +4536,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "讨厌 %d项"
+            "value" : "%d个不喜欢"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "討厭 %d項"
+            "value" : "%d個不喜歡"
           }
         }
       }
@@ -4552,7 +4552,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا أحبه"
+            "value" : "لا يعجبني هذا"
           }
         },
         "de" : {
@@ -4576,7 +4576,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Je n’aime pas"
+            "value" : "Je n’aime pas ça"
           }
         },
         "ja" : {
@@ -4594,19 +4594,19 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ogillar"
+            "value" : "Jag gillar inte detta"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我讨厌这个"
+            "value" : "我不喜欢这个"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我討厭這個"
+            "value" : "我不喜歡這個"
           }
         }
       }
@@ -4628,7 +4628,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا أحبه"
+            "value" : "لا يعجبني هذا"
           }
         },
         "de" : {
@@ -4646,7 +4646,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Je n’aime pas"
+            "value" : "Je n’aime pas ça"
           }
         },
         "ko" : {
@@ -4658,19 +4658,19 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ogillar"
+            "value" : "Jag gillar inte detta"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我讨厌这个"
+            "value" : "我不喜欢这个"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我討厭這個"
+            "value" : "我不喜歡這個"
           }
         }
       }
@@ -4680,7 +4680,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ dislikes this"
+            "value" : "%@ doesn’t like this"
           }
         },
         "ja" : {
@@ -4692,7 +4692,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ لا يحبه"
+            "value" : "%@ لا يعجبه هذا"
           }
         },
         "de" : {
@@ -4722,19 +4722,19 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ ogillar detta"
+            "value" : "%@ gillar inte detta"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@讨厌这个"
+            "value" : "%@不喜欢这个"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@討厭這個"
+            "value" : "%@不喜歡這個"
           }
         }
       }
@@ -4744,7 +4744,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "اكتب ما تكرهه"
+            "value" : "اكتب ما لا يعجبك"
           }
         },
         "de" : {
@@ -4756,7 +4756,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Γράψε τι δεν αρέσει"
+            "value" : "Γράψε τι δεν σου αρέσει"
           }
         },
         "en" : {
@@ -4768,7 +4768,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Écrire un dégoût"
+            "value" : "Écrire ce que vous n’aimez pas"
           }
         },
         "ja" : {
@@ -4786,19 +4786,19 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skriv något ogillat"
+            "value" : "Skriv något du ogillar"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "写下讨厌的东西"
+            "value" : "写下不喜欢的东西"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "寫下討厭的東西"
+            "value" : "寫下不喜歡的東西"
           }
         }
       }
@@ -4808,25 +4808,25 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ما أريد تجنبه"
+            "value" : "أشياء تريد تجنبها"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Was ich meiden will"
+            "value" : "Was du meiden willst"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Όσα αποφεύγω"
+            "value" : "Όσα θέλεις να αποφεύγεις"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Things I want to avoid"
+            "value" : "Things to avoid"
           }
         },
         "fr" : {
@@ -4872,7 +4872,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ما لا أحبه"
+            "value" : "ما لا يعجبني"
           }
         },
         "de" : {
@@ -4890,7 +4890,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What I Hate"
+            "value" : "My dislikes"
           }
         },
         "fr" : {
@@ -4920,13 +4920,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我的讨厌"
+            "value" : "我不喜欢的东西"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我的討厭"
+            "value" : "我不喜歡的東西"
           }
         }
       }
@@ -4936,7 +4936,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can add family and friends too."
+            "value" : "Add family or friends too."
           }
         },
         "ja" : {
@@ -4948,25 +4948,25 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يمكنك إضافة العائلة والأصدقاء."
+            "value" : "أضف العائلة أو الأصدقاء أيضًا."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Auch Familie und Freunde."
+            "value" : "Auch Familie oder Freunde."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Πρόσθεσε κοντινούς σου."
+            "value" : "Πρόσθεσε και οικογένεια ή φίλους."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajoutez proches et amis."
+            "value" : "Ajoutez aussi famille ou amis."
           }
         },
         "ko" : {
@@ -4978,7 +4978,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lägg även till nära."
+            "value" : "Lägg även till familj eller vänner."
           }
         },
         "zh-Hans" : {
@@ -5064,7 +5064,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "See likes and dislikes with someone else"
+            "value" : "Compare with someone"
           }
         },
         "ja" : {
@@ -5076,49 +5076,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "شاهد الأذواق مع شخص آخر"
+            "value" : "قارن مع شخص"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vorlieben mit jemandem sehen"
+            "value" : "Mit jemandem vergleichen"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δες γούστα μαζί"
+            "value" : "Σύγκριση με κάποιον"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voir les goûts à deux"
+            "value" : "Comparer avec quelqu’un"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "다른 사람과 취향 보기"
+            "value" : "누군가와 비교"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se smak med någon"
+            "value" : "Jämför med någon"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "查看我和别人的喜好"
+            "value" : "和别人比较"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "查看我和別人的喜好"
+            "value" : "和別人比較"
           }
         }
       }
@@ -5192,7 +5192,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Who is this about?"
+            "value" : "Who?"
           }
         },
         "ja" : {
@@ -5204,49 +5204,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "عن من؟"
+            "value" : "من؟"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Für wen?"
+            "value" : "Wer?"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Για ποιον;"
+            "value" : "Ποιος;"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pour qui ?"
+            "value" : "Qui ?"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "누구의 것?"
+            "value" : "누구?"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "För vem?"
+            "value" : "Vem?"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "关于谁？"
+            "value" : "谁？"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "關於誰？"
+            "value" : "誰？"
           }
         }
       }
@@ -5384,7 +5384,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Likes %d"
+            "value" : "%d likes"
           }
         },
         "ja" : {
@@ -5396,7 +5396,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "حب %d"
+            "value" : "%d إعجاب"
           }
         },
         "de" : {
@@ -5408,7 +5408,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d ναι"
+            "value" : "%d αγαπημένα"
           }
         },
         "fr" : {
@@ -5432,13 +5432,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "喜欢 %d项"
+            "value" : "%d个喜欢"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "喜歡 %d項"
+            "value" : "%d個喜歡"
           }
         }
       }
@@ -5908,7 +5908,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ما لا أحبه"
+            "value" : "ما لا يعجبني"
           }
         },
         "de" : {
@@ -5944,13 +5944,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我的讨厌"
+            "value" : "我不喜欢的东西"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我的討厭"
+            "value" : "我不喜歡的東西"
           }
         }
       }
@@ -6042,7 +6042,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Oh, thanks..."
+            "value" : "Later"
           }
         },
         "fr" : {
@@ -6054,7 +6054,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Oh, thanks..."
+            "value" : "あとで"
           }
         },
         "ko" : {
@@ -6152,7 +6152,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Likes %d / Dislikes %d"
+            "value" : "%d likes / %d dislikes"
           }
         },
         "ja" : {
@@ -6164,7 +6164,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "حب %d / كره %d"
+            "value" : "%d يعجب / %d لا يعجب"
           }
         },
         "de" : {
@@ -6200,13 +6200,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "喜欢 %d / 讨厌 %d"
+            "value" : "喜欢 %d / 不喜欢 %d"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "喜歡 %d / 討厭 %d"
+            "value" : "喜歡 %d / 不喜歡 %d"
           }
         }
       }
@@ -6228,25 +6228,25 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ما لا يحبه %@"
+            "value" : "ما لا يعجب %@"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ mag nicht"
+            "value" : "Was %@ nicht mag"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δεν αρέσουν σε %@"
+            "value" : "Όσα δεν αρέσουν σε %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dégoûts de %@"
+            "value" : "Ce que %@ n’aime pas"
           }
         },
         "ko" : {
@@ -6258,19 +6258,19 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ ogillar"
+            "value" : "Det %@ ogillar"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@的讨厌"
+            "value" : "%@不喜欢的东西"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@的討厭"
+            "value" : "%@不喜歡的東西"
           }
         }
       }
@@ -6344,7 +6344,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What you call them"
+            "value" : "Name or nickname"
           }
         },
         "ja" : {
@@ -6356,19 +6356,19 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "اكتب الاسم"
+            "value" : "الاسم أو اللقب"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rufname"
+            "value" : "Name oder Spitzname"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Πώς το λες"
+            "value" : "Όνομα ή ψευδώνυμο"
           }
         },
         "fr" : {
@@ -6380,25 +6380,25 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "부르는 이름"
+            "value" : "이름이나 별명"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Namn"
+            "value" : "Namn eller smeknamn"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "填写称呼"
+            "value" : "名字或称呼"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "填寫稱呼"
+            "value" : "名字或稱呼"
           }
         }
       }
@@ -6536,7 +6536,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lifetime"
+            "value" : "One-time"
           }
         },
         "ja" : {
@@ -6548,7 +6548,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مدى الحياة"
+            "value" : "شراء واحد"
           }
         },
         "de" : {
@@ -6560,25 +6560,25 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Για πάντα"
+            "value" : "Μία αγορά"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "À vie"
+            "value" : "Achat unique"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "평생"
+            "value" : "한 번 구매"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Livstid"
+            "value" : "Engångsköp"
           }
         },
         "zh-Hans" : {
@@ -6600,7 +6600,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use it forever with one purchase"
+            "value" : "One-time purchase"
           }
         },
         "ja" : {
@@ -6612,49 +6612,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "شراء واحد للأبد"
+            "value" : "شراء واحد"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Einmal kaufen"
+            "value" : "Einmaliger Kauf"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Μία αγορά για πάντα"
+            "value" : "Μία αγορά"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un achat, toujours"
+            "value" : "Achat unique"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "한 번 구매로 계속"
+            "value" : "한 번 구매"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ett köp, alltid"
+            "value" : "Engångsköp"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "一次购买，长期使用"
+            "value" : "一次购买"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "一次購買，長期使用"
+            "value" : "一次購買"
           }
         }
       }
@@ -6920,7 +6920,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The free version lets you register up to three people, including you."
+            "value" : "Free includes up to 3 people."
           }
         },
         "ja" : {
@@ -6932,49 +6932,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "المجاني: حتى 3 أشخاص معك."
+            "value" : "المجاني يشمل حتى 3 أشخاص."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gratis: bis 3 Personen inkl. dir."
+            "value" : "Gratis sind bis zu 3 Personen."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δωρεάν: έως 3 άτομα με εσένα."
+            "value" : "Δωρεάν έως 3 άτομα."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gratuit : 3 personnes avec vous."
+            "value" : "Gratuit jusqu’à 3 personnes."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "무료는 나 포함 3명까지예요."
+            "value" : "무료는 3명까지예요."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gratis: upp till 3 med dig."
+            "value" : "Gratis gäller upp till 3 personer."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "免费版可登记含你在内3人。"
+            "value" : "免费版最多3人。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "免費版可登記含你在內3人。"
+            "value" : "免費版最多3人。"
           }
         }
       }
@@ -7176,7 +7176,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add more loved ones"
+            "value" : "Add more people"
           }
         },
         "ja" : {
@@ -7188,49 +7188,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أضف من يهمك"
+            "value" : "أضف المزيد"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mehr wichtige Menschen"
+            "value" : "Mehr Personen hinzufügen"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Πρόσθεσε αγαπημένους"
+            "value" : "Πρόσθεσε περισσότερα άτομα"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajoutez vos proches"
+            "value" : "Ajouter plus de personnes"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "소중한 사람을 더 추가"
+            "value" : "더 많은 사람 추가"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lägg till nära"
+            "value" : "Lägg till fler"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加更多重要的人"
+            "value" : "添加更多人"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "新增更多重要的人"
+            "value" : "新增更多人"
           }
         }
       }
@@ -7240,7 +7240,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This is not monthly. One purchase unlocks it."
+            "value" : "One-time purchase. No subscription."
           }
         },
         "ja" : {
@@ -7252,49 +7252,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ليس شهريًا. شراء واحد فقط."
+            "value" : "شراء واحد. ليس اشتراكًا."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kein Abo. Ein Kauf."
+            "value" : "Einmalkauf. Kein Abo."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Όχι μηνιαίο. Μία αγορά."
+            "value" : "Μία αγορά. Όχι συνδρομή."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pas mensuel. Un seul achat."
+            "value" : "Achat unique. Pas d’abonnement."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "월정액이 아니에요. 한 번만."
+            "value" : "한 번 구매. 구독 아님."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inte månadsvis. Ett köp."
+            "value" : "Engångsköp. Ingen prenumeration."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "不是月费，一次购买。"
+            "value" : "一次购买，不是订阅。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "不是月費，一次購買。"
+            "value" : "一次購買，不是訂閱。"
           }
         }
       }
@@ -7304,7 +7304,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add four or more people and use list screens without ads."
+            "value" : "More people. No ads."
           }
         },
         "ja" : {
@@ -7316,49 +7316,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أشخاص أكثر وبدون إعلانات."
+            "value" : "أشخاص أكثر. بلا إعلانات."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mehr Personen, keine Werbung."
+            "value" : "Mehr Personen. Keine Werbung."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Περισσότερα άτομα, χωρίς διαφημίσεις."
+            "value" : "Περισσότερα άτομα. Χωρίς διαφημίσεις."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plus de personnes, sans pubs."
+            "value" : "Plus de personnes. Sans pubs."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "더 많이 추가하고 광고 숨김"
+            "value" : "더 많은 사람. 광고 없음."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fler personer, inga annonser."
+            "value" : "Fler personer. Inga annonser."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加更多人并隐藏广告。"
+            "value" : "更多人，无广告。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "新增更多人並隱藏廣告。"
+            "value" : "更多人，無廣告。"
           }
         }
       }
@@ -7368,7 +7368,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lifetime Premium"
+            "value" : "Premium"
           }
         },
         "ja" : {
@@ -7380,49 +7380,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مدى الحياة"
+            "value" : "مميز"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Einmalig Premium"
+            "value" : "Premium"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium για πάντα"
+            "value" : "Premium"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium à vie"
+            "value" : "Premium"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "평생 프리미엄"
+            "value" : "프리미엄"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Livstid Premium"
+            "value" : "Premium"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "买断高级版"
+            "value" : "高级版"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "買斷高級版"
+            "value" : "高級版"
           }
         }
       }
@@ -7496,7 +7496,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Buy Lifetime Premium"
+            "value" : "Buy Premium"
           }
         },
         "ja" : {
@@ -7508,7 +7508,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "شراء المميز"
+            "value" : "شراء Premium"
           }
         },
         "de" : {
@@ -7560,7 +7560,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Buy Lifetime Premium (%@)"
+            "value" : "Buy (%@)"
           }
         },
         "ja" : {
@@ -7572,49 +7572,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "شراء المميز (%@)"
+            "value" : "شراء (%@)"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium kaufen (%@)"
+            "value" : "Kaufen (%@)"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Αγορά Premium (%@)"
+            "value" : "Αγορά (%@)"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acheter Premium (%@)"
+            "value" : "Acheter (%@)"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "프리미엄 구매 (%@)"
+            "value" : "구매 (%@)"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Köp Premium (%@)"
+            "value" : "Köp (%@)"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "购买高级版（%@）"
+            "value" : "购买（%@）"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "購買高級版（%@）"
+            "value" : "購買（%@）"
           }
         }
       }
@@ -8136,7 +8136,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unlock people limit and hide ads"
+            "value" : "More people, no ads"
           }
         },
         "ja" : {
@@ -8148,19 +8148,19 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أشخاص أكثر وبدون إعلانات"
+            "value" : "أشخاص أكثر، بلا إعلانات"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Limit aufheben, Werbung aus"
+            "value" : "Mehr Personen, keine Werbung"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Χωρίς όριο και διαφημίσεις"
+            "value" : "Περισσότερα άτομα، χωρίς διαφημίσεις"
           }
         },
         "fr" : {
@@ -8172,7 +8172,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "인원 제한 해제·광고 숨김"
+            "value" : "더 많은 사람, 광고 없음"
           }
         },
         "sv" : {
@@ -8184,13 +8184,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "解除人数限制、隐藏广告"
+            "value" : "更多人，无广告"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "解除人數限制、隱藏廣告"
+            "value" : "更多人，無廣告"
           }
         }
       }
@@ -8200,7 +8200,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lifetime Premium"
+            "value" : "Premium"
           }
         },
         "ja" : {
@@ -8212,49 +8212,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مميز مدى الحياة"
+            "value" : "مميز"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Einmalig Premium"
+            "value" : "Premium"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium για πάντα"
+            "value" : "Premium"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium à vie"
+            "value" : "Premium"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "평생 프리미엄"
+            "value" : "프리미엄"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Livstid Premium"
+            "value" : "Premium"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "买断高级版"
+            "value" : "高级版"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "買斷高級版"
+            "value" : "高級版"
           }
         }
       }
@@ -8264,7 +8264,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "With Lifetime Premium, you can keep likes and dislikes for four or more people and hide ads."
+            "value" : "Add more people and hide ads."
           }
         },
         "ja" : {
@@ -8276,49 +8276,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "المميز يضيف 4+ أشخاص ويخفي الإعلانات."
+            "value" : "أضف المزيد وأخفِ الإعلانات."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium erlaubt 4+ und entfernt Werbung."
+            "value" : "Mehr Personen und keine Werbung."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium: 4+ άτομα, χωρίς διαφημίσεις."
+            "value" : "Περισσότερα άτομα، χωρίς διαφημίσεις."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium : 4+ personnes, sans pubs."
+            "value" : "Plus de personnes, sans pubs."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "프리미엄은 4명 이상과 광고 숨김"
+            "value" : "더 많이 추가하고 광고 숨김"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premium ger 4+ och inga annonser."
+            "value" : "Fler personer, inga annonser."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "高级版可添加4人以上并隐藏广告。"
+            "value" : "添加更多人并隐藏广告。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "高級版可新增4人以上並隱藏廣告。"
+            "value" : "新增更多人並隱藏廣告。"
           }
         }
       }
@@ -8328,7 +8328,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preset %d"
+            "value" : "Icon %d"
           }
         },
         "ja" : {
@@ -8340,49 +8340,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "اختيار %d"
+            "value" : "أيقونة %d"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preset %d"
+            "value" : "Icon %d"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Επιλογή %d"
+            "value" : "Εικονίδιο %d"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preset %d"
+            "value" : "Icône %d"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "프리셋 %d"
+            "value" : "아이콘 %d"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Förval %d"
+            "value" : "Ikon %d"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "预设 %d"
+            "value" : "图标 %d"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "預設 %d"
+            "value" : "圖示 %d"
           }
         }
       }
@@ -8392,7 +8392,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preset"
+            "value" : "Icon"
           }
         },
         "ja" : {
@@ -8404,49 +8404,49 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "اختيار"
+            "value" : "أيقونة"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preset"
+            "value" : "Icon"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Εικόνα"
+            "value" : "Εικονίδιο"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preset"
+            "value" : "Icône"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "프리셋"
+            "value" : "아이콘"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Förval"
+            "value" : "Ikon"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "预设"
+            "value" : "图标"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "預設"
+            "value" : "圖示"
           }
         }
       }
@@ -9912,13 +9912,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "你讨厌什么？"
+            "value" : "你不喜欢什么？"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "你討厭什麼？"
+            "value" : "你不喜歡什麼？"
           }
         }
       }
