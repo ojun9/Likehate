@@ -92,6 +92,7 @@ platform :ios do
          app_version: app_version,
          skip_binary_upload: true,
          submit_for_review: false,
+         overwrite_screenshots: true,
          run_precheck_before_submit: false,
          force: true
       )
