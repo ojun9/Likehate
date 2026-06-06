@@ -311,10 +311,18 @@ func cleanFastlaneScreenshotDirectories(for locales: [String]) throws {
       }
 
       let existingFiles = try FileManager.default.contentsOfDirectory(at: fastlaneDirectory, includingPropertiesForKeys: [.isRegularFileKey])
-      for file in existingFiles where file.pathExtension.lowercased() == "png" {
+      for file in existingFiles where shouldRemoveBeforeWritingIPhone(file.lastPathComponent) {
          try FileManager.default.removeItem(at: file)
       }
    }
+}
+
+func shouldRemoveBeforeWritingIPhone(_ filename: String) -> Bool {
+   if filename.range(of: #"^\d_APP_IPHONE_67_\d\.png$"#, options: .regularExpression) != nil {
+      return true
+   }
+
+   return filename.range(of: #"^0[1-5]\.png$"#, options: .regularExpression) != nil
 }
 
 func existingFastlaneScreenshotLocales() throws -> [String] {
