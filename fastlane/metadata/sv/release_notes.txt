@@ -1,2 +1,3 @@
-■ Förbättrad migrering för befintliga användare.
-■ Fler språk och små UI-förbättringar.
+■ Jämför nu vad två personer gillar och ogillar.
+■ Profiler, listor och redigering har blivit tydligare.
+■ Foto-/ikonval, Premium-skärmen och översättningar har förbättrats.

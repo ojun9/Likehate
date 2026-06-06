@@ -1,2 +1,3 @@
-■ Migration für bestehende Nutzer verbessert.
-■ Mehr Sprachen und kleine UI-Verbesserungen.
+■ Du kannst jetzt Vorlieben und Abneigungen von zwei Personen vergleichen.
+■ Profile, Listen und Bearbeitung wurden übersichtlicher gestaltet.
+■ Foto- und Icon-Auswahl, Premium-Seite und Übersetzungen wurden verbessert.

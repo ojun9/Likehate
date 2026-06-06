@@ -1,2 +1,3 @@
-■ Improved migration for existing users.
-■ Added broader localization and small UI refinements.
+■ You can now compare likes and dislikes between two people.
+■ Refined person profiles, lists, and editing flows.
+■ Improved photo/icon selection, Premium screen, and localization.
