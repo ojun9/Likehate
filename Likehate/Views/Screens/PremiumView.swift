@@ -62,6 +62,9 @@ struct PremiumView: View {
       VStack(spacing: 10) {
          Button {
             guard !store.hasPremiumAccess else { return }
+            #if DEBUG
+            Logger.purchases.debug("purchase button tapped price=\(String(describing: store.premiumProductPrice), privacy: .public)")
+            #endif
             FAAnalytics.log(.track(.premiumPurchaseButtonTapped, parameters: premiumAnalyticsParameters))
             store.purchasePremium()
          } label: {

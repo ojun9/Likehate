@@ -457,6 +457,9 @@ final class LikeHateStore: ObservableObject {
    /// RevenueCat経由で買い切りプレミアムを購入する。
    func purchasePremium() {
       guard !isPurchasing, !hasPremiumAccess else { return }
+      #if DEBUG
+      Logger.purchases.debug("purchasePremium started hasPremiumAccess=\(self.hasPremiumAccess) cachedPrice=\(String(describing: self.premiumProductPrice), privacy: .public)")
+      #endif
       isPurchasing = true
       FAAnalytics.log(.track(.premiumPurchaseStarted, parameters: premiumAnalyticsParameters(source: "purchase")))
 
@@ -498,11 +501,17 @@ final class LikeHateStore: ObservableObject {
       premiumPackage = package
       premiumProductPrice = package?.localizedPrice
       if let package {
+         #if DEBUG
+         Logger.purchases.debug("premium product fetched price=\(package.localizedPrice, privacy: .public)")
+         #endif
          FAAnalytics.log(.track(.premiumProductFetchSucceeded, parameters: premiumAnalyticsParameters(source: "fetch").merging([
             .price: package.localizedPrice,
             .productID: LikehateRevenueCatContracts.premiumProductID
          ])))
       } else {
+         #if DEBUG
+         Logger.purchases.error("premium product unavailable productID=\(LikehateRevenueCatContracts.premiumProductID, privacy: .public)")
+         #endif
          FAAnalytics.log(.track(.premiumProductFetchUnavailable, parameters: premiumAnalyticsParameters(source: "fetch").merging([
             .productID: LikehateRevenueCatContracts.premiumProductID
          ])))
@@ -520,9 +529,18 @@ final class LikeHateStore: ObservableObject {
             return
          }
 
+         #if DEBUG
+         Logger.purchases.debug("calling RevenueCat purchase")
+         #endif
          let result = try await premiumPurchaseService.purchase(package: package)
+         #if DEBUG
+         Logger.purchases.debug("RevenueCat purchase returned \(String(describing: result), privacy: .public)")
+         #endif
          handlePremiumPurchaseResult(result, analyticsSource: "purchase")
       } catch {
+         #if DEBUG
+         Logger.purchases.error("RevenueCat purchase threw \(error.localizedDescription, privacy: .public)")
+         #endif
          purchaseMessage = PurchaseMessage(title: String(localized: "PremiumPurchaseFailedTitle"), message: error.localizedDescription)
          FAAnalytics.log(.track(.premiumPurchaseFailed, parameters: premiumAnalyticsParameters(source: "purchase").merging([
             .errorDescription: error.localizedDescription

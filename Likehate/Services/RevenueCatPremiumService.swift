@@ -89,6 +89,10 @@ final class RevenueCatPremiumPurchaseService: PremiumPurchaseServicing {
    /// App Store product IDから買い切りプレミアム商品を取得する。
    func currentPremiumPackage() async throws -> PremiumPackage? {
       let products = await Purchases.shared.products([LikehateRevenueCatContracts.premiumProductID])
+      #if DEBUG
+      let productIDs = products.map(\.productIdentifier).joined(separator: ",")
+      Logger.purchases.debug("RevenueCat products fetched count=\(products.count) ids=\(productIDs, privacy: .public)")
+      #endif
       guard let product = products.first(where: { $0.productIdentifier == LikehateRevenueCatContracts.premiumProductID }) else {
          return nil
       }
@@ -102,7 +106,13 @@ final class RevenueCatPremiumPurchaseService: PremiumPurchaseServicing {
       }
 
       do {
+         #if DEBUG
+         Logger.purchases.debug("RevenueCat purchase(product:) start productID=\(revenueCatStoreProduct.productIdentifier, privacy: .public)")
+         #endif
          let result = try await Purchases.shared.purchase(product: revenueCatStoreProduct)
+         #if DEBUG
+         Logger.purchases.debug("RevenueCat purchase(product:) finished userCancelled=\(result.userCancelled)")
+         #endif
          if result.userCancelled {
             return .userCancelled
          }
