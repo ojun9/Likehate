@@ -118,6 +118,7 @@ enum FAParameter: CaseIterable, Hashable {
    case destination
    case didBuyPremium
    case didBuyRemoveAd
+   case entryText
    case entryCount
    case errorCode
    case errorDescription
@@ -189,6 +190,8 @@ enum FAParameter: CaseIterable, Hashable {
          return "did_buy_premium"
       case .didBuyRemoveAd:
          return "did_buy_remove_ad"
+      case .entryText:
+         return "entry_text"
       case .entryCount:
          return "entry_count"
       case .errorCode:
@@ -290,6 +293,16 @@ enum FAParameter: CaseIterable, Hashable {
       case .firebaseScreenName:
          return AnalyticsParameterScreenName
       }
+   }
+}
+
+enum FAEntryTextParameter {
+   static let maxLength = 100
+
+   static func value(from rawText: String) -> String? {
+      let trimmed = rawText.trimmingCharacters(in: .whitespacesAndNewlines)
+      guard !trimmed.isEmpty else { return nil }
+      return String(trimmed.prefix(maxLength))
    }
 }
 

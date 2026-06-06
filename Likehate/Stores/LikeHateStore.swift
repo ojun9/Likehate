@@ -257,7 +257,7 @@ final class LikeHateStore: ObservableObject {
       entries.append(item)
       persistEntries()
 
-      FAAnalytics.log(.track(.entrySaved, parameters: analyticsParameters(for: kind, person: person, textLength: trimmed.count)))
+      FAAnalytics.log(.track(.entrySaved, parameters: analyticsParameters(for: kind, person: person, textLength: trimmed.count, entryText: trimmed)))
       HapticsClient.success()
       recordRegistrationAndRequestReviewIfNeeded()
    }
@@ -271,7 +271,7 @@ final class LikeHateStore: ObservableObject {
       entries[index].updatedAt = Date()
       persistEntries()
 
-      FAAnalytics.log(.track(.entryUpdated, parameters: analyticsParameters(for: entries[index].type, personID: entries[index].personId, textLength: title.count)))
+      FAAnalytics.log(.track(.entryUpdated, parameters: analyticsParameters(for: entries[index].type, personID: entries[index].personId, textLength: title.count, entryText: title)))
       HapticsClient.success()
       return true
    }
@@ -819,11 +819,11 @@ final class LikeHateStore: ObservableObject {
       AppReviewClient.requestReview()
    }
 
-   private func analyticsParameters(for kind: EntryKind, personID: UUID, textLength: Int? = nil) -> FAParameters {
-      analyticsParameters(for: kind, person: person(for: personID), textLength: textLength)
+   private func analyticsParameters(for kind: EntryKind, personID: UUID, textLength: Int? = nil, entryText: String? = nil) -> FAParameters {
+      analyticsParameters(for: kind, person: person(for: personID), textLength: textLength, entryText: entryText)
    }
 
-   private func analyticsParameters(for kind: EntryKind, person: Person?, textLength: Int? = nil) -> FAParameters {
+   private func analyticsParameters(for kind: EntryKind, person: Person?, textLength: Int? = nil, entryText: String? = nil) -> FAParameters {
       let personItems = person.map { items(for: $0.id, kind: kind).count } ?? 0
       var parameters: FAParameters = [
          .kind: kind.rawValue,
@@ -842,6 +842,10 @@ final class LikeHateStore: ObservableObject {
 
       if let textLength {
          parameters[.textLength] = textLength
+      }
+
+      if let entryText = entryText.flatMap({ FAEntryTextParameter.value(from: $0) }) {
+         parameters[.entryText] = entryText
       }
 
       return parameters
