@@ -22,10 +22,13 @@ struct PremiumView: View {
                PremiumBenefitRow(iconName: "checkmark.seal.fill", title: "PremiumBenefitLifetime")
             }
             .padding(layout.cardPadding)
-            .background(LikehateTheme.elevatedSurface, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-            .overlay {
-               RoundedRectangle(cornerRadius: 22, style: .continuous)
-                  .stroke(LikehateTheme.border, lineWidth: 1)
+            .background {
+               PremiumGlassBackground(
+                  cornerRadius: 22,
+                  tint: LikehateTheme.likeAccent,
+                  opacity: 0.07,
+                  borderOpacity: 0.2
+               )
             }
          }
          .padding(.horizontal, layout.screenPadding)
@@ -259,10 +262,13 @@ private struct PremiumPlanComparison: View {
          }
       }
       .padding(layout.cardPadding)
-      .background(LikehateTheme.surface.opacity(0.74), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-      .overlay {
-         RoundedRectangle(cornerRadius: 22, style: .continuous)
-            .stroke(LikehateTheme.border, lineWidth: 1)
+      .background {
+         PremiumGlassBackground(
+            cornerRadius: 22,
+            tint: LikehateTheme.sparkleAccent,
+            opacity: 0.055,
+            borderOpacity: 0.16
+         )
       }
    }
 }
@@ -340,15 +346,14 @@ private struct PremiumPlanRow: View {
          }
       }
       .padding(14)
-      .background(rowBackground, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-      .overlay {
-         RoundedRectangle(cornerRadius: 16, style: .continuous)
-            .stroke(isEmphasized ? accent.opacity(0.22) : LikehateTheme.border, lineWidth: 1)
+      .background {
+         PremiumGlassBackground(
+            cornerRadius: 16,
+            tint: accent,
+            opacity: isEmphasized ? 0.12 : 0.045,
+            borderOpacity: isEmphasized ? 0.24 : 0.14
+         )
       }
-   }
-
-   private var rowBackground: Color {
-      isEmphasized ? accent.opacity(0.08) : LikehateTheme.elevatedSurface.opacity(0.72)
    }
 }
 
@@ -376,5 +381,36 @@ private struct PremiumBenefitRow: View {
 
          Spacer(minLength: 0)
       }
+   }
+}
+
+private struct PremiumGlassBackground: View {
+   let cornerRadius: CGFloat
+   let tint: Color
+   let opacity: Double
+   let borderOpacity: Double
+
+   var body: some View {
+      RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+         .fill(.ultraThinMaterial)
+         .overlay {
+            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+               .fill(tint.opacity(opacity))
+         }
+         .overlay {
+            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+               .strokeBorder(
+                  LinearGradient(
+                     colors: [
+                        Color.white.opacity(borderOpacity),
+                        tint.opacity(borderOpacity * 0.7),
+                        Color.white.opacity(borderOpacity * 0.35)
+                     ],
+                     startPoint: .topLeading,
+                     endPoint: .bottomTrailing
+                  ),
+                  lineWidth: 1
+               )
+         }
    }
 }
