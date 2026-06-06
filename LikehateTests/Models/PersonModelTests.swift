@@ -164,6 +164,14 @@ struct PersonNameRulesTests {
 }
 
 struct DefaultProfileImageTests {
+   private struct FixedRandomNumberGenerator: RandomNumberGenerator {
+      var nextValue: UInt64
+
+      mutating func next() -> UInt64 {
+         nextValue
+      }
+   }
+
    @Test("デフォルトプロフィール画像は同梱アセット名と一致する")
    func profileImageAssetNamesAreStable() {
       let names = DefaultProfileImage.allCases.map(\.assetName)
@@ -198,8 +206,36 @@ struct DefaultProfileImageTests {
       #expect(DefaultProfileImage.firstAvailable(excluding: usedImages) == .defaultProfileImage4)
    }
 
+   @Test("デフォルトプロフィール画像は未使用画像からランダムに選ぶ")
+   func profileImagePicksRandomUnusedImage() {
+      let usedImages: Set<DefaultProfileImage> = [
+         .defaultProfileImage,
+         .defaultProfileImage2,
+         .defaultProfileImage3
+      ]
+      var firstGenerator = FixedRandomNumberGenerator(nextValue: 0)
+      var secondGenerator = FixedRandomNumberGenerator(nextValue: 1)
+
+      let firstPick = DefaultProfileImage.randomAvailable(excluding: usedImages, using: &firstGenerator)
+      let secondPick = DefaultProfileImage.randomAvailable(excluding: usedImages, using: &secondGenerator)
+
+      #expect(firstPick == .defaultProfileImage4)
+      #expect(secondPick == .defaultProfileImage5)
+      #expect(usedImages.contains(firstPick) == false)
+      #expect(usedImages.contains(secondPick) == false)
+   }
+
    @Test("すべて使用済みならデフォルトプロフィール画像に戻る")
    func profileImageFallsBackWhenEveryImageIsUsed() {
       #expect(DefaultProfileImage.firstAvailable(excluding: Set(DefaultProfileImage.allCases)) == .defaultProfileImage)
+   }
+
+   @Test("未使用画像がない場合だけ全画像からランダムに選ぶ")
+   func profileImageRandomFallsBackToAllImagesWhenEveryImageIsUsed() {
+      var generator = FixedRandomNumberGenerator(nextValue: 1)
+
+      let image = DefaultProfileImage.randomAvailable(excluding: Set(DefaultProfileImage.allCases), using: &generator)
+
+      #expect(image == .defaultProfileImage2)
    }
 }

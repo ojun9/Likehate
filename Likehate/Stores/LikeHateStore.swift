@@ -152,10 +152,10 @@ final class LikeHateStore: ObservableObject {
       AppLayoutMetrics(textSize: textSize)
    }
 
-   /// 新規追加時に既存人物とできるだけ被らないプリセット画像を返す。
+   /// 新規追加時に既存人物と被らないプリセット画像をランダムに返す。
    func defaultProfileImageForNewPerson() -> DefaultProfileImage {
       let usedImages = Set(persons.map(\.profileImage))
-      return DefaultProfileImage.firstAvailable(excluding: usedImages)
+      return DefaultProfileImage.randomAvailable(excluding: usedImages)
    }
 
    /// デバッグ用データ差し替えなどで人物と記録をまとめて置き換える。

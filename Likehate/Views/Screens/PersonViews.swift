@@ -274,10 +274,12 @@ struct PersonFormView: View {
                )
 
                PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
-                  Label(currentPhotoButtonTitle, systemImage: "photo")
-                     .font(typography.button)
-                     .foregroundStyle(LikehateTheme.likeAccent)
+                  PhotoPickerButtonLabel(
+                     title: currentPhotoButtonTitle,
+                     typography: typography
+                  )
                }
+               .buttonStyle(.plain)
                .disabled(isLoadingPhoto)
                .simultaneousGesture(TapGesture().onEnded {
                   FAAnalytics.log(.track(.personFormPhotoTapped, parameters: formAnalyticsParameters))
@@ -627,6 +629,30 @@ struct PersonIconSelectionState: Equatable {
    mutating func selectProfileImage(_ profileImage: DefaultProfileImage) {
       selectedProfileImage = profileImage
       removesExistingPhoto = hasExistingPhoto
+   }
+}
+
+private struct PhotoPickerButtonLabel: View {
+   let title: String
+   let typography: AppTypography
+
+   var body: some View {
+      Label(title, systemImage: "photo")
+         .font(typography.button)
+         .foregroundStyle(LikehateTheme.likeAccent)
+         .lineLimit(1)
+         .minimumScaleFactor(0.85)
+         .padding(.horizontal, 18)
+         .frame(maxWidth: .infinity, minHeight: 48)
+         .background {
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+               .fill(LikehateTheme.likeAccent.opacity(0.12))
+         }
+         .overlay {
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+               .stroke(LikehateTheme.likeAccent.opacity(0.22), lineWidth: 1)
+         }
+         .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
    }
 }
 

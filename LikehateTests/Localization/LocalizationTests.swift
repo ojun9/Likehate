@@ -20,6 +20,8 @@ struct LocalizationTests {
       #expect(String(localized: "AddPersonSaveButton", bundle: .main, locale: locale) == "追加")
       #expect(String(localized: "ProfileImageSectionTitle", bundle: .main, locale: locale) == "プリセット")
       #expect(String.localizedStringWithFormat(String(localized: "ProfileImageOptionFormat", bundle: .main, locale: locale), 3) == "プリセット 3")
+      #expect(String(localized: "SelectPersonPhotoButton", bundle: .main, locale: locale) == "写真を選ぶ")
+      #expect(String(localized: "ChangePersonPhotoButton", bundle: .main, locale: locale) == "写真を変更")
       #expect(String(localized: "SavePersonChangesButton", bundle: .main, locale: locale) == "保存")
       #expect(String(localized: "EditPersonHelpText", bundle: .main, locale: locale) == "呼び方やアイコンを変えられます。")
       #expect(String.localizedStringWithFormat(String(localized: "EditPersonTitleFormat", bundle: .main, locale: locale), "あかり") == "あかりのこと")
@@ -38,6 +40,8 @@ struct LocalizationTests {
          "AddPersonSaveButton",
          "ProfileImageSectionTitle",
          "ProfileImageOptionFormat",
+         "SelectPersonPhotoButton",
+         "ChangePersonPhotoButton",
          "SavePersonChangesButton",
          "EditPersonHelpText",
          "DeletePersonConfirmationTitle",
@@ -94,6 +98,25 @@ struct LocalizationTests {
 
       #expect(title == "ふたりの違い")
       #expect(title != "違いを見る")
+   }
+
+   @Test("比較結果の上位見出しローカライズキーが解決される")
+   func comparisonResultGroupTitleLocalizationKeysResolve() {
+      let keys = [
+         "ComparisonTogetherTitle",
+         "ComparisonAvoidTitle",
+         "ComparisonDifferencesTitle"
+      ]
+
+      for key in keys {
+         let japaneseValue = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "ja"))
+         let englishValue = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "en"))
+
+         #expect(japaneseValue.isEmpty == false)
+         #expect(englishValue.isEmpty == false)
+         #expect(japaneseValue != key)
+         #expect(englishValue != key)
+      }
    }
 
    @Test("デバッグメニューのローカライズキーが解決される")

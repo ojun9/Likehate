@@ -59,8 +59,9 @@ struct LikeHateStorePersonTests {
       store.updatePerson(me.id, name: me.name, profileImage: .defaultProfileImage)
       _ = try #require(store.addPerson(named: "太郎", profileImage: .defaultProfileImage2))
       _ = try #require(store.addPerson(named: "あかり", profileImage: .defaultProfileImage3))
+      let usedImages = Set(store.persons.map(\.profileImage))
 
-      #expect(store.defaultProfileImageForNewPerson() == .defaultProfileImage4)
+      #expect(usedImages.contains(store.defaultProfileImageForNewPerson()) == false)
    }
 
    @Test("無料ユーザーはわたしを含めて3人まで登録できる")

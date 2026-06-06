@@ -40,8 +40,27 @@ enum DefaultProfileImage: String, CaseIterable, Identifiable, Codable, Hashable 
       allCases.first { !usedImages.contains($0) } ?? .defaultProfileImage
    }
 
+   /// 既存人物が使っていないプリセット画像からランダムに返す。
+   static func randomAvailable(excluding usedImages: Set<DefaultProfileImage>) -> DefaultProfileImage {
+      var generator = SystemRandomNumberGenerator()
+      return randomAvailable(excluding: usedImages, using: &generator)
+   }
+
+   /// テストで乱数を固定できるようにした、未使用プリセット画像のランダム選択。
+   static func randomAvailable<T: RandomNumberGenerator>(
+      excluding usedImages: Set<DefaultProfileImage>,
+      using generator: inout T
+   ) -> DefaultProfileImage {
+      let availableImages = allCases.filter { !usedImages.contains($0) }
+      let candidates = availableImages.isEmpty ? allCases : availableImages
+      guard candidates.isEmpty == false else { return .defaultProfileImage }
+
+      let index = Int(generator.next() % UInt64(candidates.count))
+      return candidates[index]
+   }
+
    /// ランダムなプリセット画像を返す。
    static func random() -> DefaultProfileImage {
-      allCases.randomElement() ?? .defaultProfileImage
+      randomAvailable(excluding: [])
    }
 }
