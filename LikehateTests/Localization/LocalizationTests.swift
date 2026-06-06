@@ -140,6 +140,58 @@ struct LocalizationTests {
       }
    }
 
+   @Test("アップストアスクショ用サンプルデータのローカライズキーが全言語で解決される")
+   func appStoreScreenshotSampleLocalizationKeysResolve() {
+      let locales = [
+         "ar",
+         "de",
+         "el",
+         "en",
+         "fr",
+         "ja",
+         "ko",
+         "sv",
+         "zh-Hans",
+         "zh-Hant"
+      ]
+      let nameKeys = [
+         "AppStoreScreenshotSampleSecondPersonName",
+         "AppStoreScreenshotSampleThirdPersonName"
+      ]
+      let listKeysAndCounts = [
+         ("AppStoreScreenshotSampleMeLikes", 23),
+         ("AppStoreScreenshotSampleMeHates", 16),
+         ("AppStoreScreenshotSampleSecondPersonLikes", 29),
+         ("AppStoreScreenshotSampleSecondPersonHates", 14),
+         ("AppStoreScreenshotSampleThirdPersonLikes", 21),
+         ("AppStoreScreenshotSampleThirdPersonHates", 27)
+      ]
+
+      for localeIdentifier in locales {
+         let locale = Locale(identifier: localeIdentifier)
+
+         for key in nameKeys {
+            let value = String(localized: String.LocalizationValue(key), bundle: .main, locale: locale)
+
+            #expect(value.isEmpty == false)
+            #expect(value != key)
+            #expect(value.contains("|") == false)
+         }
+
+         for (key, expectedCount) in listKeysAndCounts {
+            let value = String(localized: String.LocalizationValue(key), bundle: .main, locale: locale)
+            let titles = value
+               .split(separator: "|")
+               .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+               .filter { $0.isEmpty == false }
+
+            #expect(value != key)
+            #expect(titles.count == expectedCount)
+            #expect(Set(titles).count == expectedCount)
+         }
+      }
+   }
+
    @Test("日本語の買い切りプレミアム文言は買い切りと無料上限を説明する")
    func japanesePremiumCopyExplainsOneTimePurchaseAndFreeLimit() {
       let locale = Locale(identifier: "ja")
