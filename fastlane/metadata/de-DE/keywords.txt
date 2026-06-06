@@ -1,1 +1,1 @@
-vorlieben,geschmack,liste,notiz,tagebuch,essen,gefuehl,familie,freunde,partner
+geschmack,liste,tagebuch,allergie,partner,paar,einfach,merken,profil,essenplan,cafe,kochen,datum
