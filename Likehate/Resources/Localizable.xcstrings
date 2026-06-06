@@ -530,6 +530,38 @@
         }
       }
     },
+    "AppStoreScreenshotModeSubtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replace app data with screenshot sample data."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スクリーンショット用のサンプルデータに差し替えます。"
+          }
+        }
+      }
+    },
+    "AppStoreScreenshotModeTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store screenshot mode"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Storeスクショモード"
+          }
+        }
+      }
+    },
     "CompareButton" : {
       "localizations" : {
         "en" : {
@@ -542,6 +574,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "くらべる"
+          }
+        }
+      }
+    },
+    "ComparisonDifferencesTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The two of you differ"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ふたりの違い"
           }
         }
       }
@@ -990,6 +1038,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ と %@"
+          }
+        }
+      }
+    },
+    "DebugSectionTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Debug"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デバッグ"
           }
         }
       }
@@ -2919,6 +2983,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "プリセット"
+          }
+        }
+      }
+    },
+    "RevenueCatDebugSubtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open RevenueCat's debug overlay."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RevenueCatのデバッグ画面を開きます。"
+          }
+        }
+      }
+    },
+    "RevenueCatDebugTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RevenueCat debug"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RevenueCatデバッグ"
           }
         }
       }
