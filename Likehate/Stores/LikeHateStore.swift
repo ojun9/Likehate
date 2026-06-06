@@ -170,13 +170,19 @@ final class LikeHateStore: ObservableObject {
       return UIImage(contentsOfFile: photoURL.path)
    }
 
-   func addPerson(named rawName: String, profileImage: DefaultProfileImage = .random(), photoData: Data? = nil) -> Person? {
+   func addPerson(
+      named rawName: String,
+      profileImage: DefaultProfileImage = .random(),
+      profileImageSource: FAProfileImageSource = .randomPreset,
+      photoData: Data? = nil
+   ) -> Person? {
       let name = sanitizedPersonName(rawName)
       guard !name.isEmpty, canAddPerson else { return nil }
 
       let now = Date()
       let personID = UUID()
       let photoFileName = photoData.flatMap { Self.savePhotoData($0, personID: personID) }
+      let resolvedProfileImageSource = photoData == nil ? profileImageSource : FAProfileImageSource.selectedPhoto
       let person = Person(
          id: personID,
          name: name,
@@ -190,15 +196,28 @@ final class LikeHateStore: ObservableObject {
       persons.append(person)
       persistPersons()
 
-      FAAnalytics.log(.track(.personAdded, parameters: personAnalyticsParameters(person, source: "add")))
+      FAAnalytics.log(.track(.personAdded, parameters: personAnalyticsParameters(person, source: "add", profileImageSource: resolvedProfileImageSource)))
       HapticsClient.success()
       return person
    }
 
-   func updatePerson(_ personID: UUID, name rawName: String, profileImage: DefaultProfileImage? = nil, photoData: Data? = nil, removesPhoto: Bool = false) {
+   func updatePerson(
+      _ personID: UUID,
+      name rawName: String,
+      profileImage: DefaultProfileImage? = nil,
+      profileImageSource: FAProfileImageSource? = nil,
+      photoData: Data? = nil,
+      removesPhoto: Bool = false
+   ) {
       let name = sanitizedPersonName(rawName)
       guard !name.isEmpty, let index = persons.firstIndex(where: { $0.id == personID }) else { return }
 
+      let resolvedProfileImageSource = profileImageSource ?? resolvedProfileImageSourceForUpdate(
+         person: persons[index],
+         profileImage: profileImage,
+         photoData: photoData,
+         removesPhoto: removesPhoto
+      )
       persons[index].name = name
       if let profileImage {
          persons[index].profileImageName = profileImage.rawValue
@@ -213,7 +232,7 @@ final class LikeHateStore: ObservableObject {
       persons[index].updatedAt = Date()
       persistPersons()
 
-      FAAnalytics.log(.track(.personUpdated, parameters: personAnalyticsParameters(persons[index], source: "edit")))
+      FAAnalytics.log(.track(.personUpdated, parameters: personAnalyticsParameters(persons[index], source: "edit", profileImageSource: resolvedProfileImageSource)))
       HapticsClient.success()
    }
 
@@ -851,14 +870,42 @@ final class LikeHateStore: ObservableObject {
       return parameters
    }
 
-   private func personAnalyticsParameters(_ person: Person, source: String) -> FAParameters {
-      [
+   private func personAnalyticsParameters(_ person: Person, source: String, profileImageSource: FAProfileImageSource? = nil) -> FAParameters {
+      var parameters: FAParameters = [
          .personID: person.id.uuidString,
          .isMe: person.isMe,
          .personCount: persons.count,
          .entryCount: entries.count,
+         .profileImage: person.profileImage.rawValue,
          .source: source
       ]
+
+      if let personName = FAPersonNameParameter.value(from: person.name) {
+         parameters[.personName] = personName
+      }
+
+      if let profileImageSource {
+         parameters[.profileImageSource] = profileImageSource.rawValue
+      }
+
+      return parameters
+   }
+
+   private func resolvedProfileImageSourceForUpdate(
+      person: Person,
+      profileImage: DefaultProfileImage?,
+      photoData: Data?,
+      removesPhoto: Bool
+   ) -> FAProfileImageSource {
+      if photoData != nil {
+         return .selectedPhoto
+      }
+
+      if profileImage != nil || removesPhoto {
+         return .selectedPreset
+      }
+
+      return person.photoFileName == nil ? .existingPreset : .existingPhoto
    }
 
    private func premiumAnalyticsParameters(source: String) -> FAParameters {

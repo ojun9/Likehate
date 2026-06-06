@@ -13,6 +13,15 @@ struct RevenueCatContractsTests {
 }
 
 struct FAEventTests {
+   @Test("デバッグビルドではFirebase Analyticsへ送信しない")
+   func debugBuildDoesNotSendFirebaseAnalyticsEvents() {
+      #if DEBUG
+      #expect(FAAnalytics.sendsFirebaseEvents == false)
+      #else
+      #expect(FAAnalytics.sendsFirebaseEvents)
+      #endif
+   }
+
    @Test("画面表示イベントはFirebase標準のscreen_viewを使う")
    func screenViewUsesFirebaseScreenEvent() {
       let event = FAEvent.screenView(.premium, parameters: [.source: "settings"])
@@ -28,16 +37,20 @@ struct FAEventTests {
       let event = FAEvent.track(.personAdded, parameters: [
          .source: FAScreen.home.rawValue,
          .personCount: 3,
+         .personName: "あかり",
          .isMe: false,
          .profileImage: "defaultProfileImage04",
+         .profileImageSource: FAProfileImageSource.selectedPreset.rawValue,
          .entryText: "おすし"
       ])
 
       #expect(event.name == "person_added")
       #expect(event.parameters?["source"] as? String == "home")
       #expect(event.parameters?["person_count"] as? Int == 3)
+      #expect(event.parameters?["person_name"] as? String == "あかり")
       #expect(event.parameters?["is_me"] as? Bool == false)
       #expect(event.parameters?["profile_image"] as? String == "defaultProfileImage04")
+      #expect(event.parameters?["profile_image_source"] as? String == "selected_preset")
       #expect(event.parameters?["entry_text"] as? String == "おすし")
    }
 
@@ -69,6 +82,32 @@ struct FAEventTests {
       #expect(trimmed == "おすし")
       #expect(limited.count == FAEntryTextParameter.maxLength)
       #expect(FAEntryTextParameter.value(from: "   \n") == nil)
+   }
+
+   @Test("人物名パラメータは保存ルールと同じ整形を使う")
+   func personNameParameterUsesPersonNameRules() throws {
+      let longName = String(repeating: "あ", count: PersonNameRules.maxLength + 5)
+      let trimmed = try #require(FAPersonNameParameter.value(from: "  あかり  \n"))
+      let limited = try #require(FAPersonNameParameter.value(from: longName))
+
+      #expect(FAPersonNameParameter.maxLength == PersonNameRules.maxLength)
+      #expect(trimmed == "あかり")
+      #expect(limited.count == PersonNameRules.maxLength)
+      #expect(FAPersonNameParameter.value(from: "   \n") == nil)
+   }
+
+   @Test("プロフィール画像の由来は分析用の値として一覧化されている")
+   func profileImageSourcesAreListedAndUnique() {
+      let sources = FAProfileImageSource.allCases.map(\.rawValue)
+
+      #expect(sources.count == Set(sources).count)
+      #expect(sources == [
+         "random_preset",
+         "selected_preset",
+         "selected_photo",
+         "existing_preset",
+         "existing_photo"
+      ])
    }
 
    @Test("FAEvent名はFirebaseのカスタムイベント制約に収まる")
@@ -120,7 +159,9 @@ struct FAEventTests {
       #expect(keys.contains("source"))
       #expect(keys.contains("entry_text"))
       #expect(keys.contains("person_count"))
+      #expect(keys.contains("person_name"))
       #expect(keys.contains("product_id"))
+      #expect(keys.contains("profile_image_source"))
       #expect(keys.contains(AnalyticsParameterScreenName))
       #expect(keys.contains(AnalyticsParameterItemID))
    }

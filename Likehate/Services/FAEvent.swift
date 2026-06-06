@@ -145,12 +145,14 @@ enum FAParameter: CaseIterable, Hashable {
    case nameLength
    case personCount
    case personID
+   case personName
    case placement
    case previousTextSize
    case price
    case priceText
    case productID
    case profileImage
+   case profileImageSource
    case reason
    case removesExistingPhoto
    case screen
@@ -244,6 +246,8 @@ enum FAParameter: CaseIterable, Hashable {
          return "person_count"
       case .personID:
          return "person_id"
+      case .personName:
+         return "person_name"
       case .placement:
          return "placement"
       case .previousTextSize:
@@ -256,6 +260,8 @@ enum FAParameter: CaseIterable, Hashable {
          return "product_id"
       case .profileImage:
          return "profile_image"
+      case .profileImageSource:
+         return "profile_image_source"
       case .reason:
          return "reason"
       case .removesExistingPhoto:
@@ -304,6 +310,24 @@ enum FAEntryTextParameter {
       guard !trimmed.isEmpty else { return nil }
       return String(trimmed.prefix(maxLength))
    }
+}
+
+enum FAPersonNameParameter {
+   static let maxLength = PersonNameRules.maxLength
+
+   static func value(from rawName: String) -> String? {
+      let sanitized = PersonNameRules.sanitized(rawName)
+      guard !sanitized.isEmpty else { return nil }
+      return sanitized
+   }
+}
+
+enum FAProfileImageSource: String, CaseIterable {
+   case randomPreset = "random_preset"
+   case selectedPreset = "selected_preset"
+   case selectedPhoto = "selected_photo"
+   case existingPreset = "existing_preset"
+   case existingPhoto = "existing_photo"
 }
 
 struct FAParameters: ExpressibleByDictionaryLiteral {
@@ -380,12 +404,21 @@ enum FAEvent {
 }
 
 enum FAAnalytics {
+   static var sendsFirebaseEvents: Bool {
+      #if DEBUG
+      return false
+      #else
+      return true
+      #endif
+   }
+
    static func log(_ event: FAEvent) {
       #if DEBUG
       Logger.analytics.debug(
          "log: \(event.name, privacy: .public) \(String(describing: event.parameters), privacy: .private)"
       )
-      #endif
+      #else
       Analytics.logEvent(event.name, parameters: event.parameters)
+      #endif
    }
 }

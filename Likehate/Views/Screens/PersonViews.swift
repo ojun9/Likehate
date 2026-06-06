@@ -229,6 +229,7 @@ struct PersonFormView: View {
    @State private var selectedPhotoData: Data?
    @State private var selectedPhotoPreview: UIImage?
    @State private var cropSourceImage: PersonPhotoCropSource?
+   @State private var profileImageSource: FAProfileImageSource
    @State private var isLoadingPhoto = false
    @State private var isShowingDeleteConfirmation = false
    @State private var isShowingPremium = false
@@ -245,9 +246,11 @@ struct PersonFormView: View {
       case .add:
          _name = State(initialValue: "")
          _iconSelection = State(initialValue: PersonIconSelectionState(selectedProfileImage: .defaultProfileImage, hasExistingPhoto: false))
+         _profileImageSource = State(initialValue: .randomPreset)
       case .edit(let person):
          _name = State(initialValue: person.displayName)
          _iconSelection = State(initialValue: PersonIconSelectionState(selectedProfileImage: person.profileImage, hasExistingPhoto: person.photoFileName != nil))
+         _profileImageSource = State(initialValue: person.photoFileName == nil ? .existingPreset : .existingPhoto)
       }
    }
 
@@ -347,10 +350,7 @@ struct PersonFormView: View {
 
          ToolbarItem(placement: .confirmationAction) {
             Button(mode.saveTitle) {
-               FAAnalytics.log(.track(.personFormSaveTapped, parameters: formAnalyticsParameters.merging([
-                  .nameLength: trimmedName.count,
-                  .hasSelectedPhoto: selectedPhotoData != nil
-               ])))
+               FAAnalytics.log(.track(.personFormSaveTapped, parameters: formSaveAnalyticsParameters))
                save()
             }
             .disabled(isLoadingPhoto || (allowsNameEditing && trimmedName.isEmpty))
@@ -443,7 +443,12 @@ struct PersonFormView: View {
             isShowingPremium = true
             return
          }
-         if let person = store.addPerson(named: name, profileImage: iconSelection.selectedProfileImage, photoData: selectedPhotoData) {
+         if let person = store.addPerson(
+            named: name,
+            profileImage: iconSelection.selectedProfileImage,
+            profileImageSource: profileImageSource,
+            photoData: selectedPhotoData
+         ) {
             onAdd?(person)
          } else {
             FAAnalytics.log(.track(.personFormPremiumGateShown, parameters: formAnalyticsParameters.merging([
@@ -457,6 +462,7 @@ struct PersonFormView: View {
             person.id,
             name: allowsNameEditing ? name : person.name,
             profileImage: iconSelection.selectedProfileImage,
+            profileImageSource: profileImageSource,
             photoData: selectedPhotoData,
             removesPhoto: iconSelection.removesExistingPhoto
          )
@@ -524,14 +530,18 @@ struct PersonFormView: View {
       selectedPhotoData = thumbnailData
       selectedPhotoPreview = thumbnail
       iconSelection.didSelectPhoto()
+      profileImageSource = .selectedPhoto
       cropSourceImage = nil
       FAAnalytics.log(.track(.personFormPhotoCropped, parameters: formAnalyticsParameters))
    }
 
    private func selectProfileImage(_ profileImage: DefaultProfileImage) {
+      let selectedSource = FAProfileImageSource.selectedPreset
       FAAnalytics.log(.track(.personFormPresetSelected, parameters: formAnalyticsParameters.merging([
-         .profileImage: profileImage.rawValue
+         .profileImage: profileImage.rawValue,
+         .profileImageSource: selectedSource.rawValue
       ])))
+      profileImageSource = selectedSource
       iconSelection.selectProfileImage(profileImage)
       selectedPhotoItem = nil
       selectedPhotoData = nil
@@ -545,6 +555,7 @@ struct PersonFormView: View {
          .personCount: store.persons.count,
          .entryCount: store.totalItemCount,
          .selectedProfileImage: iconSelection.selectedProfileImage.rawValue,
+         .profileImageSource: profileImageSource.rawValue,
          .hasSelectedPhoto: selectedPhotoData != nil,
          .removesExistingPhoto: iconSelection.removesExistingPhoto
       ]
@@ -553,6 +564,19 @@ struct PersonFormView: View {
          parameters[.personID] = person.id.uuidString
          parameters[.isMe] = person.isMe
          parameters[.hasExistingPhoto] = person.photoFileName != nil
+      }
+
+      return parameters
+   }
+
+   private var formSaveAnalyticsParameters: FAParameters {
+      var parameters = formAnalyticsParameters.merging([
+         .nameLength: trimmedName.count,
+         .hasSelectedPhoto: selectedPhotoData != nil
+      ])
+
+      if let personName = FAPersonNameParameter.value(from: name) {
+         parameters[.personName] = personName
       }
 
       return parameters
