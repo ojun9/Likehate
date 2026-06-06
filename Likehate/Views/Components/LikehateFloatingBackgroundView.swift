@@ -282,6 +282,14 @@ private struct LikehateFloatingElement: Identifiable {
          palette: LikehateFloatingPalettes.sky, opacity: 0.72, horizontalDrift: 0.07,
          flowDrift: 0.05, speed: 0.30, phase: 0.72, rotationDegrees: 8),
       .init(
+         id: "top-heart-small-right", kind: .symbol("heart.fill"), x: 0.91, y: 0.08, size: 0.10,
+         palette: LikehateFloatingPalettes.petal, opacity: 0.62, horizontalDrift: 0.04,
+         flowDrift: 0.03, speed: 0.45, phase: 0.38, rotationDegrees: 14),
+      .init(
+         id: "top-star-small-left", kind: .symbol("star.fill"), x: 0.07, y: 0.20, size: 0.095,
+         palette: LikehateFloatingPalettes.lemon, opacity: 0.58, horizontalDrift: 0.035,
+         flowDrift: 0.025, speed: 0.44, phase: 0.92, rotationDegrees: -18),
+      .init(
          id: "upper-gift-right", kind: .symbol("gift.fill"), x: 0.94, y: 0.28, size: 0.18,
          palette: LikehateFloatingPalettes.mint, opacity: 0.76, speed: 0.48, phase: 0.24,
          rotationDegrees: 10),
@@ -297,6 +305,10 @@ private struct LikehateFloatingElement: Identifiable {
          id: "upper-lemon-sparkles", kind: .sparkle, x: 0.29, y: 0.29, size: 0.11,
          palette: LikehateFloatingPalettes.lemon, opacity: 0.62, speed: 0.46, phase: 0.64),
       .init(
+         id: "upper-bolt-center", kind: .symbol("bolt.fill"), x: 0.42, y: 0.35, size: 0.105,
+         palette: LikehateFloatingPalettes.coral, opacity: 0.58, horizontalDrift: 0.035,
+         flowDrift: 0.035, speed: 0.43, phase: 0.74, rotationDegrees: 11),
+      .init(
          id: "upper-right-leaf", kind: .symbol("leaf.fill"), x: 0.86, y: 0.38, size: 0.10,
          palette: LikehateFloatingPalettes.mint, opacity: 0.48, horizontalDrift: 0.04,
          flowDrift: 0.03, speed: 0.41, phase: 0.69),
@@ -308,6 +320,14 @@ private struct LikehateFloatingElement: Identifiable {
          id: "middle-right-moon", kind: .symbol("moon.fill"), x: 0.82, y: 0.45, size: 0.10,
          palette: LikehateFloatingPalettes.sky, opacity: 0.44, horizontalDrift: 0.035,
          flowDrift: 0.025, speed: 0.39, phase: 0.06),
+      .init(
+         id: "middle-star-right", kind: .symbol("star.fill"), x: 0.68, y: 0.48, size: 0.12,
+         palette: LikehateFloatingPalettes.lemon, opacity: 0.56, horizontalDrift: 0.045,
+         flowDrift: 0.04, speed: 0.40, phase: 0.87, rotationDegrees: 20),
+      .init(
+         id: "middle-heart-center", kind: .symbol("heart.fill"), x: 0.39, y: 0.52, size: 0.13,
+         palette: LikehateFloatingPalettes.petal, opacity: 0.54, horizontalDrift: 0.04,
+         verticalDrift: 0.035, speed: 0.42, phase: 0.12, rotationDegrees: -8),
       .init(
          id: "middle-left-coral-ring", kind: .ring, x: 0.18, y: 0.42, size: 0.15,
          palette: LikehateFloatingPalettes.coral, opacity: 0.34, horizontalDrift: 0.04,
@@ -337,6 +357,10 @@ private struct LikehateFloatingElement: Identifiable {
          palette: LikehateFloatingPalettes.coral, opacity: 0.64, speed: 0.47, phase: 0.62,
          rotationDegrees: -16),
       .init(
+         id: "lower-bolt-right-small", kind: .symbol("bolt.fill"), x: 0.88, y: 0.66, size: 0.12,
+         palette: LikehateFloatingPalettes.sky, opacity: 0.54, horizontalDrift: 0.04,
+         flowDrift: 0.035, speed: 0.45, phase: 0.33, rotationDegrees: 15),
+      .init(
          id: "lower-mint-dots", kind: .pairedDots, x: 0.42, y: 0.72, size: 0.11,
          palette: LikehateFloatingPalettes.mint, opacity: 0.58, horizontalDrift: 0.06,
          speed: 0.40, phase: 0.30, rotationDegrees: 9),
@@ -347,6 +371,10 @@ private struct LikehateFloatingElement: Identifiable {
          id: "lower-left-heart-small", kind: .symbol("heart.circle.fill"), x: 0.16, y: 0.86, size: 0.10,
          palette: LikehateFloatingPalettes.mint, opacity: 0.56, horizontalDrift: 0.04,
          speed: 0.44, phase: 0.27),
+      .init(
+         id: "lower-center-heart-small", kind: .symbol("heart.fill"), x: 0.48, y: 0.83, size: 0.095,
+         palette: LikehateFloatingPalettes.petal, opacity: 0.52, horizontalDrift: 0.035,
+         flowDrift: 0.03, speed: 0.47, phase: 0.70, rotationDegrees: 9),
       .init(
          id: "lower-right-coral-dot-small", kind: .circle, x: 0.73, y: 0.88, size: 0.075,
          palette: LikehateFloatingPalettes.coral, opacity: 0.46, horizontalDrift: 0.04,
@@ -362,7 +390,15 @@ private struct LikehateFloatingElement: Identifiable {
       .init(
          id: "bottom-star-small", kind: .symbol("star.circle.fill"), x: 0.57, y: 0.91, size: 0.13,
          palette: LikehateFloatingPalettes.lemon, opacity: 0.66, speed: 0.42, phase: 0.94,
-         rotationDegrees: 5)
+         rotationDegrees: 5),
+      .init(
+         id: "bottom-bolt-center", kind: .symbol("bolt.fill"), x: 0.45, y: 0.98, size: 0.10,
+         palette: LikehateFloatingPalettes.coral, opacity: 0.50, horizontalDrift: 0.035,
+         flowDrift: 0.025, speed: 0.42, phase: 0.18, rotationDegrees: -12),
+      .init(
+         id: "bottom-heart-left-small", kind: .symbol("heart.fill"), x: 0.06, y: 0.95, size: 0.11,
+         palette: LikehateFloatingPalettes.petal, opacity: 0.58, horizontalDrift: 0.04,
+         flowDrift: 0.03, speed: 0.39, phase: 0.82, rotationDegrees: -6)
    ]
 }
 

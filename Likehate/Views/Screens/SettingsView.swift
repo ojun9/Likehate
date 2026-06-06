@@ -8,6 +8,7 @@ struct SettingsView: View {
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
    @AppStorage("HapticsEnabled") private var isHapticsEnabled = true
    @State private var showDeleteConfirmation = false
+   @State private var isShowingPremium = false
    @State private var showsRevenueCatDebug = false
 
    var body: some View {
@@ -32,8 +33,9 @@ struct SettingsView: View {
          }
 
          Section {
-            NavigationLink {
-               PremiumView()
+            Button {
+               FAAnalytics.log(.track(.settingsPremiumTapped, parameters: settingsAnalyticsParameters))
+               isShowingPremium = true
             } label: {
                SettingsActionRow(
                   iconName: store.hasPremiumAccess ? "checkmark.seal.fill" : "sparkles",
@@ -43,9 +45,7 @@ struct SettingsView: View {
                   titleWeight: .bold
                )
             }
-            .simultaneousGesture(TapGesture().onEnded {
-               FAAnalytics.log(.track(.settingsPremiumTapped, parameters: settingsAnalyticsParameters))
-            })
+            .buttonStyle(.plain)
 
             Button {
                FAAnalytics.log(.track(.settingsRestoreTapped, parameters: settingsAnalyticsParameters))
@@ -161,6 +161,11 @@ struct SettingsView: View {
          FAAnalytics.log(.track(.settingsTextSizeChanged, parameters: settingsAnalyticsParameters.merging([
             .textSize: textSize.rawValue
          ])))
+      }
+      .sheet(isPresented: $isShowingPremium) {
+         NavigationStack {
+            PremiumView()
+         }
       }
       .debugRevenueCatOverlayIfDebug(isPresented: $showsRevenueCatDebug)
    }

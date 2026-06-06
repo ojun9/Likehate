@@ -2,7 +2,6 @@ import SwiftUI
 
 struct PremiumView: View {
    @EnvironmentObject private var store: LikeHateStore
-   @Environment(\.dismiss) private var dismiss
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
    var body: some View {
@@ -26,13 +25,13 @@ struct PremiumView: View {
                PremiumGlassBackground(
                   cornerRadius: 22,
                   tint: LikehateTheme.likeAccent,
-                  opacity: 0.07,
-                  borderOpacity: 0.2
+                  opacity: 0.11,
+                  borderOpacity: 0.30
                )
             }
          }
          .padding(.horizontal, layout.screenPadding)
-         .padding(.bottom, layout.sectionSpacing + 154)
+         .padding(.bottom, layout.sectionSpacing + 118)
       }
       .background {
          ZStack {
@@ -61,6 +60,7 @@ struct PremiumView: View {
    private func purchaseFooter(typography: AppTypography, layout: AppLayoutMetrics) -> some View {
       VStack(spacing: 10) {
          Button {
+            guard !store.hasPremiumAccess else { return }
             FAAnalytics.log(.track(.premiumPurchaseButtonTapped, parameters: premiumAnalyticsParameters))
             store.purchasePremium()
          } label: {
@@ -69,6 +69,9 @@ struct PremiumView: View {
                   if store.isPurchasing {
                      ProgressView()
                         .tint(.white)
+                  } else if store.hasPremiumAccess {
+                     Image(systemName: "checkmark.seal.fill")
+                        .font(typography.button)
                   }
 
                   Text(verbatim: purchaseButtonTitle)
@@ -76,56 +79,49 @@ struct PremiumView: View {
                      .fontWeight(.bold)
                }
 
-               Text(verbatim: purchaseButtonPrice ?? String(localized: "PremiumPriceLoading"))
-                  .font(typography.subtext)
-                  .fontWeight(.semibold)
-                  .foregroundStyle(.white.opacity(0.92))
-            }
-            .frame(maxWidth: .infinity)
-            .frame(minHeight: 70)
-         }
-         .buttonStyle(.borderedProminent)
-         .tint(LikehateTheme.likeAccent)
-         .disabled(store.isPurchasing || store.hasPremiumAccess)
-         .accessibilityLabel(Text(verbatim: purchaseButtonAccessibilityLabel))
-
-         HStack(spacing: 14) {
-            Button {
-               FAAnalytics.log(.track(.premiumRestoreTapped, parameters: premiumAnalyticsParameters))
-               store.restorePurchases()
-            } label: {
-               if store.isRestoring {
-                  HStack(spacing: 8) {
-                     ProgressView()
-                     Text("PremiumRestoreButton")
-                  }
-                  .font(typography.subtext)
-                  .frame(maxWidth: .infinity)
-                  .frame(minHeight: 42)
-               } else {
-                  Text("PremiumRestoreButton")
+               if let purchaseButtonSubtitle {
+                  Text(verbatim: purchaseButtonSubtitle)
                      .font(typography.subtext)
                      .fontWeight(.semibold)
-                     .frame(maxWidth: .infinity)
-                     .frame(minHeight: 42)
+                     .foregroundStyle(purchaseButtonForeground.opacity(0.92))
                }
             }
-            .buttonStyle(.bordered)
-            .tint(LikehateTheme.likeAccent)
-            .disabled(store.isRestoring)
+            .foregroundStyle(purchaseButtonForeground)
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 70)
+            .background(purchaseButtonBackground, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .overlay {
+               RoundedRectangle(cornerRadius: 18, style: .continuous)
+                  .strokeBorder(purchaseButtonBorder, lineWidth: 1)
+            }
+         }
+         .buttonStyle(.plain)
+         .disabled(store.isPurchasing)
+         .accessibilityLabel(Text(verbatim: purchaseButtonAccessibilityLabel))
 
-            Button {
-               dismiss()
-            } label: {
-               Text("PremiumCloseButton")
+         Button {
+            FAAnalytics.log(.track(.premiumRestoreTapped, parameters: premiumAnalyticsParameters))
+            store.restorePurchases()
+         } label: {
+            if store.isRestoring {
+               HStack(spacing: 8) {
+                  ProgressView()
+                  Text("PremiumRestoreButton")
+               }
+               .font(typography.subtext)
+               .frame(maxWidth: .infinity)
+               .frame(minHeight: 42)
+            } else {
+               Text("PremiumRestoreButton")
                   .font(typography.subtext)
                   .fontWeight(.semibold)
-                  .foregroundStyle(.secondary)
                   .frame(maxWidth: .infinity)
                   .frame(minHeight: 42)
             }
-            .buttonStyle(.plain)
          }
+         .buttonStyle(.bordered)
+         .tint(LikehateTheme.likeAccent)
+         .disabled(store.isRestoring)
       }
       .padding(.horizontal, layout.screenPadding)
       .padding(.top, 12)
@@ -149,6 +145,27 @@ struct PremiumView: View {
    private var purchaseButtonPrice: String? {
       guard !store.hasPremiumAccess else { return nil }
       return store.premiumProductPrice
+   }
+
+   private var purchaseButtonSubtitle: String? {
+      guard !store.hasPremiumAccess else { return nil }
+      return purchaseButtonPrice ?? String(localized: "PremiumPriceLoading")
+   }
+
+   private var purchaseButtonForeground: Color {
+      store.hasPremiumAccess ? LikehateTheme.likeAccent : .white
+   }
+
+   private var purchaseButtonBackground: Color {
+      if store.hasPremiumAccess {
+         return LikehateTheme.likeAccent.opacity(0.18)
+      }
+
+      return LikehateTheme.likeAccent
+   }
+
+   private var purchaseButtonBorder: Color {
+      store.hasPremiumAccess ? LikehateTheme.likeAccent.opacity(0.34) : Color.white.opacity(0.16)
    }
 
    private var purchaseButtonAccessibilityLabel: String {
@@ -218,10 +235,13 @@ private struct PremiumHeroPanel: View {
          .background(LikehateTheme.surface.opacity(0.72), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
       }
       .padding(layout.cardPadding + 4)
-      .background(LikehateTheme.elevatedSurface, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
-      .overlay {
-         RoundedRectangle(cornerRadius: 26, style: .continuous)
-            .stroke(LikehateTheme.likeAccent.opacity(0.24), lineWidth: 1)
+      .background {
+         PremiumGlassBackground(
+            cornerRadius: 26,
+            tint: LikehateTheme.likeAccent,
+            opacity: 0.12,
+            borderOpacity: 0.34
+         )
       }
    }
 }
@@ -266,8 +286,8 @@ private struct PremiumPlanComparison: View {
          PremiumGlassBackground(
             cornerRadius: 22,
             tint: LikehateTheme.sparkleAccent,
-            opacity: 0.055,
-            borderOpacity: 0.16
+            opacity: 0.10,
+            borderOpacity: 0.28
          )
       }
    }
@@ -350,8 +370,8 @@ private struct PremiumPlanRow: View {
          PremiumGlassBackground(
             cornerRadius: 16,
             tint: accent,
-            opacity: isEmphasized ? 0.12 : 0.045,
-            borderOpacity: isEmphasized ? 0.24 : 0.14
+            opacity: isEmphasized ? 0.15 : 0.08,
+            borderOpacity: isEmphasized ? 0.34 : 0.24
          )
       }
    }
@@ -395,22 +415,39 @@ private struct PremiumGlassBackground: View {
          .fill(.ultraThinMaterial)
          .overlay {
             RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-               .fill(tint.opacity(opacity))
+               .fill(
+                  LinearGradient(
+                     colors: [
+                        Color.white.opacity(0.18),
+                        tint.opacity(opacity),
+                        Color.white.opacity(0.055),
+                        tint.opacity(opacity * 0.42)
+                     ],
+                     startPoint: .topLeading,
+                     endPoint: .bottomTrailing
+                  )
+               )
          }
          .overlay {
             RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                .strokeBorder(
                   LinearGradient(
                      colors: [
-                        Color.white.opacity(borderOpacity),
-                        tint.opacity(borderOpacity * 0.7),
-                        Color.white.opacity(borderOpacity * 0.35)
+                        Color.white.opacity(borderOpacity + 0.14),
+                        tint.opacity(borderOpacity),
+                        Color.white.opacity(borderOpacity * 0.46)
                      ],
                      startPoint: .topLeading,
                      endPoint: .bottomTrailing
                   ),
                   lineWidth: 1
                )
+         }
+         .overlay(alignment: .topLeading) {
+            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+               .stroke(Color.white.opacity(0.12), lineWidth: 0.8)
+               .blur(radius: 0.4)
+               .padding(1.5)
          }
    }
 }
