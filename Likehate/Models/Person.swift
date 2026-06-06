@@ -38,3 +38,53 @@ struct Person: Identifiable, Codable, Hashable {
       set { profileImageName = newValue.rawValue }
    }
 }
+
+extension Person {
+   fileprivate enum CodingKeys: String, CodingKey {
+      case id
+      case name
+      case profileImageName
+      case photoFileName
+      case isMe
+      case createdAt
+      case updatedAt
+      case sortOrder
+   }
+
+   init(from decoder: Decoder) throws {
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+
+      let decodedIsMe = container.compatibleDecode(Bool.self, forKey: .isMe) ?? false
+      let decodedUpdatedAt = container.compatibleDecode(Date.self, forKey: .updatedAt)
+      let decodedCreatedAt = container.compatibleDecode(Date.self, forKey: .createdAt)
+         ?? decodedUpdatedAt
+         ?? Date(timeIntervalSince1970: 0)
+
+      id = container.compatibleDecode(UUID.self, forKey: .id) ?? UUID()
+      name = container.compatibleDecode(String.self, forKey: .name) ?? (decodedIsMe ? String(localized: "DefaultMeName") : "")
+      profileImageName = container.compatibleDecode(String.self, forKey: .profileImageName)
+      photoFileName = container.compatibleDecode(String.self, forKey: .photoFileName)
+      isMe = decodedIsMe
+      createdAt = decodedCreatedAt
+      updatedAt = decodedUpdatedAt ?? decodedCreatedAt
+      sortOrder = container.compatibleDecode(Int.self, forKey: .sortOrder) ?? 0
+   }
+
+   func encode(to encoder: Encoder) throws {
+      var container = encoder.container(keyedBy: CodingKeys.self)
+      try container.encode(id, forKey: .id)
+      try container.encode(name, forKey: .name)
+      try container.encodeIfPresent(profileImageName, forKey: .profileImageName)
+      try container.encodeIfPresent(photoFileName, forKey: .photoFileName)
+      try container.encode(isMe, forKey: .isMe)
+      try container.encode(createdAt, forKey: .createdAt)
+      try container.encode(updatedAt, forKey: .updatedAt)
+      try container.encode(sortOrder, forKey: .sortOrder)
+   }
+}
+
+private extension KeyedDecodingContainer where Key == Person.CodingKeys {
+   func compatibleDecode<T: Decodable>(_ type: T.Type, forKey key: Key) -> T? {
+      try? decodeIfPresent(type, forKey: key)
+   }
+}

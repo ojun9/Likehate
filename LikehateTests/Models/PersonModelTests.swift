@@ -51,6 +51,32 @@ struct PersonTests {
       #expect(person.profileImageName == DefaultProfileImage.defaultProfileImage9.rawValue)
       #expect(person.profileImage == .defaultProfileImage9)
    }
+
+   @Test("人物は古いJSONに新しい項目がなくても読み込める")
+   func personDecodesLegacyPayloadWithoutNewFields() throws {
+      let id = UUID()
+      let createdAt = Date(timeIntervalSince1970: 1_234)
+      let data = try JSONEncoder().encode(LegacyPersonPayload(id: id, name: "自分", isMe: true, createdAt: createdAt))
+
+      let person = try JSONDecoder().decode(Person.self, from: data)
+
+      #expect(person.id == id)
+      #expect(person.name == "自分")
+      #expect(person.isMe)
+      #expect(person.profileImageName == nil)
+      #expect(person.photoFileName == nil)
+      #expect(person.createdAt == createdAt)
+      #expect(person.updatedAt == createdAt)
+      #expect(person.sortOrder == 0)
+      #expect(person.displayName == String(localized: "DefaultMeName"))
+   }
+}
+
+private struct LegacyPersonPayload: Encodable {
+   let id: UUID
+   let name: String
+   let isMe: Bool
+   let createdAt: Date
 }
 
 struct PersonIconSelectionStateTests {
@@ -146,6 +172,12 @@ struct DefaultProfileImageTests {
       #expect(names.first == "defaultProfileImage")
       #expect(names.last == "defaultProfileImage19")
       #expect(Set(names).count == names.count)
+   }
+
+   @Test("わたしの初期プロフィール画像は4番目の同梱画像にする")
+   func initialMeProfileImageIsFourthPreset() {
+      #expect(DefaultProfileImage.initialMeImage == .defaultProfileImage4)
+      #expect(DefaultProfileImage.initialMeImage.assetName == "defaultProfileImage4")
    }
 
    @Test("デフォルトプロフィール画像の番号は1始まりで連番になる")

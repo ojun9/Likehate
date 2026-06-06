@@ -30,6 +30,11 @@ enum DefaultProfileImage: String, CaseIterable, Identifiable, Codable, Hashable 
       Self.allCases.firstIndex(of: self).map { $0 + 1 } ?? 1
    }
 
+   /// 初期ユーザー「わたし」に最初に割り当てるプリセット画像。
+   static var initialMeImage: DefaultProfileImage {
+      .defaultProfileImage4
+   }
+
    /// 既存人物が使っていない最初のプリセット画像を返す。
    static func firstAvailable(excluding usedImages: Set<DefaultProfileImage>) -> DefaultProfileImage {
       allCases.first { !usedImages.contains($0) } ?? .defaultProfileImage

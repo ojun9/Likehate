@@ -602,7 +602,7 @@ final class LikeHateStore: ObservableObject {
       Person(
          id: UUID(),
          name: String(localized: "DefaultMeName"),
-         profileImageName: DefaultProfileImage.random().rawValue,
+         profileImageName: DefaultProfileImage.initialMeImage.rawValue,
          photoFileName: nil,
          isMe: true,
          createdAt: now,
@@ -647,7 +647,9 @@ final class LikeHateStore: ObservableObject {
       }
 
       for index in normalized.indices where DefaultProfileImage(rawValue: normalized[index].profileImageName ?? "") == nil {
-         normalized[index].profileImageName = DefaultProfileImage.random().rawValue
+         normalized[index].profileImageName = normalized[index].isMe
+            ? DefaultProfileImage.initialMeImage.rawValue
+            : DefaultProfileImage.random().rawValue
          normalized[index].updatedAt = now
       }
 

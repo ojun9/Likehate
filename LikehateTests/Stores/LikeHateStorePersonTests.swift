@@ -15,7 +15,7 @@ struct LikeHateStorePersonTests {
       #expect(store.persons.count == 1)
       #expect(me.isMe)
       #expect(me.displayName.isEmpty == false)
-      #expect(DefaultProfileImage(rawValue: me.profileImageName ?? "") != nil)
+      #expect(me.profileImageName == DefaultProfileImage.initialMeImage.rawValue)
       #expect(me.photoFileName == nil)
    }
 
@@ -315,9 +315,78 @@ struct LikeHateStorePersonTests {
       #expect(me.isMe)
       #expect(me.name == String(localized: "DefaultMeName"))
       #expect(me.displayName == String(localized: "DefaultMeName"))
-      #expect(DefaultProfileImage(rawValue: me.profileImageName ?? "") != nil)
+      #expect(me.profileImageName == DefaultProfileImage.initialMeImage.rawValue)
       #expect(duplicateMe.isMe == false)
       #expect(store.entries.map(\.title) == ["おすし"])
+   }
+
+   @Test("新しい項目が欠けた保存済みJSONも人物と項目として読み込む")
+   func storedLegacyJSONWithMissingNewFieldsLoads() throws {
+      let personID = UUID()
+      let itemID = UUID()
+      let createdAt = Date(timeIntervalSince1970: 3_456)
+      let storedPersons = [
+         LegacyStoredPersonPayload(id: personID, name: "自分", isMe: true, createdAt: createdAt)
+      ]
+      let storedItems = [
+         LegacyStoredItemPayload(id: itemID, personID: personID, kind: EntryKind.hate.analyticsName, title: "雨", createdAt: createdAt)
+      ]
+      let context = try StoreTestContext(initialValues: { defaults in
+         try? storeEncoded(storedPersons, forKey: "LikehatePersonsV1", defaults: defaults)
+         try? storeEncoded(storedItems, forKey: "LikehateItemsV1", defaults: defaults)
+      })
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.person(for: personID))
+      let hateItem = try #require(store.items(for: personID, kind: .hate).first)
+
+      #expect(me.isMe)
+      #expect(me.name == String(localized: "DefaultMeName"))
+      #expect(me.displayName == String(localized: "DefaultMeName"))
+      #expect(me.profileImageName == DefaultProfileImage.initialMeImage.rawValue)
+      #expect(hateItem.id == itemID)
+      #expect(hateItem.title == "雨")
+      #expect(hateItem.createdAt == createdAt)
+      #expect(hateItem.updatedAt == createdAt)
+      #expect(hateItem.sortOrder == 0)
+   }
+
+   @Test("master版の保存データはわたしの人物と好き嫌いと購入状態へ移行される")
+   func masterUserDefaultsDataMigratesIntoCurrentStore() throws {
+      let context = try StoreTestContext(initialValues: { defaults in
+         defaults.set(["おすし", "カレー", "映画"], forKey: EntryKind.like.storageKey)
+         defaults.set(["雨", "行列"], forKey: EntryKind.hate.storageKey)
+         defaults.set(true, forKey: "BuyRemoveAd")
+         defaults.set(false, forKey: "HapticsEnabled")
+         defaults.set(9, forKey: "LaunchReviewRequestCount")
+         defaults.set(19, forKey: "RegistrationReviewRequestCount")
+      })
+      defer { context.cleanup() }
+
+      let store = context.store
+      let me = try #require(store.mePerson)
+
+      #expect(store.persons.count == 1)
+      #expect(me.isMe)
+      #expect(me.displayName == String(localized: "DefaultMeName"))
+      #expect(me.profileImageName == DefaultProfileImage.initialMeImage.rawValue)
+      #expect(store.items(for: me.id, kind: .like).map(\.title) == ["おすし", "カレー", "映画"])
+      #expect(store.items(for: me.id, kind: .like).map(\.sortOrder) == [0, 1, 2])
+      #expect(store.items(for: me.id, kind: .hate).map(\.title) == ["雨", "行列"])
+      #expect(store.items(for: me.id, kind: .hate).map(\.sortOrder) == [0, 1])
+      #expect(store.didBuyRemoveAd)
+      #expect(store.didBuyPremium)
+      #expect(store.hasPremiumAccess)
+      #expect(store.appSettings.adsRemoved)
+      #expect(store.appSettings.isPremium)
+      #expect(store.appSettings.vibrationEnabled == false)
+      #expect(context.defaults.bool(forKey: "PremiumLifetimePurchased"))
+      #expect(context.defaults.integer(forKey: "LaunchReviewRequestCount") == 9)
+      #expect(context.defaults.integer(forKey: "RegistrationReviewRequestCount") == 19)
+      #expect(context.defaults.integer(forKey: "LikehateDataMigrationVersion") == 1)
+      #expect(context.defaults.data(forKey: "LikehatePersonsV1") != nil)
+      #expect(context.defaults.data(forKey: "LikehateItemsV1") != nil)
    }
 
    @Test("空の保存済み人物はわたし1人に戻り孤立項目を落とす")
@@ -338,6 +407,7 @@ struct LikeHateStorePersonTests {
       #expect(store.persons.count == 1)
       #expect(me.isMe)
       #expect(me.displayName == String(localized: "DefaultMeName"))
+      #expect(me.profileImageName == DefaultProfileImage.initialMeImage.rawValue)
       #expect(store.entries.isEmpty)
    }
 
@@ -370,4 +440,19 @@ struct LikeHateStorePersonTests {
       #expect(otherPerson.isMe == false)
       #expect(store.entries.count == 2)
    }
+}
+
+private struct LegacyStoredPersonPayload: Encodable {
+   let id: UUID
+   let name: String
+   let isMe: Bool
+   let createdAt: Date
+}
+
+private struct LegacyStoredItemPayload: Encodable {
+   let id: UUID
+   let personID: UUID
+   let kind: String
+   let title: String
+   let createdAt: Date
 }

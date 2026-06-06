@@ -169,6 +169,6 @@ struct LikeHateStoreEntryTests {
 
       #expect(store.items(for: me.id, kind: .like).map(\.title) == ["おすし", "カレー"])
       #expect(store.items(for: me.id, kind: .hate).map(\.title) == ["雨"])
-      #expect(DefaultProfileImage(rawValue: me.profileImageName ?? "") != nil)
+      #expect(me.profileImageName == DefaultProfileImage.initialMeImage.rawValue)
    }
 }

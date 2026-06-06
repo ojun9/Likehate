@@ -168,7 +168,7 @@ struct LikeHateStoreSettingsTests {
       #expect(resetMe.isMe)
       #expect(store.items(for: resetMe.id, kind: .like).isEmpty)
       #expect(store.items(for: resetMe.id, kind: .hate).isEmpty)
-      #expect(DefaultProfileImage(rawValue: resetMe.profileImageName ?? "") != nil)
+      #expect(resetMe.profileImageName == DefaultProfileImage.initialMeImage.rawValue)
    }
 
    @Test("全削除は旧項目配列も消す")

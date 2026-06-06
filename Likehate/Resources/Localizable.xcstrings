@@ -1,23 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "AddHateButton" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add dislike"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "嫌いに追加"
-          }
-        }
-      }
-    },
     "AddHateInlineButton" : {
       "localizations" : {
         "en" : {
@@ -30,23 +13,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "+ 嫌いを追加"
-          }
-        }
-      }
-    },
-    "AddLikeButton" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add like"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "好きに追加"
           }
         }
       }
@@ -127,74 +93,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "人を追加"
-          }
-        }
-      }
-    },
-    "AddToPersonButton" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add to this person"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "この人に追加"
-          }
-        }
-      }
-    },
-    "AddWeakPointButton" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add dislike"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "嫌いに追加"
-          }
-        }
-      }
-    },
-    "AddWeakPointInlineButton" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+ Add dislike"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+ 嫌いを追加"
-          }
-        }
-      }
-    },
-    "AdsRemovedStatus" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ads are hidden"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "広告は非表示です"
           }
         }
       }
@@ -408,40 +306,6 @@
         }
       }
     },
-    "AppStoreScreenshotModeSubtitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Replace current data with sample screenshot data"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スクショ用のサンプルデータに差し替えます"
-          }
-        }
-      }
-    },
-    "AppStoreScreenshotModeTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Store screenshot mode"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Storeスクショモード"
-          }
-        }
-      }
-    },
     "AppTitle" : {
       "localizations" : {
         "ar" : {
@@ -566,23 +430,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "取消"
-          }
-        }
-      }
-    },
-    "ChangePersonPhotoButton" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Change photo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "写真を変更"
           }
         }
       }
@@ -795,23 +642,6 @@
         }
       }
     },
-    "CompareWithMeButton" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Compare with me"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "わたしと比べる"
-          }
-        }
-      }
-    },
     "CompareWithPersonFormat" : {
       "localizations" : {
         "en" : {
@@ -844,23 +674,6 @@
         }
       }
     },
-    "ComparisonAvoidTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Things to avoid"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "避けた方がよさそう"
-          }
-        }
-      }
-    },
     "ComparisonCommonHate" : {
       "localizations" : {
         "en" : {
@@ -889,57 +702,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "どっちも好き"
-          }
-        }
-      }
-    },
-    "ComparisonCommonWeakPoint" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Both avoid"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "どっちも嫌い"
-          }
-        }
-      }
-    },
-    "ComparisonDifferencesTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Differences between you two"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ふたりの違い"
-          }
-        }
-      }
-    },
-    "ComparisonEmptyCategoryTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nothing here yet"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "まだありません"
           }
         }
       }
@@ -1008,23 +770,6 @@
         }
       }
     },
-    "ComparisonEmptyCommonWeakPoint" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No shared dislikes yet."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "どっちも嫌いなものはまだありません"
-          }
-        }
-      }
-    },
     "ComparisonEmptyFirstOnlyHateFormat" : {
       "localizations" : {
         "en" : {
@@ -1085,23 +830,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "好きなものを追加すると、違いが見つかります。"
-          }
-        }
-      }
-    },
-    "ComparisonEmptyFirstOnlyWeakPointFormat" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nothing only %@ dislikes yet."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@だけが嫌いなものはまだありません"
           }
         }
       }
@@ -1170,23 +898,6 @@
         }
       }
     },
-    "ComparisonEmptySecondOnlyWeakPointFormat" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nothing only %@ dislikes yet."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@だけが嫌いなものはまだありません"
-          }
-        }
-      }
-    },
     "ComparisonFirstOnlyHateFormat" : {
       "localizations" : {
         "en" : {
@@ -1215,23 +926,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@だけ好き"
-          }
-        }
-      }
-    },
-    "ComparisonFirstOnlyWeakPointFormat" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Only %@ dislikes"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@だけ嫌い"
           }
         }
       }
@@ -1268,23 +962,6 @@
         }
       }
     },
-    "ComparisonSecondOnlyWeakPointFormat" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Only %@ dislikes"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@だけ嫌い"
-          }
-        }
-      }
-    },
     "ComparisonSeparatorAnd" : {
       "localizations" : {
         "en" : {
@@ -1317,238 +994,6 @@
         }
       }
     },
-    "ComparisonSummaryCommonHateFormat" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "There are %d shared dislikes."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "共通で避けたいものが%d件あります"
-          }
-        }
-      }
-    },
-    "ComparisonSummaryCommonLikeFormat" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Both people like %d items."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "2人とも好きなものが%d件あります"
-          }
-        }
-      }
-    },
-    "ComparisonSummaryCommonWeakPointFormat" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "There are %d things to avoid together."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "2人で避けたいものが%d件あります"
-          }
-        }
-      }
-    },
-    "ComparisonSummaryNoCommonLike" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No shared likes yet."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "どっちも好きなものはまだありません"
-          }
-        }
-      }
-    },
-    "ComparisonTogetherTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Things to enjoy together"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "一緒に楽しめそう"
-          }
-        }
-      }
-    },
-    "Congrats" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "مبروك!"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Glückwunsch!"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Συγχαρητήρια!"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Congrats!"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Félicitations!"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "おめでとうございます!!"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "축하합니다!"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "grattis!"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "恭喜！"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "恭喜！"
-          }
-        }
-      }
-    },
-    "ContactUs" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "اتصل بنا"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kontaktiere uns"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Επικοινωνήστε μαζί μας"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Contact Us"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nous contacter"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "お問い合わせ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "문의하기"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kontakta oss"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "联络我们"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "聯絡我們"
-          }
-        }
-      }
-    },
-    "DebugSectionTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Debug"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "デバッグ"
-          }
-        }
-      }
-    },
     "DefaultMeName" : {
       "localizations" : {
         "en" : {
@@ -1561,71 +1006,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "わたし"
-          }
-        }
-      }
-    },
-    "delete" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "حذف"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Löschen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Διαγράφω"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supprimer"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "削除する"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "지우다"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radera"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "取消"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "刪除"
           }
         }
       }
@@ -1872,88 +1252,6 @@
         }
       }
     },
-    "DeletePersonPhotoButton" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remove photo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "写真を削除"
-          }
-        }
-      }
-    },
-    "doyouwanttodelete" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "هل تريد حذف جميع البيانات؟"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Möchten Sie alle Daten löschen?"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Θέλετε να διαγράψετε όλα τα δεδομένα;"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Do you want to delete all data?"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Voulez-vous supprimer toutes les données?"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "すべてのデータを削除しますか？"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "모든 데이터를 삭제 하시겠습니까?"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vill du ta bort all information?"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "您要删除所有数据吗？"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "您要刪除所有數據嗎？"
-          }
-        }
-      }
-    },
     "EditItemButton" : {
       "localizations" : {
         "en" : {
@@ -2014,23 +1312,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "呼び方やアイコンを変えられます。"
-          }
-        }
-      }
-    },
-    "EditPersonTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About this person"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "この人のこと"
           }
         }
       }
@@ -2175,88 +1456,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "まだ好きなものがありません"
-          }
-        }
-      }
-    },
-    "EmptyListMessage" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "لم يتم حفظ أي شيء بعد"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Noch nichts gespeichert"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Δεν έχει αποθηκευτεί τίποτα ακόμα"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nothing saved yet"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rien n'est encore enregistré"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "まだ登録されていません"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "아직 등록된 것이 없습니다"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inget sparat än"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "还没有保存内容"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "尚未儲存內容"
-          }
-        }
-      }
-    },
-    "EmptyWeakPointsTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No weak points yet"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "まだ嫌いなものがありません"
           }
         }
       }
@@ -2639,71 +1838,6 @@
         }
       }
     },
-    "home" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "الصفحة الرئيسية"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zuhause"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Σπίτι"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Home"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Accueil"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ホーム"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "집"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hem"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "家"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "家"
-          }
-        }
-      }
-    },
     "HomeAddPeopleHint" : {
       "localizations" : {
         "en" : {
@@ -2716,40 +1850,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "家族や友人も追加できます"
-          }
-        }
-      }
-    },
-    "HomeBrowseSubtitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choose a person and review entries"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "人を選んで一覧を見る"
-          }
-        }
-      }
-    },
-    "HomeBrowseTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "View likes/dislikes"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "好き嫌いを見る"
           }
         }
       }
@@ -2814,40 +1914,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "だれのこと？"
-          }
-        }
-      }
-    },
-    "HomeRegisterSubtitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save a like or dislike"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "好き・嫌いを残す"
-          }
-        }
-      }
-    },
-    "HomeRegisterTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "とうろく"
           }
         }
       }
@@ -3246,23 +2312,6 @@
         }
       }
     },
-    "MeBadge" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Me"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "わたし"
-          }
-        }
-      }
-    },
     "MyHatesTitle" : {
       "localizations" : {
         "en" : {
@@ -3291,65 +2340,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "わたしの好きなもの"
-          }
-        }
-      }
-    },
-    "No Ads" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Ads"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Ads"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Ads"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Ads"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "広告を非表示"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "광고 없음"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Ads"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "无广告"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "無廣告"
           }
         }
       }
@@ -3421,23 +2411,6 @@
     "OK" : {
 
     },
-    "PersonColorSectionTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Color"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "色"
-          }
-        }
-      }
-    },
     "PersonCountFormat" : {
       "localizations" : {
         "en" : {
@@ -3466,23 +2439,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@の嫌いなもの"
-          }
-        }
-      }
-    },
-    "PersonIconSectionTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Icon"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アイコン"
           }
         }
       }
@@ -3551,23 +2507,6 @@
         }
       }
     },
-    "PersonWeakPointCountFormat" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Likes %d / Dislikes %d"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "好き %d件 / 嫌い %d件"
-          }
-        }
-      }
-    },
     "PremiumBadge" : {
       "localizations" : {
         "en" : {
@@ -3628,23 +2567,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "4人以上追加できる"
-          }
-        }
-      }
-    },
-    "PremiumCloseButton" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Later"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "あとで"
           }
         }
       }
@@ -3729,23 +2651,6 @@
         }
       }
     },
-    "PremiumHeroMessage" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keep family and friends' favorite things and dislikes for later."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "家族や友だちの好きなもの、苦手なものも残しておけます。"
-          }
-        }
-      }
-    },
     "PremiumHeroTitle" : {
       "localizations" : {
         "en" : {
@@ -3758,23 +2663,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "もっと大切な人を追加できます"
-          }
-        }
-      }
-    },
-    "PremiumOneTimeNote" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This is not monthly. One purchase lets you use it."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "月額ではありません。一度の購入で使えます。"
           }
         }
       }
@@ -3855,40 +2743,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "買い切りプレミアムを購入（%@）"
-          }
-        }
-      }
-    },
-    "PremiumPurchaseDeferredMessage" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The purchase is waiting for approval."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "購入は承認待ちです。"
-          }
-        }
-      }
-    },
-    "PremiumPurchaseDeferredTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Purchase Pending"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "購入を保留しています"
           }
         }
       }
@@ -4069,136 +2923,6 @@
         }
       }
     },
-    "registe10Things" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "قمت بتسجيل 10 أشياء تحب!"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Du registrierst 10 Dinge die dir gefallen !!"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Εγγραφείτε 10 πράγματα που σας αρέσει !!"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You register 10 Things YOU LIKE!!"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vous enregistrez 10 choses que vous aimez !!"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "10こ好きなものを登録しました"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "당신이 좋아하는 10 가지를 등록하십시오!"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Du registrerar 10 saker du gillar !!"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "您注册喜欢的10件事！！"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "您註冊喜歡的10件事！！"
-          }
-        }
-      }
-    },
-    "register" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "تسجيل"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registrieren"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Κανω ΕΓΓΡΑΦΗ"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Register"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "S'inscrire"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "登録"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "레지스터"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registrera"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "寄存器"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "寄存器"
-          }
-        }
-      }
-    },
     "Restore" : {
       "localizations" : {
         "ar" : {
@@ -4337,40 +3061,6 @@
         }
       }
     },
-    "RevenueCatDebugSubtitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open RevenueCat debug overlay"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RevenueCatのデバッグ表示を開きます"
-          }
-        }
-      }
-    },
-    "RevenueCatDebugTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RevenueCat Debug"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RevenueCatデバッグ"
-          }
-        }
-      }
-    },
     "SaveItemButton" : {
       "localizations" : {
         "en" : {
@@ -4415,23 +3105,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保存"
-          }
-        }
-      }
-    },
-    "SelectPersonPhotoButton" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choose photo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "写真を選ぶ"
           }
         }
       }
@@ -4676,71 +3349,6 @@
         }
       }
     },
-    "thisoperation" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "هذه العملية لا يمكن التراجع عنها"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dieser Vorgang kann nicht rückgängig gemacht werden"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αυτή η λειτουργία δεν μπορεί να ανακληθεί"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This operation can not be undone"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cette opération ne peut pas être annulée"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "この操作は取り消せません"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 작업은 취소 할 수 없습니다"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Denna åtgärd kan inte ångras"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "此操作无法撤消"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "此操作無法撤消"
-          }
-        }
-      }
-    },
     "Vibration" : {
       "localizations" : {
         "en" : {
@@ -4769,40 +3377,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "すべて見る"
-          }
-        }
-      }
-    },
-    "WeakPointInputPlaceholder" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Write something they dislike"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "嫌いなものを書く"
-          }
-        }
-      }
-    },
-    "WeakPointTitle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dislike"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "嫌い"
           }
         }
       }

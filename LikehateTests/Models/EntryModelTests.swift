@@ -53,6 +53,43 @@ struct EntryKindTests {
    }
 }
 
+struct LikeDislikeItemCodableCompatibilityTests {
+   @Test("好き嫌い項目は古いJSONに新しい項目がなくても読み込める")
+   func itemDecodesLegacyPayloadWithoutNewFields() throws {
+      let id = UUID()
+      let personID = UUID()
+      let createdAt = Date(timeIntervalSince1970: 2_345)
+      let data = try JSONEncoder().encode(
+         LegacyLikeDislikeItemPayload(
+            id: id,
+            personID: personID,
+            kind: EntryKind.hate.analyticsName,
+            title: "雨",
+            createdAt: createdAt
+         )
+      )
+
+      let item = try JSONDecoder().decode(LikeDislikeItem.self, from: data)
+
+      #expect(item.id == id)
+      #expect(item.personId == personID)
+      #expect(item.type == .hate)
+      #expect(item.title == "雨")
+      #expect(item.note == nil)
+      #expect(item.createdAt == createdAt)
+      #expect(item.updatedAt == createdAt)
+      #expect(item.sortOrder == 0)
+   }
+}
+
+private struct LegacyLikeDislikeItemPayload: Encodable {
+   let id: UUID
+   let personID: UUID
+   let kind: String
+   let title: String
+   let createdAt: Date
+}
+
 struct EntryPreviewItemsTests {
    @Test("入力プレビューは現在の並び順の先頭項目を使う")
    func previewsUseFirstItemsFromCurrentOrder() {
