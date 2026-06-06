@@ -306,6 +306,38 @@
         }
       }
     },
+    "AppStoreScreenshotModeSubtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replace app data with screenshot sample data."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スクリーンショット用のサンプルデータに差し替えます。"
+          }
+        }
+      }
+    },
+    "AppStoreScreenshotModeTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store screenshot mode"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Storeスクショモード"
+          }
+        }
+      }
+    },
     "AppTitle" : {
       "localizations" : {
         "ar" : {
@@ -530,38 +562,6 @@
         }
       }
     },
-    "AppStoreScreenshotModeSubtitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Replace app data with screenshot sample data."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スクリーンショット用のサンプルデータに差し替えます。"
-          }
-        }
-      }
-    },
-    "AppStoreScreenshotModeTitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Store screenshot mode"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Storeスクショモード"
-          }
-        }
-      }
-    },
     "CompareButton" : {
       "localizations" : {
         "en" : {
@@ -574,22 +574,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "くらべる"
-          }
-        }
-      }
-    },
-    "ComparisonDifferencesTitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The two of you differ"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ふたりの違い"
           }
         }
       }
@@ -750,6 +734,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "どっちも好き"
+          }
+        }
+      }
+    },
+    "ComparisonDifferencesTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The two of you differ"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ふたりの違い"
           }
         }
       }
@@ -1188,7 +1188,6 @@
       }
     },
     "deleteErasing" : {
-      "comment" : "Localizable.strings\n  Likehate\n\n  Created by jun on 2018/07/01.\n  Copyright © 2018年 jun. All rights reserved.",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -2635,6 +2634,22 @@
         }
       }
     },
+    "PremiumCloseButton" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Later"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あとで"
+          }
+        }
+      }
+    },
     "PremiumComparisonTitle" : {
       "localizations" : {
         "en" : {
@@ -2731,6 +2746,22 @@
         }
       }
     },
+    "PremiumOneTimeNote" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is not monthly. One purchase unlocks it."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "月額ではありません。一度の購入で使えます。"
+          }
+        }
+      }
+    },
     "PremiumPaidPlanMessage" : {
       "localizations" : {
         "en" : {
@@ -2807,6 +2838,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "買い切りプレミアムを購入（%@）"
+          }
+        }
+      }
+    },
+    "PremiumPurchaseDeferredMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The purchase is pending approval."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "購入は承認待ちです。"
+          }
+        }
+      }
+    },
+    "PremiumPurchaseDeferredTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase Pending"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "購入が保留中です"
           }
         }
       }
@@ -2987,38 +3050,6 @@
         }
       }
     },
-    "RevenueCatDebugSubtitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open RevenueCat's debug overlay."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RevenueCatのデバッグ画面を開きます。"
-          }
-        }
-      }
-    },
-    "RevenueCatDebugTitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RevenueCat debug"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RevenueCatデバッグ"
-          }
-        }
-      }
-    },
     "Restore" : {
       "localizations" : {
         "ar" : {
@@ -3153,6 +3184,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "復元しました"
+          }
+        }
+      }
+    },
+    "RevenueCatDebugSubtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open RevenueCat's debug overlay."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RevenueCatのデバッグ画面を開きます。"
+          }
+        }
+      }
+    },
+    "RevenueCatDebugTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RevenueCat debug"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RevenueCatデバッグ"
           }
         }
       }
