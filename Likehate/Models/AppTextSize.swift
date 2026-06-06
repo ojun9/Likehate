@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// アプリ内で独自に選べる文字サイズ。
 enum AppTextSize: String, CaseIterable, Codable, Hashable, Identifiable {
    case extraSmall
    case small
@@ -9,6 +10,7 @@ enum AppTextSize: String, CaseIterable, Codable, Hashable, Identifiable {
 
    var id: String { rawValue }
 
+   /// 現在値から指定段階だけ進めた文字サイズを、範囲内に丸めて返す。
    func advanced(by offset: Int) -> AppTextSize {
       let allSizes = Self.allCases
       guard let currentIndex = allSizes.firstIndex(of: self) else { return self }
@@ -16,6 +18,7 @@ enum AppTextSize: String, CaseIterable, Codable, Hashable, Identifiable {
       return allSizes[clampedIndex]
    }
 
+   /// 設定画面に表示するローカライズ済みタイトルキー。
    var title: LocalizedStringKey {
       switch self {
       case .extraSmall: return "TextSizeExtraSmall"

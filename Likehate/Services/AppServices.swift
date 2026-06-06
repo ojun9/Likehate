@@ -2,6 +2,7 @@ import StoreKit
 import SwiftUI
 import UIKit
 
+/// アプリ全体で使う触覚フィードバックの薄いラッパー。
 enum HapticsClient {
    private static let isEnabledKey = "HapticsEnabled"
 
@@ -11,30 +12,35 @@ enum HapticsClient {
       return defaults.bool(forKey: isEnabledKey)
    }
 
+   /// 軽い選択や補助操作で使うフィードバック。
    @MainActor
    static func light() {
       guard isEnabled else { return }
       UIImpactFeedbackGenerator(style: .light).impactOccurred()
    }
 
+   /// 中程度の操作で使うフィードバック。
    @MainActor
    static func medium() {
       guard isEnabled else { return }
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
    }
 
+   /// 重要な確認操作で使う強めのフィードバック。
    @MainActor
    static func heavy() {
       guard isEnabled else { return }
       UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
    }
 
+   /// 保存や購入成功などで使う成功フィードバック。
    @MainActor
    static func success() {
       guard isEnabled else { return }
       UINotificationFeedbackGenerator().notificationOccurred(.success)
    }
 
+   /// 入力エラーなどで使う失敗フィードバック。
    @MainActor
    static func error() {
       guard isEnabled else { return }
@@ -42,7 +48,9 @@ enum HapticsClient {
    }
 }
 
+/// App Storeレビュー依頼を出すためのラッパー。
 enum AppReviewClient {
+   /// 現在のSceneが取れる場合は標準レビュー依頼、取れない場合はストアURLへフォールバックする。
    @MainActor
    static func requestReview() {
       guard let scene = UIApplication.shared.likehateWindowScene else {
@@ -57,6 +65,7 @@ enum AppReviewClient {
 }
 
 extension UIApplication {
+   /// 現在キーウィンドウを持つScene。
    var likehateWindowScene: UIWindowScene? {
       connectedScenes
          .compactMap { $0 as? UIWindowScene }
@@ -65,6 +74,7 @@ extension UIApplication {
          }
    }
 
+   /// AdMobなどUIKitブリッジが使う現在のrootViewController。
    var likehateRootViewController: UIViewController? {
       likehateWindowScene?
          .windows

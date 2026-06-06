@@ -1,6 +1,7 @@
 #if DEBUG
 import Foundation
 
+/// App Store用スクリーンショット撮影のために、実データを一時的にサンプルデータへ差し替えるデバッグ拡張。
 @MainActor
 extension LikeHateStore {
    private enum AppStoreScreenshotModeConstants {
@@ -9,10 +10,12 @@ extension LikeHateStore {
       static let backupItemsKey = "DebugAppStoreScreenshotBackupItemsV1"
    }
 
+   /// スクリーンショット用サンプルデータモードが有効かどうか。
    var isAppStoreScreenshotModeEnabled: Bool {
       defaults.bool(forKey: AppStoreScreenshotModeConstants.modeEnabledKey)
    }
 
+   /// スクリーンショット用サンプルデータモードのON/OFFを切り替える。
    func setAppStoreScreenshotModeEnabled(_ isEnabled: Bool) {
       guard isEnabled != isAppStoreScreenshotModeEnabled else { return }
 
@@ -23,6 +26,7 @@ extension LikeHateStore {
       }
    }
 
+   /// 現在のデータを退避して、スクリーンショット用の人物と好き嫌いへ差し替える。
    private func enableAppStoreScreenshotMode() {
       backupCurrentDataForAppStoreScreenshotMode()
 
@@ -32,6 +36,7 @@ extension LikeHateStore {
       persistPeopleAndEntries()
    }
 
+   /// 退避した実データを復元し、退避データがない場合は初期状態へ戻す。
    private func restoreDataFromAppStoreScreenshotMode() {
       let now = Date()
       if
@@ -77,6 +82,7 @@ extension LikeHateStore {
    private static let appStoreScreenshotSecondPersonID = UUID(uuidString: "00000000-0000-0000-0000-000000000102") ?? UUID()
    private static let appStoreScreenshotThirdPersonID = UUID(uuidString: "00000000-0000-0000-0000-000000000103") ?? UUID()
 
+   /// スクリーンショット用に見栄えと比較結果を調整した固定サンプルデータを作る。
    private static func makeAppStoreScreenshotData(now: Date) -> (persons: [Person], entries: [LikeDislikeItem]) {
       let persons = [
          makeAppStoreScreenshotPerson(
@@ -282,6 +288,7 @@ extension LikeHateStore {
       return (persons, entries)
    }
 
+   /// サンプルデータ用の人物を固定IDと並び順で作る。
    private static func makeAppStoreScreenshotPerson(
       id: UUID,
       name: String,
@@ -302,6 +309,7 @@ extension LikeHateStore {
       )
    }
 
+   /// サンプルデータ用の記録を表示順つきでまとめて作る。
    private static func makeAppStoreScreenshotEntries(
       personID: UUID,
       kind: EntryKind,

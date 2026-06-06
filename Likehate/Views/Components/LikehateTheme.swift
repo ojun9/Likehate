@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// アプリ全体で使う色、影、アクセントを集約するテーマ定義。
 enum LikehateTheme {
    static let background = dynamicColor(
       light: UIColor(red: 0.984, green: 0.976, blue: 0.992, alpha: 1),
@@ -35,6 +36,7 @@ enum LikehateTheme {
    static let hateAccent = Color(red: 0.337, green: 0.522, blue: 0.929)
    static let sparkleAccent = Color(red: 0.839, green: 0.698, blue: 0.298)
 
+   /// 好き嫌いの種別に対応するアクセント色。
    static func accent(for kind: EntryKind) -> Color {
       switch kind {
       case .like: return likeAccent
@@ -57,6 +59,7 @@ enum LikehateTheme {
    }
 }
 
+/// 文字サイズ設定とDynamic Typeを合わせて画面用フォントへ変換する定義。
 struct AppTypography {
    let textSize: AppTextSize
    let dynamicTypeSize: DynamicTypeSize
@@ -98,6 +101,7 @@ struct AppTypography {
    }
 }
 
+/// 画面種別ごとの基準フォントサイズ。
 private enum FontToken {
    case screenTitle
    case sectionTitle
@@ -148,6 +152,7 @@ private enum FontToken {
    }
 }
 
+/// 文字サイズ設定に応じた余白、行高、アバターサイズの共通値。
 struct AppLayoutMetrics {
    let textSize: AppTextSize
 

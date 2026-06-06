@@ -2,6 +2,7 @@ import FirebaseAnalytics
 import Foundation
 import os
 
+/// Firebase Analyticsに送る画面名の一覧。
 enum FAScreen: String, CaseIterable {
    case home = "home"
    case settings = "settings"
@@ -19,6 +20,7 @@ enum FAScreen: String, CaseIterable {
    case comparisonCategoryDetail = "comparison_category_detail"
 }
 
+/// Firebase Analyticsに送るカスタムイベント名の一覧。
 enum FAEventName: String, CaseIterable {
    /// ホームで人物カードをタップして人物詳細へ進んだ。
    case homePersonTapped = "home_person_tapped"
@@ -187,6 +189,7 @@ enum FAEventName: String, CaseIterable {
    case premiumEntitlementUpdated = "premium_entitlement_updated"
 }
 
+/// Firebase Analyticsに送るパラメータキーの一覧。
 enum FAParameter: CaseIterable, Hashable {
    /// アプリ内アニメーション設定が有効かどうか。
    case animationEnabled
@@ -443,6 +446,7 @@ enum FAParameter: CaseIterable, Hashable {
    }
 }
 
+/// 好き・嫌い本文を分析パラメータとして送るための整形ルール。
 enum FAEntryTextParameter {
    static let maxLength = 100
 
@@ -453,6 +457,7 @@ enum FAEntryTextParameter {
    }
 }
 
+/// 人物名を分析パラメータとして送るための整形ルール。
 enum FAPersonNameParameter {
    static let maxLength = PersonNameRules.maxLength
 
@@ -463,6 +468,7 @@ enum FAPersonNameParameter {
    }
 }
 
+/// プロフィール画像がどの操作・状態に由来するかを表す分析用分類。
 enum FAProfileImageSource: String, CaseIterable {
    case randomPreset = "random_preset"
    case selectedPreset = "selected_preset"
@@ -471,6 +477,7 @@ enum FAProfileImageSource: String, CaseIterable {
    case existingPhoto = "existing_photo"
 }
 
+/// `FAParameter`をキーにした型付き分析パラメータ。
 struct FAParameters: ExpressibleByDictionaryLiteral {
    private var storage: [FAParameter: Any]
 
@@ -491,6 +498,7 @@ struct FAParameters: ExpressibleByDictionaryLiteral {
       }
    }
 
+   /// 既存値に別のパラメータを重ねた新しい値を返す。
    func merging(_ other: FAParameters) -> FAParameters {
       var merged = self
       for (key, value) in other.storage {
@@ -499,6 +507,7 @@ struct FAParameters: ExpressibleByDictionaryLiteral {
       return merged
    }
 
+   /// Firebase Analyticsに渡せる文字列キーの辞書。
    var firebaseParameters: [String: Any] {
       Dictionary(uniqueKeysWithValues: storage.map { parameter, value in
          (parameter.key, value)
@@ -506,6 +515,7 @@ struct FAParameters: ExpressibleByDictionaryLiteral {
    }
 }
 
+/// Firebase Analyticsに送るイベントの型付き表現。
 enum FAEvent {
    case screenView(FAScreen, parameters: FAParameters)
    case track(FAEventName, parameters: FAParameters?)
@@ -522,6 +532,7 @@ enum FAEvent {
       }
    }
 
+   /// Firebase Analyticsに渡すイベントパラメータ。
    var parameters: [String: Any]? {
       switch self {
       case .screenView(let screen, let parameters):
@@ -544,7 +555,9 @@ enum FAEvent {
    }
 }
 
+/// Firebase Analytics送信の入口。
 enum FAAnalytics {
+   /// 本番ビルドでのみFirebaseへ送信するかどうか。
    static var sendsFirebaseEvents: Bool {
       #if DEBUG
       return false
@@ -553,6 +566,7 @@ enum FAAnalytics {
       #endif
    }
 
+   /// DEBUGではログのみ、本番ではFirebase Analyticsへ送信する。
    static func log(_ event: FAEvent) {
       #if DEBUG
       Logger.analytics.debug(

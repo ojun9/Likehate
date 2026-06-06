@@ -2,6 +2,7 @@ import PhotosUI
 import SwiftUI
 import UIKit
 
+/// 人物選択画面を追加用、閲覧用のどちらの文脈で開くかを表す。
 enum PersonSelectionMode {
    case register
    case browse
@@ -14,6 +15,7 @@ enum PersonSelectionMode {
    }
 }
 
+/// 人物を選んで入力や閲覧へ進むための一覧画面。
 struct PersonSelectionView: View {
    @EnvironmentObject private var store: LikeHateStore
    @State private var formMode: PersonFormMode?
@@ -107,6 +109,7 @@ struct PersonSelectionView: View {
    }
 }
 
+/// 人物選択画面で使う、人物の概要を1行で表示する行View。
 struct PersonSummaryRow: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -141,6 +144,7 @@ struct PersonSummaryRow: View {
    }
 }
 
+/// 写真またはプリセット画像を丸いアバターとして表示する共通View。
 struct PersonAvatar: View {
    @EnvironmentObject private var store: LikeHateStore
 
@@ -185,6 +189,7 @@ private struct PersonAvatarContent: View {
    }
 }
 
+/// 人物フォームを追加として使うか編集として使うかを表す。
 enum PersonFormMode: Identifiable {
    case add
    case edit(Person)
@@ -219,6 +224,7 @@ enum PersonFormMode: Identifiable {
    }
 }
 
+/// 人物の呼び方、写真、プリセット画像を追加・編集するフォーム画面。
 struct PersonFormView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dismiss) private var dismiss
@@ -583,6 +589,7 @@ struct PersonFormView: View {
    }
 }
 
+/// 名前入力のReturnキーで実行する動作。
 enum PersonNameSubmitAction {
    enum Action: Equatable {
       case dismissKeyboard
@@ -598,6 +605,7 @@ enum PersonNameSubmitAction {
    }
 }
 
+/// フォーム上で選択中のプロフィール画像状態。
 struct PersonIconSelectionState: Equatable {
    var selectedProfileImage: DefaultProfileImage
    private(set) var removesExistingPhoto: Bool
@@ -664,6 +672,7 @@ private struct DefaultProfileImagePicker: View {
    }
 }
 
+/// 1人の好き嫌いを見返し、追加・一覧・比較へ進む人物詳細画面。
 struct PersonDetailView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -918,6 +927,7 @@ private struct PersonEntryPreviewSection: View {
    }
 }
 
+/// 比較する2人を選ぶ画面。
 struct ComparisonSelectionView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.colorScheme) private var colorScheme
@@ -1130,6 +1140,7 @@ struct ComparisonSelectionView: View {
    }
 }
 
+/// 2人の比較結果をカテゴリ別に表示する画面。
 struct ComparisonResultView: View {
    @EnvironmentObject private var store: LikeHateStore
 
@@ -1379,6 +1390,7 @@ private struct ComparisonCategoryAvatar: View {
    }
 }
 
+/// 比較結果カテゴリをタップした後の詳細一覧画面。
 struct ComparisonCategoryDetailView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize

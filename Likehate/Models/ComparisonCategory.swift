@@ -1,3 +1,4 @@
+/// 2人の好き嫌いを比較したときの分類。
 enum ComparisonCategory: String, CaseIterable, Identifiable {
    case firstOnlyLike
    case commonLike
@@ -8,6 +9,7 @@ enum ComparisonCategory: String, CaseIterable, Identifiable {
 
    var id: String { rawValue }
 
+   /// この比較カテゴリが好き・嫌いのどちらに属するか。
    var kind: EntryKind {
       switch self {
       case .firstOnlyLike, .commonLike, .secondOnlyLike:

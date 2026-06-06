@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// アプリのエントリポイント。共有ストアを生成してルート画面へ注入する。
 @main
 struct LikehateApp: App {
    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate

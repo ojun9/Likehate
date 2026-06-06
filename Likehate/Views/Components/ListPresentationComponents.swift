@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// 一覧や比較詳細で使う、アプリ共通のやわらかいカードコンテナ。
 struct AppSectionCard<Content: View>: View {
    @Environment(\.colorScheme) private var colorScheme
 
@@ -21,6 +22,7 @@ struct AppSectionCard<Content: View>: View {
    }
 }
 
+/// 比較対象の2人を重なったアバターと名前で表示するヘッダー。
 struct PersonPairHeaderView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -61,6 +63,7 @@ struct PersonPairHeaderView: View {
    }
 }
 
+/// 2人分のアバターを斜めに重ねて、ペア感を出す表示部品。
 struct DiagonalOverlappingPersonAvatars: View {
    @Environment(\.colorScheme) private var colorScheme
 
@@ -111,6 +114,7 @@ struct DiagonalOverlappingPersonAvatars: View {
    }
 }
 
+/// 空状態をカードに閉じ込めず、画面上に直接伝えるための共通View。
 struct EmptyMemoStateView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -154,6 +158,7 @@ struct EmptyMemoStateView: View {
    }
 }
 
+/// 好き嫌いのタイトル一覧を、共通カードの質感で表示するView。
 struct LikeDislikeListCard: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize

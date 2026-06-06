@@ -1,6 +1,8 @@
 import SwiftUI
 
+/// 買い切りプレミアム画面などに使う、ハートや星がゆっくり漂う背景。
 struct LikehateFloatingBackgroundView: View {
+   /// 背景のにじみをどの範囲へ重ねるか。
    enum BlurPlacement: CaseIterable, Hashable {
       case center
       case full
@@ -69,6 +71,7 @@ struct LikehateFloatingBackgroundView: View {
    }
 }
 
+/// 背景装飾を本文の可読性に合わせてやわらかくぼかすレイヤー。
 private struct LikehateFloatingBackgroundBlur: View {
    let placement: LikehateFloatingBackgroundView.BlurPlacement
    let containerHeight: CGFloat
@@ -98,6 +101,7 @@ private struct LikehateFloatingBackgroundBlur: View {
    }
 }
 
+/// 背景全体に薄い色の流れを加えるウォッシュ。
 private struct LikehateFloatingArtworkWash: View {
    var body: some View {
       LinearGradient(
@@ -114,6 +118,7 @@ private struct LikehateFloatingArtworkWash: View {
    }
 }
 
+/// 個々の浮遊要素を位置、回転、透明度つきで描画するView。
 private struct LikehateFloatingElementView: View {
    let element: LikehateFloatingElement
    let time: TimeInterval
@@ -215,6 +220,7 @@ private struct LikehateFloatingElementView: View {
    }
 }
 
+/// 浮遊背景に配置する要素の形状と動きの定義。
 private struct LikehateFloatingElement: Identifiable {
    enum Kind {
       case symbol(String)

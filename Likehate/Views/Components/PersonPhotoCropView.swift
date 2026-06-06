@@ -2,11 +2,13 @@ import CropViewController
 import SwiftUI
 import UIKit
 
+/// 写真クロップ画面へ渡す元画像。
 struct PersonPhotoCropSource: Identifiable {
    let image: UIImage
    let id = UUID()
 }
 
+/// CropViewControllerをSwiftUIのsheetから扱うためのラッパー。
 struct PersonPhotoCropView: UIViewControllerRepresentable {
    let sourceImage: UIImage
    let onCrop: (UIImage) -> Void
@@ -31,6 +33,7 @@ struct PersonPhotoCropView: UIViewControllerRepresentable {
 
    func updateUIViewController(_ uiViewController: CropViewController, context: Context) {}
 
+   /// CropViewControllerの完了・キャンセルをSwiftUI側のクロージャへ橋渡しする。
    final class Coordinator: NSObject, @MainActor CropViewControllerDelegate {
       private let onCrop: (UIImage) -> Void
       private let onCancel: () -> Void

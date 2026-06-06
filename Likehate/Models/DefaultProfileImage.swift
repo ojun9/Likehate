@@ -1,3 +1,4 @@
+/// アプリ内に同梱しているプリセットプロフィール画像。
 enum DefaultProfileImage: String, CaseIterable, Identifiable, Codable, Hashable {
    case defaultProfileImage
    case defaultProfileImage2
@@ -21,16 +22,20 @@ enum DefaultProfileImage: String, CaseIterable, Identifiable, Codable, Hashable 
 
    var id: String { rawValue }
 
+   /// Asset Catalog上の画像名。
    var assetName: String { rawValue }
 
+   /// UIに表示する1始まりの選択肢番号。
    var optionNumber: Int {
       Self.allCases.firstIndex(of: self).map { $0 + 1 } ?? 1
    }
 
+   /// 既存人物が使っていない最初のプリセット画像を返す。
    static func firstAvailable(excluding usedImages: Set<DefaultProfileImage>) -> DefaultProfileImage {
       allCases.first { !usedImages.contains($0) } ?? .defaultProfileImage
    }
 
+   /// ランダムなプリセット画像を返す。
    static func random() -> DefaultProfileImage {
       allCases.randomElement() ?? .defaultProfileImage
    }

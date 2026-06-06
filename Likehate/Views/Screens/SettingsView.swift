@@ -3,6 +3,7 @@ import SwiftUI
 import RevenueCat
 #endif
 
+/// アプリ設定、購入復元、デバッグ機能への入口をまとめた画面。
 struct SettingsView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -195,6 +196,7 @@ private extension View {
    }
 }
 
+/// アプリ内文字サイズを選択する設定画面。
 private struct TextSizeSettingsView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -248,6 +250,7 @@ private struct TextSizeSettingsView: View {
    }
 }
 
+/// 設定画面でアイコン、タイトル、補足値を横並びで表示する行View。
 private struct SettingsActionRow: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -296,6 +299,7 @@ private struct SettingsActionRow: View {
    }
 }
 
+/// 復元処理など進行中の設定アクションを表示する行View。
 private struct SettingsProgressRow: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize

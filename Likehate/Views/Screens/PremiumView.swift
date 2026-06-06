@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// 買い切りプレミアムの価値説明、購入、復元を行う画面。
 struct PremiumView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -185,6 +186,7 @@ struct PremiumView: View {
    }
 }
 
+/// プレミアム画面上部で人数制限解除の価値を伝えるヒーローパネル。
 private struct PremiumHeroPanel: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -246,6 +248,7 @@ private struct PremiumHeroPanel: View {
    }
 }
 
+/// 無料版と買い切りプレミアムの違いを並べて見せる比較カード。
 private struct PremiumPlanComparison: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -293,6 +296,7 @@ private struct PremiumPlanComparison: View {
    }
 }
 
+/// プラン比較カード内の1行。
 private struct PremiumPlanRow: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -377,6 +381,7 @@ private struct PremiumPlanRow: View {
    }
 }
 
+/// プレミアム特典をアイコンつきで表示する行View。
 private struct PremiumBenefitRow: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -404,6 +409,7 @@ private struct PremiumBenefitRow: View {
    }
 }
 
+/// プレミアム画面のカードに使うガラス調背景。
 private struct PremiumGlassBackground: View {
    let cornerRadius: CGFloat
    let tint: Color

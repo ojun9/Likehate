@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// アプリ全体のNavigationStackを保持するルートView。
 struct RootView: View {
    var body: some View {
       NavigationStack {
@@ -8,6 +9,7 @@ struct RootView: View {
    }
 }
 
+/// 人物一覧、追加導線、比較導線を表示するホーム画面。
 struct HomeView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.colorScheme) private var colorScheme
@@ -206,10 +208,12 @@ struct HomeView: View {
    }
 }
 
+/// ホームから人物詳細へ遷移するための識別子。
 struct PersonDetailRoute: Identifiable, Hashable {
    let id: UUID
 }
 
+/// ホーム上で人物のアバター、呼び方、登録件数を表示するカード。
 private struct HomePersonCard: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.colorScheme) private var colorScheme

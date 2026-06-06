@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import UIKit
 
+/// 人物、好き嫌い、設定、課金状態をまとめて管理するアプリの中心ストア。
 @MainActor
 final class LikeHateStore: ObservableObject {
    private enum Constants {
@@ -20,24 +21,35 @@ final class LikeHateStore: ObservableObject {
       static let personPhotoSize = CGSize(width: 512, height: 512)
    }
 
+   /// 登録されている人物一覧。
    @Published private(set) var persons: [Person]
+   /// すべての人物に紐づく好き嫌いの記録。
    @Published private(set) var entries: [LikeDislikeItem]
+   /// 旧広告非表示購入を含む広告非表示フラグ。
    @Published var didBuyRemoveAd: Bool
+   /// 買い切りプレミアムが有効かどうか。
    @Published var didBuyPremium: Bool
+   /// Lottieなどの装飾アニメーションを再生するかどうか。
    @Published var animationEnabled: Bool {
       didSet {
          defaults.set(animationEnabled, forKey: Constants.animationEnabledKey)
       }
    }
+   /// アプリ独自の文字サイズ設定。
    @Published var textSize: AppTextSize {
       didSet {
          defaults.set(textSize.rawValue, forKey: Constants.textSizeKey)
       }
    }
+   /// 購入や復元の結果として表示する一時メッセージ。
    @Published var purchaseMessage: PurchaseMessage?
+   /// レビュー依頼の表示状態。
    @Published var reviewPrompt: ReviewPrompt?
+   /// プレミアム購入処理中かどうか。
    @Published var isPurchasing = false
+   /// 購入復元処理中かどうか。
    @Published var isRestoring = false
+   /// RevenueCatから取得したプレミアム商品の表示価格。
    @Published var premiumProductPrice: String?
 
    let defaults: UserDefaults
@@ -45,6 +57,7 @@ final class LikeHateStore: ObservableObject {
    private var premiumPackage: PremiumPackage?
    private var premiumEntitlementObserver: NSObjectProtocol?
 
+   /// 保存済みデータを読み込み、必要な移行と課金状態の互換処理を行う。
    init(defaults: UserDefaults = .standard, premiumPurchaseService: PremiumPurchaseServicing = RevenueCatPremiumPurchaseService()) {
       self.defaults = defaults
       self.premiumPurchaseService = premiumPurchaseService
@@ -77,24 +90,29 @@ final class LikeHateStore: ObservableObject {
       observePremiumEntitlementUpdates()
    }
 
+   /// `isMe` の人物。初回起動時や移行後は必ず1人存在する想定。
    var mePerson: Person? {
       persons.first(where: \.isMe)
    }
 
+   /// わたしに紐づく好きなもののタイトル一覧。
    var likes: [String] {
       guard let mePerson else { return [] }
       return items(for: mePerson.id, kind: .like).map(\.title)
    }
 
+   /// わたしに紐づく嫌いなもののタイトル一覧。
    var hates: [String] {
       guard let mePerson else { return [] }
       return items(for: mePerson.id, kind: .hate).map(\.title)
    }
 
+   /// アプリ内に保存されている好き嫌い記録の合計件数。
    var totalItemCount: Int {
       entries.count
    }
 
+   /// 画面側へ渡す現在の設定値。
    var appSettings: AppSettings {
       AppSettings(
          animationEnabled: animationEnabled,
@@ -105,6 +123,7 @@ final class LikeHateStore: ObservableObject {
       )
    }
 
+   /// 人数制限や広告表示の判定に使うプレミアム状態。
    var premiumAccessPolicy: PremiumAccessPolicy {
       PremiumAccessPolicy(
          isPremium: didBuyPremium,
@@ -113,41 +132,50 @@ final class LikeHateStore: ObservableObject {
       )
    }
 
+   /// 買い切りプレミアム、または旧広告非表示購入が有効かどうか。
    var hasPremiumAccess: Bool {
       premiumAccessPolicy.hasPremiumAccess
    }
 
+   /// 現在の購入状態と人数で新しい人物を追加できるかどうか。
    var canAddPerson: Bool {
       premiumAccessPolicy.canAddPerson
    }
 
+   /// 設定文字サイズとDynamic Typeを反映したタイポグラフィ。
    func typography(for dynamicTypeSize: DynamicTypeSize) -> AppTypography {
       AppTypography(textSize: textSize, dynamicTypeSize: dynamicTypeSize)
    }
 
+   /// 設定文字サイズに応じた余白や行高。
    var layoutMetrics: AppLayoutMetrics {
       AppLayoutMetrics(textSize: textSize)
    }
 
+   /// 新規追加時に既存人物とできるだけ被らないプリセット画像を返す。
    func defaultProfileImageForNewPerson() -> DefaultProfileImage {
       let usedImages = Set(persons.map(\.profileImage))
       return DefaultProfileImage.firstAvailable(excluding: usedImages)
    }
 
+   /// デバッグ用データ差し替えなどで人物と記録をまとめて置き換える。
    func replacePeopleAndEntries(persons newPersons: [Person], entries newEntries: [LikeDislikeItem]) {
       persons = newPersons
       entries = newEntries
    }
 
+   /// IDに一致する人物を返す。
    func person(for id: UUID) -> Person? {
       persons.first { $0.id == id }
    }
 
+   /// わたしに紐づく指定種別のタイトル一覧。
    func items(for kind: EntryKind) -> [String] {
       guard let mePerson else { return [] }
       return items(for: mePerson.id, kind: kind).map(\.title)
    }
 
+   /// 指定人物と種別に紐づく記録を並び順つきで返す。
    func items(for personID: UUID, kind: EntryKind) -> [LikeDislikeItem] {
       entries
          .filter { $0.personId == personID && $0.type == kind }
@@ -159,17 +187,20 @@ final class LikeHateStore: ObservableObject {
          }
    }
 
+   /// 人物に設定された写真ファイルのURLを返す。
    func photoURL(for person: Person) -> URL? {
       guard let photoFileName = person.photoFileName else { return nil }
       guard let url = Self.photoURL(fileName: photoFileName) else { return nil }
       return FileManager.default.fileExists(atPath: url.path) ? url : nil
    }
 
+   /// 人物に設定された写真画像を読み込む。
    func photoImage(for person: Person) -> UIImage? {
       guard let photoURL = photoURL(for: person) else { return nil }
       return UIImage(contentsOfFile: photoURL.path)
    }
 
+   /// 新しい人物を追加し、写真があればアプリ内領域へ保存する。
    func addPerson(
       named rawName: String,
       profileImage: DefaultProfileImage = .random(),
@@ -201,6 +232,7 @@ final class LikeHateStore: ObservableObject {
       return person
    }
 
+   /// 既存人物の呼び方、プリセット、写真を更新する。
    func updatePerson(
       _ personID: UUID,
       name rawName: String,
@@ -236,6 +268,7 @@ final class LikeHateStore: ObservableObject {
       HapticsClient.success()
    }
 
+   /// 人物とその人物に紐づく記録・写真を削除する。わたしは削除しない。
    func deletePerson(_ personID: UUID) {
       guard let index = persons.firstIndex(where: { $0.id == personID }), !persons[index].isMe else { return }
 
@@ -253,11 +286,13 @@ final class LikeHateStore: ObservableObject {
       HapticsClient.success()
    }
 
+   /// わたしに好き嫌いの記録を追加する。
    func add(_ text: String, to kind: EntryKind) {
       guard let mePerson else { return }
       add(text, to: kind, personID: mePerson.id)
    }
 
+   /// 指定人物に好き嫌いの記録を追加する。
    func add(_ text: String, to kind: EntryKind, personID: UUID) {
       let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
       guard !trimmed.isEmpty, let person = person(for: personID) else { return }
@@ -281,6 +316,7 @@ final class LikeHateStore: ObservableObject {
       recordRegistrationAndRequestReviewIfNeeded()
    }
 
+   /// 記録のタイトルを編集する。
    @discardableResult
    func updateItem(_ itemID: UUID, title rawTitle: String) -> Bool {
       let title = rawTitle.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -295,6 +331,7 @@ final class LikeHateStore: ObservableObject {
       return true
    }
 
+   /// 起動回数を記録し、条件に達した場合だけレビュー依頼を出す。
    func recordLaunchAndRequestReviewIfNeeded() {
       let nextCount = defaults.integer(forKey: Constants.launchReviewRequestCountKey) + 1
       defaults.set(nextCount, forKey: Constants.launchReviewRequestCountKey)
@@ -310,11 +347,13 @@ final class LikeHateStore: ObservableObject {
       requestReviewIfNeeded(count: nextCount, eventName: "requestReviewByLaunchCount")
    }
 
+   /// わたしの指定種別の記録を削除する。
    func delete(at offsets: IndexSet, from kind: EntryKind) {
       guard let mePerson else { return }
       delete(at: offsets, from: kind, personID: mePerson.id)
    }
 
+   /// 指定人物の指定種別の記録を削除する。
    func delete(at offsets: IndexSet, from kind: EntryKind, personID: UUID) {
       let orderedItems = items(for: personID, kind: kind)
       let deletedIDs = offsets.compactMap { offset in
@@ -331,11 +370,13 @@ final class LikeHateStore: ObservableObject {
       ])))
    }
 
+   /// わたしの指定種別の記録を並び替える。
    func move(from source: IndexSet, to destination: Int, in kind: EntryKind) {
       guard let mePerson else { return }
       move(from: source, to: destination, in: kind, personID: mePerson.id)
    }
 
+   /// 指定人物の指定種別の記録を並び替える。
    func move(from source: IndexSet, to destination: Int, in kind: EntryKind, personID: UUID) {
       var orderedItems = items(for: personID, kind: kind)
       orderedItems.move(fromOffsets: source, toOffset: destination)
@@ -353,6 +394,7 @@ final class LikeHateStore: ObservableObject {
       ])))
    }
 
+   /// すべての人物と記録を初期状態に戻す。
    func deleteAll() {
       let likeCount = entries.filter { $0.type == .like }.count
       let hateCount = entries.filter { $0.type == .hate }.count
@@ -374,6 +416,7 @@ final class LikeHateStore: ObservableObject {
       ]))
    }
 
+   /// 2人の好き嫌いを比較し、カテゴリごとのタイトル一覧を作る。
    func comparisonSections(firstPersonID: UUID, secondPersonID: UUID) -> [ComparisonSection] {
       let firstLikes = uniqueComparisonTitles(from: items(for: firstPersonID, kind: .like))
       let secondLikes = uniqueComparisonTitles(from: items(for: secondPersonID, kind: .like))
@@ -395,6 +438,7 @@ final class LikeHateStore: ObservableObject {
       ]
    }
 
+   /// プレミアム商品の価格やパッケージ情報を読み込む。
    func loadPremiumProductInfo() {
       guard premiumProductPrice == nil, premiumPackage == nil else { return }
 
@@ -410,6 +454,7 @@ final class LikeHateStore: ObservableObject {
       }
    }
 
+   /// RevenueCat経由で買い切りプレミアムを購入する。
    func purchasePremium() {
       guard !isPurchasing, !hasPremiumAccess else { return }
       isPurchasing = true
@@ -420,6 +465,7 @@ final class LikeHateStore: ObservableObject {
       }
    }
 
+   /// RevenueCat経由で購入状態を復元する。
    func restorePurchases() {
       guard !isRestoring else { return }
       isRestoring = true
@@ -430,6 +476,7 @@ final class LikeHateStore: ObservableObject {
       }
    }
 
+   /// 起動時や復帰時にRevenueCatの権利状態を再確認する。
    func refreshPremiumStatus() {
       Task {
          do {
@@ -497,6 +544,7 @@ final class LikeHateStore: ObservableObject {
       }
    }
 
+   /// 旧UserDefaults配列形式の好き嫌いを現在の人物・記録形式へ移行する。
    private static func migratedLegacyData(defaults: UserDefaults, now: Date) -> (persons: [Person], entries: [LikeDislikeItem]) {
       let me = makeMePerson(now: now, sortOrder: 0)
       let legacyLikes = defaults.stringArray(forKey: EntryKind.like.storageKey) ?? []
@@ -531,6 +579,7 @@ final class LikeHateStore: ObservableObject {
       return ([me], likeItems + hateItems)
    }
 
+   /// 初期人物として使う「わたし」を生成する。
    static func makeMePerson(now: Date, sortOrder: Int) -> Person {
       Person(
          id: UUID(),
@@ -544,6 +593,7 @@ final class LikeHateStore: ObservableObject {
       )
    }
 
+   /// 既存人物データを並び順、`isMe`、旧表示名、プリセット画像の観点で補正する。
    static func normalizedPersons(_ rawPersons: [Person], now: Date) -> [Person] {
       var normalized = rawPersons.sorted {
          if $0.sortOrder == $1.sortOrder {
@@ -591,6 +641,7 @@ final class LikeHateStore: ObservableObject {
       return trimmedName.isEmpty || trimmedName == "自分"
    }
 
+   /// 人物と各人物の記録の並び順を連番に補正する。
    func normalizeSortOrders() {
       for index in persons.indices {
          persons[index].sortOrder = index
@@ -638,6 +689,7 @@ final class LikeHateStore: ObservableObject {
       return titles
    }
 
+   /// 選択写真を丸アイコン表示向けの正方形サムネイルJPEGへ変換する。
    static func thumbnailPhotoData(from data: Data) -> Data? {
       guard let image = UIImage(data: data), image.size.width > 0, image.size.height > 0 else { return nil }
 
@@ -708,6 +760,7 @@ final class LikeHateStore: ObservableObject {
       return try? JSONDecoder().decode(type, from: data)
    }
 
+   /// 人物と記録を永続化し、現在の移行バージョンを書き込む。
    func persistPeopleAndEntries() {
       persistPersons()
       persistEntries()

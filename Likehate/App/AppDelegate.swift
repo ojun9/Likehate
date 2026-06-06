@@ -4,6 +4,7 @@ import GoogleMobileAds
 import RevenueCat
 import UIKit
 
+/// Firebase、AdMob、RevenueCatなどアプリ起動時に必要なSDKを初期化する。
 final class AppDelegate: NSObject, UIApplicationDelegate {
    func application(_ application: UIApplication,
                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -15,6 +16,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
       return true
    }
 
+   /// RevenueCat SDKを設定し、権利更新を受け取れるようにする。
    private func configureRevenueCat() {
       #if DEBUG
       Purchases.logLevel = .debug
@@ -27,11 +29,13 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
       Purchases.shared.delegate = self
    }
 
+   /// Firebase Analyticsの収集を有効にする。
    private func configureAnalyticsCollection() {
       Analytics.setAnalyticsCollectionEnabled(true)
    }
 }
 
+/// RevenueCatから届いた購入権利の更新をアプリ内ストアへ通知する。
 extension AppDelegate: @MainActor PurchasesDelegate {
    func purchases(_ purchases: Purchases, receivedUpdated customerInfo: CustomerInfo) {
       guard let isPremiumActive = customerInfo.likehatePremiumEntitlementIsActive else { return }

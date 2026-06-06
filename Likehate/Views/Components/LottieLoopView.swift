@@ -1,6 +1,7 @@
 import Lottie
 import SwiftUI
 
+/// LottieアニメーションをSwiftUI内でループ再生するためのラッパー。
 struct LottieLoopView: UIViewRepresentable {
    let name: String
 
@@ -13,6 +14,7 @@ struct LottieLoopView: UIViewRepresentable {
    }
 }
 
+/// Lottieの描画を親View内にクリップして再利用するUIKitビュー。
 final class ClippedLottieView: UIView {
    private let animationView = LottieAnimationView()
    private var currentName: String?

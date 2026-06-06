@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// 好きか嫌いのどちらを登録するか選ぶ入口画面。
 struct ChooseEntryView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.colorScheme) private var colorScheme
@@ -117,6 +118,7 @@ struct ChooseEntryView: View {
    }
 }
 
+/// 好き嫌いのテキストを入力して保存する画面。
 struct WriteItemView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dismiss) private var dismiss
@@ -305,6 +307,7 @@ struct WriteItemView: View {
    }
 }
 
+/// 入力画面上部にLottieを安全に重ねる背景レイヤー。
 struct WriteLottieLayer: View {
    let lottieName: String
    let kind: EntryKind
@@ -339,6 +342,7 @@ struct WriteLottieLayer: View {
    }
 }
 
+/// 好きなもの・嫌いなものを一覧表示し、編集や並び替えを行う画面。
 struct ItemListView: View {
    @EnvironmentObject private var store: LikeHateStore
    @Environment(\.dynamicTypeSize) private var dynamicTypeSize

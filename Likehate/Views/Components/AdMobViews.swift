@@ -2,7 +2,8 @@ import GoogleMobileAds
 import SwiftUI
 import UIKit
 
-enum AdMobUnitID: Sendable {
+/// 一覧系画面で使うAdMob広告ユニットID。
+private enum AdMobUnitID: Sendable {
     #if DEBUG
    static let itemListBanner = "ca-app-pub-3940256099942544/2934735716"
     #else
@@ -10,11 +11,13 @@ enum AdMobUnitID: Sendable {
     #endif
 }
 
+/// 広告表示場所を分析イベントで区別するための識別子。
 enum ListAdPlacement: String, Sendable {
    case itemList = "item_list"
    case comparisonCategoryDetail = "comparison_category_detail"
 }
 
+/// Google Mobile AdsのバナーViewをSwiftUIで扱うためのラッパー。
 struct LikehateAdBannerView: UIViewRepresentable {
    let adSize: AdSize
    let adUnitID: String
@@ -46,6 +49,7 @@ struct LikehateAdBannerView: UIViewRepresentable {
       Coordinator(adUnitID: adUnitID, placement: placement)
    }
 
+   /// AdMobバナーの読み込み結果を分析イベントへ変換するデリゲート。
    final class Coordinator: NSObject, BannerViewDelegate {
       init(adUnitID: String, placement: ListAdPlacement) {
          self.adUnitID = adUnitID
@@ -74,6 +78,7 @@ struct LikehateAdBannerView: UIViewRepresentable {
    }
 }
 
+/// 画面幅に合わせたインライン適応バナーを表示するView。
 struct LikehateAdaptiveAdBanner: View {
    let adUnitID: String
    let placement: ListAdPlacement
@@ -108,6 +113,7 @@ struct LikehateAdaptiveAdBanner: View {
    }
 }
 
+/// 一覧系画面で、広告表示条件を満たす場合だけバナーを差し込むView。
 struct ConditionalListAdBanner: View {
    @EnvironmentObject private var store: LikeHateStore
 
@@ -123,6 +129,7 @@ struct ConditionalListAdBanner: View {
    }
 }
 
+/// 一覧コンテンツの外側に置く広告表示本体。
 private struct ListAdBanner: View {
    let placement: ListAdPlacement
    let topPadding: CGFloat

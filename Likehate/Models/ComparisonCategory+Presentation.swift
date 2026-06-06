@@ -1,6 +1,7 @@
 import SwiftUI
 
 extension ComparisonCategory {
+   /// 比較結果セルで使う控えめな背景色。
    var color: Color {
       switch self {
       case .commonLike:
@@ -14,6 +15,7 @@ extension ComparisonCategory {
       }
    }
 
+   /// 比較結果セルのアクセント枠色。
    var borderColor: Color {
       switch self {
       case .firstOnlyLike, .commonLike, .secondOnlyLike:
@@ -23,6 +25,7 @@ extension ComparisonCategory {
       }
    }
 
+   /// 比較対象の表示名を反映したユーザー向けカテゴリ名。
    func title(first: Person, second: Person) -> String {
       switch self {
       case .firstOnlyLike:
