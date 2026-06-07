@@ -10,4 +10,6 @@ struct AppSettings: Codable, Hashable {
    var isPremium: Bool
    /// アプリ独自の文字サイズ設定。
    var textSize: AppTextSize
+   /// 現在のユーザーにオンボーディングを自動表示するかどうか。
+   var showsOnboarding: Bool
 }

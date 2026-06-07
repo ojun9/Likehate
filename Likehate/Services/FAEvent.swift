@@ -8,6 +8,7 @@ enum FAScreen: String, CaseIterable {
    case settings = "settings"
    case textSizeSettings = "text_size_settings"
    case license = "license"
+   case onboarding = "onboarding"
    case premium = "premium"
    case personSelection = "person_selection"
    case personForm = "person_form"
@@ -33,6 +34,12 @@ enum FAEventName: String, CaseIterable {
    case homeCompareTapped = "home_compare_tapped"
    /// ホームから設定画面を開いた。
    case settingsOpenedFromHome = "settings_opened_from_home"
+   /// オンボーディングで次へ進んだ。
+   case onboardingNextTapped = "onboarding_next_tapped"
+   /// オンボーディングをスキップした。
+   case onboardingSkipped = "onboarding_skipped"
+   /// オンボーディングを完了した。
+   case onboardingCompleted = "onboarding_completed"
    /// レビュー依頼の確認でレビューする側を選んだ。
    case reviewPromptConfirmed = "review_prompt_confirmed"
    /// レビュー依頼の確認でキャンセル側を選んだ。
@@ -100,6 +107,8 @@ enum FAEventName: String, CaseIterable {
    case settingsDeleteAllCancelled = "settings_delete_all_cancelled"
    /// デバッグセクションでRevenueCatデバッグ画面を開いた。
    case settingsRevenueCatDebugTapped = "settings_rc_debug_tapped"
+   /// デバッグセクションでオンボーディング画面を開いた。
+   case settingsOnboardingDebugTapped = "settings_onboarding_debug_tapped"
    /// 設定画面でアニメーション設定を変更した。
    case settingsAnimationChanged = "settings_animation_changed"
    /// 設定画面で触覚フィードバック設定を変更した。

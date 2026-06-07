@@ -2,10 +2,32 @@ import SwiftUI
 
 /// アプリ全体のNavigationStackを保持するルートView。
 struct RootView: View {
+   @EnvironmentObject private var store: LikeHateStore
+   @State private var isShowingOnboarding = false
+
    var body: some View {
       NavigationStack {
          HomeView()
       }
+      .fullScreenCover(isPresented: $isShowingOnboarding) {
+         NavigationStack {
+            OnboardingView(source: .automatic) {
+               store.completeOnboarding()
+            }
+         }
+         .interactiveDismissDisabled()
+      }
+      .onAppear {
+         presentOnboardingIfNeeded()
+      }
+      .onChange(of: store.shouldPresentOnboarding) {
+         presentOnboardingIfNeeded()
+      }
+   }
+
+   private func presentOnboardingIfNeeded() {
+      guard store.shouldPresentOnboarding else { return }
+      isShowingOnboarding = true
    }
 }
 

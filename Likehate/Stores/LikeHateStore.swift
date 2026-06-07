@@ -17,6 +17,8 @@ final class LikeHateStore: ObservableObject {
       static let adRemovedKey = "BuyRemoveAd"
       static let premiumPurchasedKey = "PremiumLifetimePurchased"
       static let textSizeKey = "AppTextSize"
+      static let onboardingEnabledKey = "OnboardingEnabled"
+      static let onboardingCompletedKey = "OnboardingCompleted"
       static let personPhotosDirectoryName = "PersonPhotos"
       static let personPhotoSize = CGSize(width: 512, height: 512)
    }
@@ -41,6 +43,14 @@ final class LikeHateStore: ObservableObject {
          defaults.set(textSize.rawValue, forKey: Constants.textSizeKey)
       }
    }
+   /// 現在のユーザーにオンボーディングを自動表示するかどうか。
+   @Published var showsOnboarding: Bool {
+      didSet {
+         defaults.set(showsOnboarding, forKey: Constants.onboardingEnabledKey)
+      }
+   }
+   /// オンボーディングを完了またはスキップ済みかどうか。
+   @Published private(set) var hasCompletedOnboarding: Bool
    /// 購入や復元の結果として表示する一時メッセージ。
    @Published var purchaseMessage: PurchaseMessage?
    /// レビュー依頼の表示状態。
@@ -68,6 +78,8 @@ final class LikeHateStore: ObservableObject {
       self.didBuyPremium = hasStoredPremiumAccess
       self.animationEnabled = defaults.object(forKey: Constants.animationEnabledKey) as? Bool ?? true
       self.textSize = AppTextSize(rawValue: defaults.string(forKey: Constants.textSizeKey) ?? "") ?? .standard
+      self.showsOnboarding = defaults.object(forKey: Constants.onboardingEnabledKey) as? Bool ?? false
+      self.hasCompletedOnboarding = defaults.bool(forKey: Constants.onboardingCompletedKey)
 
       if storedAdsRemoved {
          defaults.set(true, forKey: Constants.premiumPurchasedKey)
@@ -119,8 +131,14 @@ final class LikeHateStore: ObservableObject {
          vibrationEnabled: defaults.object(forKey: Constants.hapticsEnabledKey) as? Bool ?? true,
          adsRemoved: didBuyRemoveAd,
          isPremium: didBuyPremium,
-         textSize: textSize
+         textSize: textSize,
+         showsOnboarding: showsOnboarding
       )
+   }
+
+   /// 自動オンボーディングを出すべきかどうか。
+   var shouldPresentOnboarding: Bool {
+      showsOnboarding && !hasCompletedOnboarding
    }
 
    /// 人数制限や広告表示の判定に使うプレミアム状態。
@@ -150,6 +168,13 @@ final class LikeHateStore: ObservableObject {
    /// 設定文字サイズに応じた余白や行高。
    var layoutMetrics: AppLayoutMetrics {
       AppLayoutMetrics(textSize: textSize)
+   }
+
+   /// オンボーディングを完了扱いにして、次回以降の自動表示を止める。
+   func completeOnboarding() {
+      guard !hasCompletedOnboarding else { return }
+      hasCompletedOnboarding = true
+      defaults.set(true, forKey: Constants.onboardingCompletedKey)
    }
 
    /// 新規追加時に既存人物と被らないプリセット画像をランダムに返す。

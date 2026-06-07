@@ -99,6 +99,20 @@ struct SettingsView: View {
 
          #if DEBUG
          Section("DebugSectionTitle") {
+            NavigationLink {
+               OnboardingView(source: .debug)
+            } label: {
+               SettingsActionRow(
+                  iconName: "sparkles",
+                  title: "OnboardingDebugTitle",
+                  subtitle: "OnboardingDebugSubtitle",
+                  iconColor: LikehateTheme.sparkleAccent
+               )
+            }
+            .simultaneousGesture(TapGesture().onEnded {
+               FAAnalytics.log(.track(.settingsOnboardingDebugTapped, parameters: settingsAnalyticsParameters))
+            })
+
             Button {
                FAAnalytics.log(.track(.settingsRevenueCatDebugTapped, parameters: settingsAnalyticsParameters))
                showsRevenueCatDebug = true

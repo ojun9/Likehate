@@ -125,6 +125,8 @@ struct LocalizationTests {
          "DebugSectionTitle",
          "AppStoreScreenshotModeTitle",
          "AppStoreScreenshotModeSubtitle",
+         "OnboardingDebugTitle",
+         "OnboardingDebugSubtitle",
          "RevenueCatDebugTitle",
          "RevenueCatDebugSubtitle"
       ]
@@ -138,6 +140,39 @@ struct LocalizationTests {
          #expect(japaneseValue != key)
          #expect(englishValue != key)
       }
+   }
+
+   @Test("オンボーディングのローカライズキーが解決される")
+   func onboardingLocalizationKeysResolve() {
+      let keys = [
+         "OnboardingCompareMessage",
+         "OnboardingCompareTitle",
+         "OnboardingNavigationTitle",
+         "OnboardingNextButton",
+         "OnboardingPageIndicatorFormat",
+         "OnboardingPeopleMessage",
+         "OnboardingPeopleTitle",
+         "OnboardingSkipButton",
+         "OnboardingStartButton",
+         "OnboardingWriteMessage",
+         "OnboardingWriteTitle"
+      ]
+
+      for key in keys {
+         let japaneseValue = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "ja"))
+         let englishValue = String(localized: String.LocalizationValue(key), bundle: .main, locale: Locale(identifier: "en"))
+
+         #expect(japaneseValue.isEmpty == false)
+         #expect(englishValue.isEmpty == false)
+         #expect(japaneseValue != key)
+         #expect(englishValue != key)
+      }
+
+      let japaneseIndicator = String(format: String(localized: "OnboardingPageIndicatorFormat", bundle: .main, locale: Locale(identifier: "ja")), 1, 3)
+      let englishIndicator = String(format: String(localized: "OnboardingPageIndicatorFormat", bundle: .main, locale: Locale(identifier: "en")), 1, 3)
+      #expect(japaneseIndicator.contains("1"))
+      #expect(japaneseIndicator.contains("3"))
+      #expect(englishIndicator == "Step 1 of 3")
    }
 
    @Test("アップストアスクショ用サンプルデータのローカライズキーが全言語で解決される")

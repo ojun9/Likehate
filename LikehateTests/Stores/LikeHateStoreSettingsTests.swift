@@ -16,6 +16,9 @@ struct LikeHateStoreSettingsTests {
       #expect(settings.adsRemoved == false)
       #expect(settings.isPremium == false)
       #expect(settings.textSize == .standard)
+      #expect(settings.showsOnboarding == false)
+      #expect(context.store.showsOnboarding == false)
+      #expect(context.store.shouldPresentOnboarding == false)
    }
 
    @Test("不正な保存文字サイズは標準に戻る")
@@ -53,6 +56,39 @@ struct LikeHateStoreSettingsTests {
 
       #expect(reloadedStore.animationEnabled == false)
       #expect(reloadedStore.appSettings.animationEnabled == false)
+   }
+
+   @Test("オンボーディング表示フラグは初期値falseで永続化される")
+   func onboardingPresentationFlagPersists() throws {
+      let context = try StoreTestContext()
+      defer { context.cleanup() }
+
+      let store = context.store
+      store.showsOnboarding = true
+
+      let reloadedStore = LikeHateStore(defaults: context.defaults)
+
+      #expect(reloadedStore.showsOnboarding)
+      #expect(reloadedStore.appSettings.showsOnboarding)
+      #expect(reloadedStore.shouldPresentOnboarding)
+   }
+
+   @Test("オンボーディング完了後は表示フラグがtrueでも自動表示しない")
+   func completedOnboardingStopsAutomaticPresentation() throws {
+      let context = try StoreTestContext(initialValues: { defaults in
+         defaults.set(true, forKey: "OnboardingEnabled")
+      })
+      defer { context.cleanup() }
+
+      let store = context.store
+      #expect(store.shouldPresentOnboarding)
+
+      store.completeOnboarding()
+
+      let reloadedStore = LikeHateStore(defaults: context.defaults)
+      #expect(reloadedStore.showsOnboarding)
+      #expect(reloadedStore.hasCompletedOnboarding)
+      #expect(reloadedStore.shouldPresentOnboarding == false)
    }
 
    @Test("アプリ設定は永続化された触覚と広告フラグを読む")
