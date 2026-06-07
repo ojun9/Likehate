@@ -1455,10 +1455,11 @@ struct ComparisonCategoryDetailView: View {
                            ConditionalListAdBanner(
                               placement: .comparisonCategoryDetail,
                               hasItems: !titles.isEmpty,
-                              topPadding: max(24, layout.cardSpacing),
+                              topPadding: max(12, layout.cardSpacing / 2),
                               bottomPadding: 20
                            )
                            .frame(maxWidth: .infinity, alignment: .center)
+                           .padding(.horizontal, -layout.screenPadding)
                            .onAppear {
                               FAAnalytics.log(.track(.comparisonCategoryAdVisible, parameters: categoryDetailAnalyticsParameters(
                                  firstPerson: firstPerson,
