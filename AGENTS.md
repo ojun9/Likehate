@@ -5,13 +5,15 @@
 This repository contains the iOS app `Likehate`. App code lives under `Likehate/`:
 
 - `App/`: SwiftUI app entry point and `AppDelegate`.
+- `Features/`: feature-oriented SwiftUI screens and feature-local UI. Current features include `Home`, `Entries`, `People`, `Comparison`, `Premium`, `Settings`, and `Onboarding`.
+- `CoreUI/`: cross-feature UI foundations and reusable UI. `Theme/` contains app-wide styling, `Components/` contains shared SwiftUI components, and `Integrations/` contains UIKit or SDK bridge views such as AdMob, Lottie, and crop UI.
 - `Models/`: shared app model types such as `EntryKind`.
 - `Stores/`: observable state and persistence, currently `LikeHateStore`.
 - `Services/`: app services, notification names, and haptics helpers.
-- `Views/Screens/`: SwiftUI screens such as home, entry, list, and settings.
-- `Views/Components/`: reusable SwiftUI/UIKit bridge components such as AdMob and Lottie views.
 - `Resources/`: asset catalogs, Lottie JSON, and `.xcstrings` localization files.
 - `SupportingFiles/`: `Info.plist`, entitlements, and Firebase config.
+
+When adding a screen or UI that belongs to one user-facing area, put it under the matching `Features/<Feature>/` folder. Put UI in `CoreUI/` only when it is reused across multiple features or is an app-wide UI foundation.
 
 ## Build, Test, and Development Commands
 

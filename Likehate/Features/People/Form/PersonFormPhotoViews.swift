@@ -1,11 +1,15 @@
 import SwiftUI
 
 struct PhotoPickerButtonLabel: View {
-   let title: String
+   let title: LocalizedStringKey
    let typography: AppTypography
 
    var body: some View {
-      Label(title, systemImage: "photo")
+      Label {
+         Text(title)
+      } icon: {
+         Image(systemName: "photo")
+      }
          .font(typography.button)
          .foregroundStyle(LikehateTheme.likeAccent)
          .lineLimit(1)

@@ -213,8 +213,8 @@ struct PersonFormView: View {
       previewImage != nil
    }
 
-   private var photoButtonTitle: String {
-      String(localized: canRemovePhoto ? "ChangePersonPhotoButton" : "SelectPersonPhotoButton")
+   private var photoButtonTitle: LocalizedStringKey {
+      canRemovePhoto ? "ChangePersonPhotoButton" : "SelectPersonPhotoButton"
    }
 
    private func save() {
