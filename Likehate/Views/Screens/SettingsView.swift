@@ -87,7 +87,7 @@ struct SettingsView: View {
             .buttonStyle(.plain)
          }
 
-         Section("Other") {
+         Section {
             NavigationLink {
                LicenseView()
             } label: {
