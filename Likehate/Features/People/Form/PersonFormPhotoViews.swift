@@ -1,15 +1,11 @@
 import SwiftUI
 
 struct PhotoPickerButtonLabel: View {
-   let title: LocalizedStringKey
+   let canRemovePhoto: Bool
    let typography: AppTypography
 
    var body: some View {
-      Label {
-         Text(title)
-      } icon: {
-         Image(systemName: "photo")
-      }
+      titleLabel
          .font(typography.button)
          .foregroundStyle(LikehateTheme.likeAccent)
          .lineLimit(1)
@@ -25,6 +21,15 @@ struct PhotoPickerButtonLabel: View {
                .stroke(LikehateTheme.likeAccent.opacity(0.22), lineWidth: 1)
          }
          .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+   }
+
+   @ViewBuilder
+   private var titleLabel: some View {
+      if canRemovePhoto {
+         Label("ChangePersonPhotoButton", systemImage: "photo")
+      } else {
+         Label("SelectPersonPhotoButton", systemImage: "photo")
+      }
    }
 }
 

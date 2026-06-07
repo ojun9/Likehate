@@ -39,7 +39,7 @@ struct PersonFormView: View {
    }
 
    var body: some View {
-      let currentPhotoButtonTitle = photoButtonTitle
+      let currentCanRemovePhoto = canRemovePhoto
       let typography = store.typography(for: dynamicTypeSize)
 
       Form {
@@ -53,7 +53,7 @@ struct PersonFormView: View {
 
                PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
                   PhotoPickerButtonLabel(
-                     title: currentPhotoButtonTitle,
+                     canRemovePhoto: currentCanRemovePhoto,
                      typography: typography
                   )
                }
@@ -211,10 +211,6 @@ struct PersonFormView: View {
 
    private var canRemovePhoto: Bool {
       previewImage != nil
-   }
-
-   private var photoButtonTitle: LocalizedStringKey {
-      canRemovePhoto ? "ChangePersonPhotoButton" : "SelectPersonPhotoButton"
    }
 
    private func save() {
