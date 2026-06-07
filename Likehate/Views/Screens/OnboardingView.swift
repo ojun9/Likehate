@@ -1,9 +1,11 @@
 import SwiftUI
 
 /// オンボーディングがどの導線から表示されたか。
-enum OnboardingPresentationSource: String {
+enum OnboardingPresentationSource: String, Identifiable {
    case automatic
    case debug
+
+   var id: String { rawValue }
 }
 
 /// 初回ユーザーにLikehateの最初の価値を伝えるオンボーディング画面。

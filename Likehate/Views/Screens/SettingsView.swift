@@ -12,6 +12,12 @@ struct SettingsView: View {
    @State private var isShowingPremium = false
    @State private var showsRevenueCatDebug = false
 
+   let onOpenDebugOnboarding: () -> Void
+
+   init(onOpenDebugOnboarding: @escaping () -> Void = {}) {
+      self.onOpenDebugOnboarding = onOpenDebugOnboarding
+   }
+
    var body: some View {
       let typography = store.typography(for: dynamicTypeSize)
 
@@ -99,8 +105,9 @@ struct SettingsView: View {
 
          #if DEBUG
          Section("DebugSectionTitle") {
-            NavigationLink {
-               OnboardingView(source: .debug)
+            Button {
+               HapticsClient.light()
+               onOpenDebugOnboarding()
             } label: {
                SettingsActionRow(
                   iconName: "sparkles",
@@ -109,9 +116,7 @@ struct SettingsView: View {
                   iconColor: LikehateTheme.sparkleAccent
                )
             }
-            .simultaneousGesture(TapGesture().onEnded {
-               FAAnalytics.log(.track(.settingsOnboardingDebugTapped, parameters: settingsAnalyticsParameters))
-            })
+            .buttonStyle(.plain)
 
             Button {
                FAAnalytics.log(.track(.settingsRevenueCatDebugTapped, parameters: settingsAnalyticsParameters))

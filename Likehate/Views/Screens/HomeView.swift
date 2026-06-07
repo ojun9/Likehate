@@ -3,16 +3,20 @@ import SwiftUI
 /// アプリ全体のNavigationStackを保持するルートView。
 struct RootView: View {
    @EnvironmentObject private var store: LikeHateStore
-   @State private var isShowingOnboarding = false
+   @State private var onboardingSource: OnboardingPresentationSource?
 
    var body: some View {
       NavigationStack {
-         HomeView()
+         HomeView { source in
+            onboardingSource = source
+         }
       }
-      .fullScreenCover(isPresented: $isShowingOnboarding) {
+      .fullScreenCover(item: $onboardingSource) { source in
          NavigationStack {
-            OnboardingView(source: .automatic) {
-               store.completeOnboarding()
+            OnboardingView(source: source) {
+               if source == .automatic {
+                  store.completeOnboarding()
+               }
             }
          }
          .interactiveDismissDisabled()
@@ -27,7 +31,7 @@ struct RootView: View {
 
    private func presentOnboardingIfNeeded() {
       guard store.shouldPresentOnboarding else { return }
-      isShowingOnboarding = true
+      onboardingSource = .automatic
    }
 }
 
@@ -39,8 +43,15 @@ struct HomeView: View {
    @State private var isShowingSettings = false
    @State private var isShowingAddPerson = false
    @State private var isShowingPremium = false
+   @State private var showsDebugOnboardingAfterSettingsDismiss = false
    @State private var pendingAddedPerson: PersonDetailRoute?
    @State private var selectedPersonRoute: PersonDetailRoute?
+
+   let onOpenOnboarding: (OnboardingPresentationSource) -> Void
+
+   init(onOpenOnboarding: @escaping (OnboardingPresentationSource) -> Void = { _ in }) {
+      self.onOpenOnboarding = onOpenOnboarding
+   }
 
    var body: some View {
       let typography = store.typography(for: dynamicTypeSize)
@@ -166,9 +177,12 @@ struct HomeView: View {
             }
          )
       }
-      .sheet(isPresented: $isShowingSettings) {
+      .sheet(isPresented: $isShowingSettings, onDismiss: showDebugOnboardingIfNeeded) {
          NavigationStack {
-            SettingsView()
+            SettingsView {
+               showsDebugOnboardingAfterSettingsDismiss = true
+               isShowingSettings = false
+            }
          }
       }
       .sheet(isPresented: $isShowingAddPerson, onDismiss: showAddedPersonIfNeeded) {
@@ -192,6 +206,12 @@ struct HomeView: View {
       guard let pendingAddedPerson else { return }
       self.pendingAddedPerson = nil
       selectedPersonRoute = pendingAddedPerson
+   }
+
+   private func showDebugOnboardingIfNeeded() {
+      guard showsDebugOnboardingAfterSettingsDismiss else { return }
+      showsDebugOnboardingAfterSettingsDismiss = false
+      onOpenOnboarding(.debug)
    }
 
    private func showAddPersonOrPremium() {

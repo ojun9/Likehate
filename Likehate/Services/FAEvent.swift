@@ -107,8 +107,6 @@ enum FAEventName: String, CaseIterable {
    case settingsDeleteAllCancelled = "settings_delete_all_cancelled"
    /// デバッグセクションでRevenueCatデバッグ画面を開いた。
    case settingsRevenueCatDebugTapped = "settings_rc_debug_tapped"
-   /// デバッグセクションでオンボーディング画面を開いた。
-   case settingsOnboardingDebugTapped = "settings_onboarding_debug_tapped"
    /// 設定画面でアニメーション設定を変更した。
    case settingsAnimationChanged = "settings_animation_changed"
    /// 設定画面で触覚フィードバック設定を変更した。
