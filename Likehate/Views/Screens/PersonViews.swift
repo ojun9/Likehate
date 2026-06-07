@@ -1455,7 +1455,7 @@ struct ComparisonCategoryDetailView: View {
                            ConditionalListAdBanner(
                               placement: .comparisonCategoryDetail,
                               hasItems: !titles.isEmpty,
-                              topPadding: max(12, layout.cardSpacing / 2),
+                              topPadding: max(12, layout.cardSpacing / 2) + 4,
                               bottomPadding: 20
                            )
                            .frame(maxWidth: .infinity, alignment: .center)

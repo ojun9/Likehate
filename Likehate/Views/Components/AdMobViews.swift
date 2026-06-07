@@ -43,21 +43,50 @@ final class AdBannerContainerView: UIView {
    }
 }
 
+private struct AdBannerRotationObserver: UIViewControllerRepresentable {
+   let onTransition: @MainActor () -> Void
+
+   func makeUIViewController(context: Context) -> Controller {
+      let controller = Controller()
+      controller.onTransition = onTransition
+      return controller
+   }
+
+   func updateUIViewController(_ uiViewController: Controller, context: Context) {
+      uiViewController.onTransition = onTransition
+   }
+
+   final class Controller: UIViewController {
+      var onTransition: (@MainActor () -> Void)?
+
+      override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+         super.viewWillTransition(to: size, with: coordinator)
+
+         coordinator.animate(alongsideTransition: nil) { [weak self] _ in
+            self?.onTransition?()
+         }
+      }
+   }
+}
+
 /// Google Mobile AdsのバナーViewをSwiftUIで扱うためのラッパー。
 struct LikehateAdBannerView: UIViewRepresentable {
    let adSize: AdSize
    let adUnitID: String
+   let layoutID: Int
    let placement: ListAdPlacement
    let onHeightChange: @MainActor (CGFloat) -> Void
 
    init(
       adUnitID: String,
       adSize: AdSize,
+      layoutID: Int,
       placement: ListAdPlacement,
       onHeightChange: @escaping @MainActor (CGFloat) -> Void
    ) {
       self.adUnitID = adUnitID
       self.adSize = adSize
+      self.layoutID = layoutID
       self.placement = placement
       self.onHeightChange = onHeightChange
    }
@@ -69,6 +98,7 @@ struct LikehateAdBannerView: UIViewRepresentable {
       banner.delegate = context.coordinator
       banner.rootViewController = UIApplication.shared.likehateRootViewController
       banner.clipsToBounds = true
+      context.coordinator.loadedLayoutID = layoutID
       banner.load(Request())
       return container
    }
@@ -76,13 +106,21 @@ struct LikehateAdBannerView: UIViewRepresentable {
    func updateUIView(_ uiView: AdBannerContainerView, context: Context) {
       let banner = uiView.bannerView
       context.coordinator.onHeightChange = onHeightChange
-      if !isAdSizeEqualToSize(size1: banner.adSize, size2: adSize) {
+      let didChangeAdSize = !isAdSizeEqualToSize(size1: banner.adSize, size2: adSize)
+      let didChangeLayout = context.coordinator.loadedLayoutID != layoutID
+
+      if didChangeAdSize {
          banner.adSize = adSize
       }
       banner.rootViewController = UIApplication.shared.likehateRootViewController
       banner.delegate = context.coordinator
       banner.clipsToBounds = true
       uiView.clipsToBounds = true
+
+      if didChangeAdSize || didChangeLayout {
+         context.coordinator.loadedLayoutID = layoutID
+         banner.load(Request())
+      }
    }
 
    func makeCoordinator() -> Coordinator {
@@ -104,6 +142,7 @@ struct LikehateAdBannerView: UIViewRepresentable {
       private let adUnitID: String
       private let placement: ListAdPlacement
       var onHeightChange: @MainActor (CGFloat) -> Void
+      var loadedLayoutID: Int?
 
       func bannerViewDidReceiveAd(_ bannerView: BannerView) {
          print("AdMob banner loaded: \(adUnitID)")
@@ -135,10 +174,19 @@ struct LikehateAdBannerView: UIViewRepresentable {
 struct LikehateAdaptiveAdBanner: View {
    private static let placeholderHeight: CGFloat = 50
 
+   private struct BannerLayoutKey: Equatable {
+      let adWidth: CGFloat
+      let interfaceOrientation: UIInterfaceOrientation
+      let windowSize: CGSize
+   }
+
    let adUnitID: String
    let placement: ListAdPlacement
    @State private var adWidth: CGFloat = 0
    @State private var bannerHeight: CGFloat = 0
+   @State private var contentWidth: CGFloat = 0
+   @State private var layoutID = 0
+   @State private var layoutKey: BannerLayoutKey?
 
    var body: some View {
       let contentHeight = bannerHeight > 0 ? bannerHeight : Self.placeholderHeight
@@ -153,6 +201,7 @@ struct LikehateAdaptiveAdBanner: View {
                LikehateAdBannerView(
                   adUnitID: adUnitID,
                   adSize: adSize,
+                  layoutID: layoutID,
                   placement: placement
                ) { height in
                   bannerHeight = height
@@ -174,25 +223,50 @@ struct LikehateAdaptiveAdBanner: View {
             }
          }
          .onPreferenceChange(BannerWidthPreferenceKey.self) { width in
-            let nextWidth = Self.adRequestWidth(fallbackWidth: width)
-            guard nextWidth > 0, nextWidth != adWidth else { return }
-            adWidth = nextWidth
-            bannerHeight = 0
+            contentWidth = floor(width)
+            updateBannerLayout(fallbackWidth: contentWidth)
+         }
+         .background {
+            AdBannerRotationObserver {
+               updateBannerLayout(fallbackWidth: contentWidth)
+            }
          }
          .frame(height: contentHeight + 8)
          .background(Color.clear)
    }
 
    @MainActor
-   private static func adRequestWidth(fallbackWidth: CGFloat) -> CGFloat {
-      if let window = UIApplication.shared.likehateWindowScene?.windows.first(where: \.isKeyWindow) {
+   private func updateBannerLayout(fallbackWidth: CGFloat) {
+      guard let nextLayoutKey = Self.bannerLayoutKey(fallbackWidth: fallbackWidth),
+            nextLayoutKey != layoutKey else { return }
+
+      layoutKey = nextLayoutKey
+      adWidth = nextLayoutKey.adWidth
+      bannerHeight = 0
+      layoutID += 1
+   }
+
+   @MainActor
+   private static func bannerLayoutKey(fallbackWidth: CGFloat) -> BannerLayoutKey? {
+      if let scene = UIApplication.shared.likehateWindowScene,
+         let window = scene.keyWindow ?? scene.windows.first(where: \.isKeyWindow) {
          let safeAreaWidth = window.bounds.inset(by: window.safeAreaInsets).width
          if safeAreaWidth > 0 {
-            return floor(safeAreaWidth)
+            return BannerLayoutKey(
+               adWidth: floor(safeAreaWidth),
+               interfaceOrientation: scene.effectiveGeometry.interfaceOrientation,
+               windowSize: CGSize(width: floor(window.bounds.width), height: floor(window.bounds.height))
+            )
          }
       }
 
-      return floor(fallbackWidth)
+      let fallbackAdWidth = floor(fallbackWidth)
+      guard fallbackAdWidth > 0 else { return nil }
+      return BannerLayoutKey(
+         adWidth: fallbackAdWidth,
+         interfaceOrientation: .unknown,
+         windowSize: .zero
+      )
    }
 }
 
@@ -202,7 +276,7 @@ struct ConditionalListAdBanner: View {
 
    let placement: ListAdPlacement
    let hasItems: Bool
-   var topPadding: CGFloat = 12
+   var topPadding: CGFloat = 16
    var bottomPadding: CGFloat = 16
 
    var body: some View {

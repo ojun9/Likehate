@@ -456,16 +456,13 @@ struct ItemListView: View {
                   .padding(.horizontal, 2)
                   .padding(.bottom, 8)
                   .textCase(nil)
-               }
-
-               if showsBanner {
-                  ConditionalListAdBanner(placement: .itemList, hasItems: !items.isEmpty)
-                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                     .listRowSeparator(.hidden)
-                     .listRowBackground(Color.clear)
-                     .onAppear {
-                        FAAnalytics.log(.track(.itemListAdVisible, parameters: listAnalyticsParameters(person: person, itemCount: itemCount, showsBanner: showsBanner)))
-                     }
+               } footer: {
+                  if showsBanner {
+                     ConditionalListAdBanner(placement: .itemList, hasItems: !items.isEmpty, topPadding: 4)
+                        .onAppear {
+                           FAAnalytics.log(.track(.itemListAdVisible, parameters: listAnalyticsParameters(person: person, itemCount: itemCount, showsBanner: showsBanner)))
+                        }
+                  }
                }
             }
             .listStyle(.insetGrouped)

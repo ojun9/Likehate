@@ -87,6 +87,16 @@ struct SettingsView: View {
             .buttonStyle(.plain)
          }
 
+         Section("Other") {
+            NavigationLink {
+               LicenseView()
+            } label: {
+               SettingsActionRow(iconName: "doc.text.magnifyingglass", title: "License")
+            }
+
+            SettingsVersionRow(versionText: appVersionDisplayText)
+         }
+
          #if DEBUG
          Section("DebugSectionTitle") {
             Button {
@@ -182,6 +192,12 @@ struct SettingsView: View {
          .isHapticsEnabled: isHapticsEnabled,
          .textSize: store.textSize.rawValue
       ]
+   }
+
+   private var appVersionDisplayText: String {
+      let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "-"
+      let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "-"
+      return "\(version)(\(build))"
    }
 }
 
@@ -296,6 +312,41 @@ private struct SettingsActionRow: View {
       .frame(minHeight: layout.rowMinHeight)
       .frame(maxWidth: .infinity, alignment: .leading)
       .contentShape(Rectangle())
+   }
+}
+
+/// 設定画面でアプリバージョンを表示する行View。
+private struct SettingsVersionRow: View {
+   @EnvironmentObject private var store: LikeHateStore
+   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+   let versionText: String
+
+   var body: some View {
+      let typography = store.typography(for: dynamicTypeSize)
+      let layout = store.layoutMetrics
+
+      HStack(spacing: 12) {
+         Image(systemName: "info.circle")
+            .font(typography.body)
+            .foregroundStyle(.primary)
+            .frame(width: 24, alignment: .center)
+
+         Text("Version")
+            .font(typography.bodyRegular)
+            .foregroundStyle(.primary)
+
+         Spacer(minLength: 8)
+
+         Text(verbatim: versionText)
+            .font(typography.subtext.monospaced())
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+      }
+      .frame(minHeight: layout.rowMinHeight)
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .accessibilityElement(children: .combine)
    }
 }
 

@@ -15,6 +15,7 @@
 		BF083ADB2FCDE83B00C67F9D /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = BF083ADA2FCDE83B00C67F9D /* CropViewController */; };
 		BF083ADD2FCDE83B00C67F9D /* TOCropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = BF083ADC2FCDE83B00C67F9D /* TOCropViewController */; };
 		BF083D7B2FD312C300C67F9D /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = BF083D7A2FD312C300C67F9D /* RevenueCat */; };
+		E80C0994177EDF9639A32B51 /* LicenseList in Frameworks */ = {isa = PBXBuildFile; productRef = 817CECA0E7AC3E4347819AAC /* LicenseList */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 				BF083D7B2FD312C300C67F9D /* RevenueCat in Frameworks */,
 				BF083ADB2FCDE83B00C67F9D /* CropViewController in Frameworks */,
 				BF0000010000000000000006 /* Lottie in Frameworks */,
+				E80C0994177EDF9639A32B51 /* LicenseList in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +129,7 @@
 				BF083ADA2FCDE83B00C67F9D /* CropViewController */,
 				BF083ADC2FCDE83B00C67F9D /* TOCropViewController */,
 				BF083D7A2FD312C300C67F9D /* RevenueCat */,
+				817CECA0E7AC3E4347819AAC /* LicenseList */,
 			);
 			productName = Likehate;
 			productReference = BF22F45E20DE6E4C00B56F99 /* Likehate.app */;
@@ -203,6 +206,7 @@
 				BF0000010000000000000023 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				BF083AD92FCDE83B00C67F9D /* XCRemoteSwiftPackageReference "TOCropViewController" */,
 				BF083D792FD312C300C67F9D /* XCRemoteSwiftPackageReference "purchases-ios" */,
+				5CD461D7A376B73001764048 /* XCRemoteSwiftPackageReference "LicenseList" */,
 			);
 			productRefGroup = BF22F45F20DE6E4C00B56F99 /* Products */;
 			projectDirPath = "";
@@ -500,6 +504,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5CD461D7A376B73001764048 /* XCRemoteSwiftPackageReference "LicenseList" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cybozu/LicenseList";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.0;
+			};
+		};
 		BF0000010000000000000021 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
@@ -543,6 +555,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		817CECA0E7AC3E4347819AAC /* LicenseList */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5CD461D7A376B73001764048 /* XCRemoteSwiftPackageReference "LicenseList" */;
+			productName = LicenseList;
+		};
 		BF0000010000000000000011 /* GoogleMobileAds */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BF0000010000000000000021 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;

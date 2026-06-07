@@ -7,6 +7,7 @@ enum FAScreen: String, CaseIterable {
    case home = "home"
    case settings = "settings"
    case textSizeSettings = "text_size_settings"
+   case license = "license"
    case premium = "premium"
    case personSelection = "person_selection"
    case personForm = "person_form"
