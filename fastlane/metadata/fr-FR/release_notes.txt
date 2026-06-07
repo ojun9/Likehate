@@ -1,3 +1,3 @@
-■ Comparez désormais les goûts et les choses à éviter entre deux personnes.
-■ Les profils, les listes et l’édition ont été rendus plus clairs.
-■ La sélection de photos/icônes, l’écran Premium et les traductions ont été améliorés.
+■ Ajout d’un court parcours d’accueil pour bien démarrer.
+■ Ajout d’un écran de licences dans les réglages.
+■ Amélioration de l’affichage des publicités, du choix des photos et de certains textes.
