@@ -1,3 +1,2 @@
-■ En enkel introduktion hjälper dig att komma igång.
-■ En licenssida har lagts till i inställningarna.
-■ Annonsvisning, fotoval och vissa texter har förbättrats.
+■ Appens presentation i App Store har förbättrats.
+■ Små förbättringar för den här versionen.

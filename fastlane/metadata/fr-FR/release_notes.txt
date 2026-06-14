@@ -1,3 +1,2 @@
-■ Ajout d’un court parcours d’accueil pour bien démarrer.
-■ Ajout d’un écran de licences dans les réglages.
-■ Amélioration de l’affichage des publicités, du choix des photos et de certains textes.
+■ La présentation de l’app sur l’App Store a été mise à jour.
+■ Petites améliorations pour cette version.

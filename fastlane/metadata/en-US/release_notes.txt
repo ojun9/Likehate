@@ -1,3 +1,2 @@
-■ Added a simple onboarding flow to help you get started.
-■ Added a license information screen in Settings.
-■ Improved ad display, photo selection, and some localized text.
+■ Refined how the app is presented on the App Store.
+■ Made minor improvements for this release.

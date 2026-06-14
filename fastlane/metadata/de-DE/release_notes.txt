@@ -1,3 +1,2 @@
-■ Eine neue Einführung hilft beim ersten Start.
-■ In den Einstellungen gibt es jetzt eine Lizenzseite.
-■ Anzeigen, Fotoauswahl und einige Texte wurden verbessert.
+■ Die Darstellung der App im App Store wurde überarbeitet.
+■ Kleine Verbesserungen für diese Version.
