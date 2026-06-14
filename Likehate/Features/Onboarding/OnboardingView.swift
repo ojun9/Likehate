@@ -350,3 +350,4 @@ private struct OnboardingPageIndicator: View {
       )
    }
 }
+
