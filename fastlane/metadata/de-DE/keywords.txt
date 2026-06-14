@@ -1,1 +1,1 @@
-geschmack,liste,tagebuch,allergie,partner,paar,einfach,merken,profil,essenplan,cafe,kochen,datum
+essen,allergie,kinder,babybrei,geschenk,geburtstag,date,cafe,paar,partner,freund,familie,profil
