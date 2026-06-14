@@ -46,6 +46,7 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BF26683F2FB9858900DA9BBF /* Likehate */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (BF26685D2FB9858A00DA9BBF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Likehate; sourceTree = "<group>"; };
 		BF9000012FD0000000000002 /* LikehateTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = LikehateTests; sourceTree = "<group>"; };
+		BFE4293F2FDE70C400E8B7E3 /* ci_scripts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ci_scripts; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +86,7 @@
 		BF22F45520DE6E4C00B56F99 = {
 			isa = PBXGroup;
 			children = (
+				BFE4293F2FDE70C400E8B7E3 /* ci_scripts */,
 				BF26683F2FB9858900DA9BBF /* Likehate */,
 				BF9000012FD0000000000002 /* LikehateTests */,
 				BF22F45F20DE6E4C00B56F99 /* Products */,
@@ -118,6 +120,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				BF26683F2FB9858900DA9BBF /* Likehate */,
+				BFE4293F2FDE70C400E8B7E3 /* ci_scripts */,
 			);
 			name = Likehate;
 			packageProductDependencies = (
