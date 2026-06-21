@@ -1,2 +1,2 @@
-■ Die Darstellung der App im App Store wurde überarbeitet.
-■ Kleine Verbesserungen für diese Version.
+■ Der Umgang mit Notizen und Namen wurde zum besseren Schutz der Privatsphäre verbessert.
+■ Die App Store-Texte und Suchbegriffe wurden überarbeitet.

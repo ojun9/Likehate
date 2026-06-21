@@ -1,2 +1,2 @@
-■ La présentation de l’app sur l’App Store a été mise à jour.
-■ Petites améliorations pour cette version.
+■ La gestion des notes et des noms a été améliorée pour mieux protéger la confidentialité.
+■ Les textes et mots-clés de l’App Store ont été ajustés.
