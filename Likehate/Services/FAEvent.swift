@@ -217,8 +217,6 @@ enum FAParameter: CaseIterable, Hashable {
    case didBuyPremium
    /// 旧広告非表示購入済み状態かどうか。
    case didBuyRemoveAd
-   /// ユーザーが入力・保存した好き・嫌い項目の本文。
-   case entryText
    /// 好き・嫌い項目の総数。
    case entryCount
    /// SDKやシステムから返されたエラーコード。
@@ -271,8 +269,6 @@ enum FAParameter: CaseIterable, Hashable {
    case personCount
    /// 対象人物の人物ID。
    case personID
-   /// ユーザーが入力・保存した人物名。
-   case personName
    /// 広告やUI要素の表示位置。
    case placement
    /// 変更前の文字サイズ設定。
@@ -344,8 +340,6 @@ enum FAParameter: CaseIterable, Hashable {
          return "did_buy_premium"
       case .didBuyRemoveAd:
          return "did_buy_remove_ad"
-      case .entryText:
-         return "entry_text"
       case .entryCount:
          return "entry_count"
       case .errorCode:
@@ -398,8 +392,6 @@ enum FAParameter: CaseIterable, Hashable {
          return "person_count"
       case .personID:
          return "person_id"
-      case .personName:
-         return "person_name"
       case .placement:
          return "placement"
       case .previousTextSize:
@@ -451,28 +443,6 @@ enum FAParameter: CaseIterable, Hashable {
       case .firebaseScreenName:
          return AnalyticsParameterScreenName
       }
-   }
-}
-
-/// 好き・嫌い本文を分析パラメータとして送るための整形ルール。
-enum FAEntryTextParameter {
-   static let maxLength = 100
-
-   static func value(from rawText: String) -> String? {
-      let trimmed = rawText.trimmingCharacters(in: .whitespacesAndNewlines)
-      guard !trimmed.isEmpty else { return nil }
-      return String(trimmed.prefix(maxLength))
-   }
-}
-
-/// 人物名を分析パラメータとして送るための整形ルール。
-enum FAPersonNameParameter {
-   static let maxLength = PersonNameRules.maxLength
-
-   static func value(from rawName: String) -> String? {
-      let sanitized = PersonNameRules.sanitized(rawName)
-      guard !sanitized.isEmpty else { return nil }
-      return sanitized
    }
 }
 

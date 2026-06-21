@@ -336,7 +336,13 @@ final class LikeHateStore: ObservableObject {
       entries.append(item)
       persistEntries()
 
-      FAAnalytics.log(.track(.entrySaved, parameters: analyticsParameters(for: kind, person: person, textLength: trimmed.count, entryText: trimmed)))
+      FAAnalytics.log(.track(.entrySaved, parameters: analyticsParameters(
+         for: kind,
+         person: person,
+         textLength: trimmed.count,
+         screen: .writeEntry,
+         mode: "add"
+      )))
       HapticsClient.success()
       recordRegistrationAndRequestReviewIfNeeded()
    }
@@ -351,7 +357,13 @@ final class LikeHateStore: ObservableObject {
       entries[index].updatedAt = Date()
       persistEntries()
 
-      FAAnalytics.log(.track(.entryUpdated, parameters: analyticsParameters(for: entries[index].type, personID: entries[index].personId, textLength: title.count, entryText: title)))
+      FAAnalytics.log(.track(.entryUpdated, parameters: analyticsParameters(
+         for: entries[index].type,
+         personID: entries[index].personId,
+         textLength: title.count,
+         screen: .editItem,
+         mode: "edit"
+      )))
       HapticsClient.success()
       return true
    }
@@ -936,11 +948,23 @@ final class LikeHateStore: ObservableObject {
       AppReviewClient.requestReview()
    }
 
-   private func analyticsParameters(for kind: EntryKind, personID: UUID, textLength: Int? = nil, entryText: String? = nil) -> FAParameters {
-      analyticsParameters(for: kind, person: person(for: personID), textLength: textLength, entryText: entryText)
+   private func analyticsParameters(
+      for kind: EntryKind,
+      personID: UUID,
+      textLength: Int? = nil,
+      screen: FAScreen? = nil,
+      mode: String? = nil
+   ) -> FAParameters {
+      analyticsParameters(for: kind, person: person(for: personID), textLength: textLength, screen: screen, mode: mode)
    }
 
-   private func analyticsParameters(for kind: EntryKind, person: Person?, textLength: Int? = nil, entryText: String? = nil) -> FAParameters {
+   private func analyticsParameters(
+      for kind: EntryKind,
+      person: Person?,
+      textLength: Int? = nil,
+      screen: FAScreen? = nil,
+      mode: String? = nil
+   ) -> FAParameters {
       let personItems = person.map { items(for: $0.id, kind: kind).count } ?? 0
       var parameters: FAParameters = [
          .kind: kind.rawValue,
@@ -961,8 +985,12 @@ final class LikeHateStore: ObservableObject {
          parameters[.textLength] = textLength
       }
 
-      if let entryText = entryText.flatMap({ FAEntryTextParameter.value(from: $0) }) {
-         parameters[.entryText] = entryText
+      if let screen {
+         parameters[.screen] = screen.rawValue
+      }
+
+      if let mode {
+         parameters[.mode] = mode
       }
 
       return parameters
@@ -971,16 +999,15 @@ final class LikeHateStore: ObservableObject {
    private func personAnalyticsParameters(_ person: Person, source: String, profileImageSource: FAProfileImageSource? = nil) -> FAParameters {
       var parameters: FAParameters = [
          .personID: person.id.uuidString,
+         .nameLength: person.name.trimmingCharacters(in: .whitespacesAndNewlines).count,
          .isMe: person.isMe,
          .personCount: persons.count,
          .entryCount: entries.count,
          .profileImage: person.profileImage.rawValue,
+         .screen: FAScreen.personForm.rawValue,
+         .mode: source,
          .source: source
       ]
-
-      if let personName = FAPersonNameParameter.value(from: person.name) {
-         parameters[.personName] = personName
-      }
 
       if let profileImageSource {
          parameters[.profileImageSource] = profileImageSource.rawValue

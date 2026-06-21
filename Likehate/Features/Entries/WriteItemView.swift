@@ -141,7 +141,7 @@ struct WriteItemView: View {
          return
       }
 
-      FAAnalytics.log(.track(.writeEntrySubmitTapped, parameters: writeAnalyticsParameters(source: source, includesEntryText: true)))
+      FAAnalytics.log(.track(.writeEntrySubmitTapped, parameters: writeAnalyticsParameters(source: source)))
       store.add(text, to: kind, personID: person.id)
       dismiss()
    }
@@ -163,7 +163,7 @@ struct WriteItemView: View {
       isTextFieldFocused ? kind.color.opacity(0.46) : LikehateTheme.border
    }
 
-   private func writeAnalyticsParameters(source: String, includesEntryText: Bool = false) -> FAParameters {
+   private func writeAnalyticsParameters(source: String) -> FAParameters {
       var parameters: FAParameters = [
          .kind: kind.rawValue,
          .source: source,
@@ -179,10 +179,6 @@ struct WriteItemView: View {
       if let selectedPerson {
          parameters[.personID] = selectedPerson.id.uuidString
          parameters[.isMe] = selectedPerson.isMe
-      }
-
-      if includesEntryText, let entryText = FAEntryTextParameter.value(from: text) {
-         parameters[.entryText] = entryText
       }
 
       return parameters

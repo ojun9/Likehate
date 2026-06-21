@@ -36,22 +36,26 @@ struct FAEventTests {
    func trackEventUsesDefinedNameAndTypedParameters() {
       let event = FAEvent.track(.personAdded, parameters: [
          .source: FAScreen.home.rawValue,
+         .personID: UUID().uuidString,
          .personCount: 3,
-         .personName: "あかり",
+         .nameLength: 3,
          .isMe: false,
          .profileImage: "defaultProfileImage04",
          .profileImageSource: FAProfileImageSource.selectedPreset.rawValue,
-         .entryText: "おすし"
+         .textLength: 3
       ])
 
       #expect(event.name == "person_added")
       #expect(event.parameters?["source"] as? String == "home")
+      #expect(event.parameters?["person_id"] as? String != nil)
       #expect(event.parameters?["person_count"] as? Int == 3)
-      #expect(event.parameters?["person_name"] as? String == "あかり")
+      #expect(event.parameters?["name_length"] as? Int == 3)
       #expect(event.parameters?["is_me"] as? Bool == false)
       #expect(event.parameters?["profile_image"] as? String == "defaultProfileImage04")
       #expect(event.parameters?["profile_image_source"] as? String == "selected_preset")
-      #expect(event.parameters?["entry_text"] as? String == "おすし")
+      #expect(event.parameters?["text_length"] as? Int == 3)
+      #expect(event.parameters?["entry_text"] == nil)
+      #expect(event.parameters?["person_name"] == nil)
    }
 
    @Test("通常イベントはパラメータなしでも送信できる")
@@ -71,29 +75,6 @@ struct FAEventTests {
       #expect(screens.contains("home"))
       #expect(screens.contains("premium"))
       #expect(screens.contains("comparison_category_detail"))
-   }
-
-   @Test("入力本文パラメータは空白を落として長すぎる値を制限する")
-   func entryTextParameterTrimsAndLimitsLongValues() throws {
-      let longText = String(repeating: "あ", count: FAEntryTextParameter.maxLength + 5)
-      let trimmed = try #require(FAEntryTextParameter.value(from: "  おすし  \n"))
-      let limited = try #require(FAEntryTextParameter.value(from: longText))
-
-      #expect(trimmed == "おすし")
-      #expect(limited.count == FAEntryTextParameter.maxLength)
-      #expect(FAEntryTextParameter.value(from: "   \n") == nil)
-   }
-
-   @Test("人物名パラメータは保存ルールと同じ整形を使う")
-   func personNameParameterUsesPersonNameRules() throws {
-      let longName = String(repeating: "あ", count: PersonNameRules.maxLength + 5)
-      let trimmed = try #require(FAPersonNameParameter.value(from: "  あかり  \n"))
-      let limited = try #require(FAPersonNameParameter.value(from: longName))
-
-      #expect(FAPersonNameParameter.maxLength == PersonNameRules.maxLength)
-      #expect(trimmed == "あかり")
-      #expect(limited.count == PersonNameRules.maxLength)
-      #expect(FAPersonNameParameter.value(from: "   \n") == nil)
    }
 
    @Test("プロフィール画像の由来は分析用の値として一覧化されている")
@@ -157,9 +138,9 @@ struct FAEventTests {
       #expect(keys.count == Set(keys).count)
       #expect(keys.allSatisfy { $0.isEmpty == false })
       #expect(keys.contains("source"))
-      #expect(keys.contains("entry_text"))
+      #expect(!keys.contains("entry_text"))
       #expect(keys.contains("person_count"))
-      #expect(keys.contains("person_name"))
+      #expect(!keys.contains("person_name"))
       #expect(keys.contains("product_id"))
       #expect(keys.contains("profile_image_source"))
       #expect(keys.contains(AnalyticsParameterScreenName))

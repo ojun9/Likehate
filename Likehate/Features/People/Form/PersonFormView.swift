@@ -352,15 +352,9 @@ struct PersonFormView: View {
    }
 
    private var formSaveAnalyticsParameters: FAParameters {
-      var parameters = formAnalyticsParameters.merging([
+      formAnalyticsParameters.merging([
          .nameLength: trimmedName.count,
          .hasSelectedPhoto: selectedPhotoData != nil
       ])
-
-      if let personName = FAPersonNameParameter.value(from: name) {
-         parameters[.personName] = personName
-      }
-
-      return parameters
    }
 }
