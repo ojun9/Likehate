@@ -1,1 +1,1 @@
-repas,goûts,allergie,enfant,bébé,cadeau,anniversaire,rencard,café,couple,ami,famille,profil,simple
+allergie,enfant,bébé,cadeau,anniversaire,rencard,café,couple,ami,famille,profil,simple,journal,note

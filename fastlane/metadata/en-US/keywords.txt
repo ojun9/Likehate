@@ -1,1 +1,1 @@
-food,picky,eater,allergy,kids,baby,meal,gift,birthday,date,cafe,couple,partner,friend,family,profile
+picky,eater,allergy,kids,baby,meal,gift,birthday,date,cafe,couple,partner,profile,journal,simple

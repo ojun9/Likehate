@@ -1,1 +1,1 @@
-preferens,lista,anteckning,dagbok,kansla,partner,allergi,enkel,minne,profil,matlista,cafe,par
+preferens,lista,anteckning,dagbok,kansla,partner,allergi,enkel,minne,profil,cafe,par,vanner
