@@ -1,2 +1,2 @@
-■ Hanteringen av sparade anteckningar och namn har förbättrats för bättre integritet.
-■ App Store-texter och sökord har uppdaterats.
+■ App Store-texter och sökord har justerats.
+■ Små förbättringar för den här versionen.

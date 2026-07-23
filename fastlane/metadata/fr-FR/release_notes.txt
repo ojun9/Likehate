@@ -1,2 +1,2 @@
-■ La gestion des notes et des noms a été améliorée pour mieux protéger la confidentialité.
 ■ Les textes et mots-clés de l’App Store ont été ajustés.
+■ Petites améliorations pour cette version.

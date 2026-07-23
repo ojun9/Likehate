@@ -1,2 +1,2 @@
-■ Der Umgang mit Notizen und Namen wurde zum besseren Schutz der Privatsphäre verbessert.
-■ Die App Store-Texte und Suchbegriffe wurden überarbeitet.
+■ Die App Store-Darstellung und Suchbegriffe wurden angepasst.
+■ Kleine Verbesserungen für diese Version.

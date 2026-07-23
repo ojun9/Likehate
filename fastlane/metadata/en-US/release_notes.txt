@@ -1,2 +1,2 @@
-■ Improved privacy handling for saved notes and names.
-■ Refined the App Store wording and search keywords.
+■ Adjusted the App Store wording and search keywords.
+■ Made minor improvements for this release.
