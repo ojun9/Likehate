@@ -1,2 +1,1 @@
-■ App Store-texter och sökord har justerats.
-■ Små förbättringar för den här versionen.
+■ Den första upplevelsen har förbättrats med en kort introduktion till appens viktigaste funktioner.

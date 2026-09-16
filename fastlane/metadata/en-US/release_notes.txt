@@ -1,2 +1,1 @@
-■ Adjusted the App Store wording and search keywords.
-■ Made minor improvements for this release.
+■ Improved the first-use experience with a short introduction to the app’s main features.
