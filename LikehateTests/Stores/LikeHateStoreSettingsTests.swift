@@ -4,7 +4,7 @@ import Testing
 
 @MainActor
 struct LikeHateStoreSettingsTests {
-   @Test("デフォルト設定は控えめで読みやすい")
+   @Test("新規インストールのデフォルト設定は読みやすくオンボーディングを表示する")
    func defaultSettings() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }
@@ -16,9 +16,9 @@ struct LikeHateStoreSettingsTests {
       #expect(settings.adsRemoved == false)
       #expect(settings.isPremium == false)
       #expect(settings.textSize == .standard)
-      #expect(settings.showsOnboarding == false)
-      #expect(context.store.showsOnboarding == false)
-      #expect(context.store.shouldPresentOnboarding == false)
+      #expect(settings.showsOnboarding)
+      #expect(context.store.showsOnboarding)
+      #expect(context.store.shouldPresentOnboarding)
    }
 
    @Test("不正な保存文字サイズは標準に戻る")
@@ -58,7 +58,7 @@ struct LikeHateStoreSettingsTests {
       #expect(reloadedStore.appSettings.animationEnabled == false)
    }
 
-   @Test("オンボーディング表示フラグは初期値falseで永続化される")
+   @Test("オンボーディング表示フラグは永続化される")
    func onboardingPresentationFlagPersists() throws {
       let context = try StoreTestContext()
       defer { context.cleanup() }

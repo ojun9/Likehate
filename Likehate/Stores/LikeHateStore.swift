@@ -74,15 +74,22 @@ final class LikeHateStore: ObservableObject {
       let storedAdsRemoved = defaults.bool(forKey: Constants.adRemovedKey)
       let storedPremium = defaults.bool(forKey: Constants.premiumPurchasedKey)
       let hasStoredPremiumAccess = storedPremium || storedAdsRemoved
+      let storedOnboardingPreference = defaults.object(forKey: Constants.onboardingEnabledKey) as? Bool
+      let hasLaunchHistory = defaults.object(forKey: Constants.launchReviewRequestCountKey) != nil
+      let initialShowsOnboarding = storedOnboardingPreference ?? !hasLaunchHistory
       self.didBuyRemoveAd = storedAdsRemoved
       self.didBuyPremium = hasStoredPremiumAccess
       self.animationEnabled = defaults.object(forKey: Constants.animationEnabledKey) as? Bool ?? true
       self.textSize = AppTextSize(rawValue: defaults.string(forKey: Constants.textSizeKey) ?? "") ?? .standard
-      self.showsOnboarding = defaults.object(forKey: Constants.onboardingEnabledKey) as? Bool ?? false
+      self.showsOnboarding = initialShowsOnboarding
       self.hasCompletedOnboarding = defaults.bool(forKey: Constants.onboardingCompletedKey)
 
       if storedAdsRemoved {
          defaults.set(true, forKey: Constants.premiumPurchasedKey)
+      }
+
+      if storedOnboardingPreference == nil {
+         defaults.set(initialShowsOnboarding, forKey: Constants.onboardingEnabledKey)
       }
 
       let now = Date()
