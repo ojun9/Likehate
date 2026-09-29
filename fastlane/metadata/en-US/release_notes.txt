@@ -1,1 +1,1 @@
-■ Improved the first-use experience with a short introduction to the app’s main features.
+■ Improved app stability and made minor improvements.

@@ -1,1 +1,1 @@
-■ Nous avons amélioré la première utilisation grâce à une courte présentation des fonctions principales.
+■ Nous avons amélioré la stabilité de l’application et apporté quelques améliorations mineures.

@@ -1,1 +1,1 @@
-■ Den första upplevelsen har förbättrats med en kort introduktion till appens viktigaste funktioner.
+■ Vi har förbättrat appens stabilitet och gjort mindre förbättringar.
