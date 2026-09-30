@@ -17,63 +17,66 @@ struct ChooseEntryView: View {
          if let person = selectedPerson {
             GeometryReader { proxy in
                ZStack(alignment: .top) {
-                  VStack(spacing: 14) {
-                     Text(verbatim: String.localizedStringWithFormat(String(localized: "EntryTargetFormat"), person.displayName))
-                        .font(.subheadline.weight(.medium))
-                        .foregroundStyle(.secondary)
-                        .padding(.top, 4)
+                  ScrollView {
+                     VStack(spacing: 14) {
+                        Text(verbatim: String.localizedStringWithFormat(String(localized: "EntryTargetFormat"), person.displayName))
+                           .font(.subheadline.weight(.medium))
+                           .foregroundStyle(.secondary)
+                           .padding(.top, 4)
 
-                     ForEach(EntryKind.allCases) { kind in
-                        NavigationLink {
-                           WriteItemView(kind: kind, personID: person.id)
-                        } label: {
-                           VStack(spacing: 8) {
-                              Text(verbatim: kind.title(for: person))
-                                 .font(.largeTitle.bold())
-                                 .fontDesign(.rounded)
-                                 .lineLimit(1)
-                                 .minimumScaleFactor(0.8)
+                        ForEach(EntryKind.allCases) { kind in
+                           NavigationLink {
+                              WriteItemView(kind: kind, personID: person.id)
+                           } label: {
+                              VStack(spacing: 8) {
+                                 Text(verbatim: kind.title(for: person))
+                                    .font(.largeTitle.bold())
+                                    .fontDesign(.rounded)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.8)
 
-                              Text(kind.selectionSubtitle)
-                                 .font(.callout.weight(.medium))
-                                 .fontDesign(.rounded)
-                                 .foregroundStyle(.secondary)
-                                 .lineLimit(1)
-                                 .minimumScaleFactor(0.75)
-                           }
-                           .frame(maxWidth: .infinity, minHeight: 132)
-                           .padding(.horizontal, 20)
-                           .padding(.vertical, 16)
-                           .background(LikehateTheme.surface, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-                           .overlay(
-                              RoundedRectangle(cornerRadius: 22, style: .continuous)
-                                 .stroke(kind.color.opacity(colorScheme == .dark ? 0.2 : 0.14), lineWidth: 1)
-                           )
-                           .overlay(alignment: kind == .like ? .leading : .trailing) {
-                              if store.animationEnabled && showsLottie {
-                                 LottieLoopView(name: kind == .like ? "Egg" : "MaruKuru")
-                                    .opacity(0.42)
-                                    .frame(width: 96, height: 96)
-                                    .clipped()
-                                    .padding(.horizontal, 12)
-                                    .allowsHitTesting(false)
-                                    .accessibilityHidden(true)
+                                 Text(kind.selectionSubtitle)
+                                    .font(.callout.weight(.medium))
+                                    .fontDesign(.rounded)
+                                    .foregroundStyle(.secondary)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.75)
                               }
+                              .frame(maxWidth: .infinity, minHeight: 132)
+                              .padding(.horizontal, 20)
+                              .padding(.vertical, 16)
+                              .background(LikehateTheme.surface, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+                              .overlay(
+                                 RoundedRectangle(cornerRadius: 22, style: .continuous)
+                                    .stroke(kind.color.opacity(colorScheme == .dark ? 0.2 : 0.14), lineWidth: 1)
+                              )
+                              .overlay(alignment: kind == .like ? .leading : .trailing) {
+                                 if store.animationEnabled && showsLottie {
+                                    LottieLoopView(name: kind == .like ? "Egg" : "MaruKuru")
+                                       .opacity(0.42)
+                                       .frame(width: 96, height: 96)
+                                       .clipped()
+                                       .padding(.horizontal, 12)
+                                       .allowsHitTesting(false)
+                                       .accessibilityHidden(true)
+                                 }
+                              }
+                              .shadow(color: LikehateTheme.cardShadow(for: colorScheme), radius: 12, x: 0, y: 4)
                            }
-                           .shadow(color: LikehateTheme.cardShadow(for: colorScheme), radius: 12, x: 0, y: 4)
+                           .buttonStyle(.plain)
+                           .simultaneousGesture(TapGesture().onEnded {
+                              FAAnalytics.log(.track(.chooseEntryKindTapped, parameters: [
+                                 .kind: kind.rawValue,
+                                 .personID: person.id.uuidString,
+                                 .isMe: person.isMe
+                              ]))
+                           })
                         }
-                        .buttonStyle(.plain)
-                        .simultaneousGesture(TapGesture().onEnded {
-                           FAAnalytics.log(.track(.chooseEntryKindTapped, parameters: [
-                              .kind: kind.rawValue,
-                              .personID: person.id.uuidString,
-                              .isMe: person.isMe
-                           ]))
-                        })
                      }
+                     .padding(.horizontal, 20)
+                     .padding(.top, max(proxy.safeAreaInsets.top + 18, 32))
+                     .padding(.bottom, 20)
                   }
-                  .padding(.horizontal, 20)
-                  .padding(.top, max(proxy.safeAreaInsets.top + 18, 32))
                }
             }
          } else {
