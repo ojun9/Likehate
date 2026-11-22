@@ -1,1 +1,1 @@
-■ Nous avons amélioré la stabilité de l’application et apporté quelques améliorations mineures.
+■ L’application prend désormais en charge l’iPhone Duo. L’affichage s’adapte lorsque vous pliez ou dépliez l’appareil.

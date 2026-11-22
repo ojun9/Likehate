@@ -1,1 +1,1 @@
-■ Vi har förbättrat appens stabilitet och gjort mindre förbättringar.
+■ Appen har nu stöd för iPhone Duo. Layouten anpassas när du viker ihop eller öppnar enheten.

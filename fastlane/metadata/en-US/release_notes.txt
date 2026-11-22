@@ -1,1 +1,1 @@
-■ Improved app stability and made minor improvements.
+■ Added support for iPhone Duo. The layout adapts when you fold or unfold your device.

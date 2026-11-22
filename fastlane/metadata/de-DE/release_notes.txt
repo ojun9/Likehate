@@ -1,1 +1,1 @@
-■ Die Stabilität der App wurde verbessert und kleinere Verbesserungen wurden vorgenommen.
+■ Die App unterstützt jetzt das iPhone Duo. Die Ansichten passen sich beim Auf- und Zuklappen an.
