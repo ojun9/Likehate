@@ -74,11 +74,4 @@ extension UIApplication {
          }
    }
 
-   /// AdMobなどUIKitブリッジが使う現在のrootViewController。
-   var likehateRootViewController: UIViewController? {
-      likehateWindowScene?
-         .windows
-         .first(where: \.isKeyWindow)?
-         .rootViewController
-   }
 }

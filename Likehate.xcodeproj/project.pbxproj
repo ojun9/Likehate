@@ -520,7 +520,7 @@
 			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 13.3.0;
+				minimumVersion = 13.13.0;
 			};
 		};
 		BF0000010000000000000022 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
@@ -528,7 +528,7 @@
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 12.0.0;
+				minimumVersion = 13.2.0;
 			};
 		};
 		BF0000010000000000000023 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
@@ -536,7 +536,7 @@
 			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.5.1;
+				minimumVersion = 4.6.1;
 			};
 		};
 		BF083AD92FCDE83B00C67F9D /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
@@ -544,7 +544,7 @@
 			repositoryURL = "https://github.com/TimOliver/TOCropViewController";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 3.1.2;
+				minimumVersion = 3.3.0;
 			};
 		};
 		BF083D792FD312C300C67F9D /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
@@ -552,7 +552,7 @@
 			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.77.0;
+				minimumVersion = 5.103.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

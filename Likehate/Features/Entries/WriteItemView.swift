@@ -77,6 +77,7 @@ struct WriteItemView: View {
                         .controlSize(.regular)
                         .padding(.top, 18)
                      }
+                     .frame(maxWidth: 540)
                      .padding(.top, 32)
                      .padding(.bottom, 180)
                      .frame(maxWidth: .infinity)
@@ -149,7 +150,7 @@ struct WriteItemView: View {
    private func registerButtonWidth(for containerWidth: CGFloat) -> CGFloat {
       let availableWidth = min(containerWidth * 0.58, 228)
       guard availableWidth.isFinite else { return 0 }
-      return max(156, availableWidth)
+      return min(containerWidth, max(156, availableWidth))
    }
 
    private var fieldBackgroundColor: Color {
